@@ -21,5 +21,9 @@ public class NikaErpCoreUrlConstants {
 	 * The TAXPAYER_BRANCHES_URL
 	 */
 	public static final String TAXPAYER_BRANCHES_LIST_URL = "taxpayer-branches/list";
+	/**
+	 * The ITEMS_URL
+	 */
+	public static final String ITEMS_URL = "items";
 	
 }

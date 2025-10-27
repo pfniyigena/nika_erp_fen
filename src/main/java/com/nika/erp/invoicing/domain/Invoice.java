@@ -35,6 +35,11 @@ public class Invoice extends AbstractEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
+	 * The internalCode
+	 */
+	@Column(name = "INTERNAL_CODE", nullable = false, unique = true)
+	private String internalCode;
+	/**
 	 * The registeredTinNumber
 	 */
 	@Column(name = "REGISTERED_TIN_NUMBER", nullable = false)
@@ -350,4 +355,50 @@ public class Invoice extends AbstractEntity {
 	@JoinColumn(name = "TAXPAYER_ID", nullable = false)
 	private CoreTaxpayer taxpayer;
 
+	public String getTransactionTypeCode() {
+
+		String invoiceNumberPerType = "";
+
+		switch (this.transactionType) {
+		case TRANSACTION_TYPE_SALE:
+
+			invoiceNumberPerType = "V";
+			break;
+		case TRANSACTION_TYPE_REFUND:
+
+			invoiceNumberPerType = "A";
+			break;
+		default:
+			break;
+		}
+
+		return invoiceNumberPerType;
+	}
+
+	public String getInvoiceTypeCode() {
+		String invoiceNumberPerType = "";
+
+		switch (this.invoiceType) {
+		case INVOICE_TYPE_NORMAL:
+
+			invoiceNumberPerType = "N";
+			break;
+		case INVOICE_TYPE_TRAINING:
+
+			invoiceNumberPerType = "T";
+			break;
+		case INVOICE_TYPE_COPY:
+
+			invoiceNumberPerType = "C";
+			break;
+		case INVOICE_TYPE_PROFORMA:
+
+			invoiceNumberPerType = "P";
+			break;
+		default:
+			break;
+		}
+
+		return invoiceNumberPerType;
+	}
 }

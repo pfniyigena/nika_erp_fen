@@ -49,6 +49,10 @@ public class NikaErpConstants {
 	 * The NIKA_DEFAULT_TAXPAYER_BRANCH_NAME
 	 */
 	public static final String NIKA_DEFAULT_TAXPAYER_BRANCH_NAME = "NIKA_DEFAULT_TAXPAYER_BRANCH_NAME";
+	/**
+	 * The NIKA_DEFAULT_ITEM_NAME
+	 */
+	public static final String NIKA_DEFAULT_ITEM_NAME = "NIKA_DEFAULT_ITEM_NAME";
 
 
 }

@@ -19,8 +19,6 @@ public class NikaErpApplication {
 		return _ -> {
 
 			coreTaxpayerService.initTaxpayer();
-			customerRepository.save(new Customer(null, "John Doe", "john@example.com", "123 Main St"));
-			customerRepository.save(new Customer(null, "Acme Corp", "acme@example.com", "456 Business Rd"));
 		};
 	}
 

@@ -62,4 +62,9 @@ public class SequenceNumberService {
 		String sequence = this.getNextSequenceNumber(ESequenceType.BRANCH_TAXPAYER);
 		return "BRA000" + StringUtils.leftPad(sequence, 8, "0");
 	}
+	public String getNextItemCode() {
+
+		String sequence = this.getNextSequenceNumber(ESequenceType.ITEM);
+		return "ITEM" + StringUtils.leftPad(sequence, 9, "0");
+	}
 }

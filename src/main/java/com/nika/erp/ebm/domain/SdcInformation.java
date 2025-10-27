@@ -1,6 +1,7 @@
 package com.nika.erp.ebm.domain;
 
 import com.nika.erp.common.domain.AbstractEntity;
+import com.nika.erp.core.domain.CoreTaxpayer;
 import com.nika.erp.core.domain.CoreTaxpayerBranch;
 
 import jakarta.persistence.Column;
@@ -68,4 +69,8 @@ public class SdcInformation extends AbstractEntity {
 	@ManyToOne
 	@JoinColumn(name = "TAXPAYER_BRANCH_ID", nullable = false)
 	private CoreTaxpayerBranch branch;
+	
+	@ManyToOne
+	@JoinColumn(name = "TAXPAYER_ID", nullable = false)
+	private CoreTaxpayer taxpayer;
 }

@@ -6,6 +6,8 @@ public enum ESequenceType {
 	/** The TAXPAYER. */
 	TAXPAYER,
 	/** The BRANCH_TAXPAYER. */
-	BRANCH_TAXPAYER
+	BRANCH_TAXPAYER,
+	/** The ITEM. */
+	ITEM
 
 }

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<th:block th:insert="~{fragments/header :: head}"></th:block>
+</head>
+<body>
+	<th:block th:insert="~{fragments/header :: pre-loader}"></th:block>
+	<div id="pcoded" class="pcoded">
+		<div class="pcoded-overlay-box"></div>
+		<div class="pcoded-container navbar-wrapper">
+
+			<th:block th:insert="~{fragments/header :: navbar-top}"></th:block>
+
+			<div class="pcoded-main-container">
+				<div class="pcoded-wrapper">
+					<th:block th:insert="~{fragments/header :: navbar-left}"></th:block>
+
+					<div class="pcoded-content">
+
+						<div class="pcoded-inner-content">
+							<!-- Main-body start -->
+							<div class="main-body">
+								<div class="page-wrapper">
+									<!-- Page-body start -->
+									<div class="page-body">
+										<!-- Input Alignment card start -->
+										<div class="card">
+											<div class="card-header">
+												<h5 th:text="#{label.invoice.details}"></h5>
+											</div>
+											<div class="card-block">
+												<form th:object="${invoiceForm}"
+													th:action="@{/invoices/new}" method="post">
+													<table id="invoiceTable">
+														<thead>
+															<tr>
+																<th>Item</th>
+																<th>Qty</th>
+																<th>Price</th>
+																<th>Total</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr class="invoice-line">
+																<td><input type="text" name="itemName"
+																	class="item-search" autocomplete="off">
+																	<div class="suggestions"></div></td>
+																<td><input type="number" class="qty"
+																	name="quantity" value="1" min="1"></td>
+																<td><input type="number" class="price" name="price"
+																	step="0.01"></td>
+																<td><input type="number" class="lineTotal"
+																	name="lineTotal" readonly></td>
+															</tr>
+														</tbody>
+													</table>
+
+													<br> <strong>Grand Total: </strong><input
+														type="number" id="grandTotal" readonly> <br>
+													<br>
+													<button type="button" id="addRow">Add Line</button>
+													<button type="submit">Save</button>
+
+												</form>
+											</div>
+										</div>
+										<!-- Input Alignment card end -->
+
+									</div>
+									<!-- Page-body end -->
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:insert="~{fragments/header :: footer}"></th:block>
+	<script>
+$(document).ready(function () {
+    // 🔍 Auto-search
+    $(document).on('keyup', '.item-search', function () {
+        const $input = $(this);
+        const query = $input.val();
+        const $suggestions = $input.next('.suggestions');
+
+        if (query.length >= 2) {
+            $.get('[[@{/items/search}]]', {query}, function (data) {
+            	alert(data);
+                let list = data.map(item =>
+                    `<div class="suggestion" data-id="${item.id}" data-price="${item.price}" data-name="${item.name}">
+                        ${item.name} (${item.price})
+                    </div>`).join('');
+                $suggestions.html(list).show();
+            });
+        } else {
+            $suggestions.hide();
+        }
+    });
+
+    // 🧭 Select item
+    $(document).on('click', '.suggestion', function () {
+        const $div = $(this);
+        const $row = $div.closest('td');
+        $row.find('.item-search').val($div.data('name'));
+        $row.parent().find('.price').val($div.data('price'));
+        $row.find('.suggestions').hide();
+        calculateLineTotal($row.parent());
+    });
+
+    // ➕ Add line
+    $('#addRow').click(function () {
+        let row = $('.invoice-line:first').clone();
+        row.find('input').val('');
+        $('#invoiceTable tbody').append(row);
+    });
+
+    // 🔢 Calculate totals
+    $(document).on('input', '.qty, .price', function () {
+        calculateLineTotal($(this).closest('tr'));
+    });
+
+    function calculateLineTotal($row) {
+        let qty = parseFloat($row.find('.qty').val()) || 0;
+        let price = parseFloat($row.find('.price').val()) || 0;
+        let total = qty * price;
+        $row.find('.lineTotal').val(total.toFixed(2));
+        updateGrandTotal();
+    }
+
+    function updateGrandTotal() {
+        let total = 0;
+        $('.lineTotal').each(function () {
+            total += parseFloat($(this).val()) || 0;
+        });
+        $('#grandTotal').val(total.toFixed(2));
+    }
+});
+</script>
+</body>
+
+</html>

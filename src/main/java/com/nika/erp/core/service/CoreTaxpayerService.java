@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.nika.erp.common.service.SequenceNumberService;
 import com.nika.erp.common.util.NikaErpConstants;
+import com.nika.erp.core.domain.CoreItem;
 import com.nika.erp.core.domain.CoreTaxpayer;
 import com.nika.erp.core.domain.CoreTaxpayerBranch;
 import com.nika.erp.core.repository.CoreTaxpayerRepository;
@@ -23,6 +24,8 @@ public class CoreTaxpayerService {
 	private final SequenceNumberService sequenceNumberService;
 
 	private final CoreTaxpayerBranchService coreTaxpayerBranchService;
+
+	private final CoreItemService coreItemService;
 
 	public void initTaxpayer() {
 
@@ -43,6 +46,9 @@ public class CoreTaxpayerService {
 			coreTaxpayerBranchService.saveNew(CoreTaxpayerBranch.builder().taxpayer(coreTaxpayer)
 					.branchCode(NikaErpConstants.NIKA_DEFAULT_TAXPAYER_BRANCH_NAME)
 					.branchName(NikaErpConstants.NIKA_DEFAULT_TAXPAYER_BRANCH_NAME).build());
+
+			coreItemService.saveNew(CoreItem.builder().taxpayer(coreTaxpayer)
+					.itemName(NikaErpConstants.NIKA_DEFAULT_ITEM_NAME).build());
 		}
 
 	}

@@ -73,7 +73,7 @@ public class CoreItem  extends AbstractEntity {
 	 * The taxRate
 	 */
 	@ManyToOne
-	@JoinColumn(name = "TAX_RATE_ID", nullable = false)
+	@JoinColumn(name = "TAX_RATE_ID")
 	private TaxRate taxRate;
 	/**
 	 * The 	itemNature
@@ -85,7 +85,7 @@ public class CoreItem  extends AbstractEntity {
 	 * The classification
 	 */
 	@ManyToOne
-	@JoinColumn(name = "ITEM_CLASSIFICATION_ID", nullable = false)
+	@JoinColumn(name = "ITEM_CLASSIFICATION_ID")
 	private CoreItemClassification classification;
 	/**
 	 * The irpp
