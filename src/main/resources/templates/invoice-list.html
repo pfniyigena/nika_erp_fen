@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Invoices</title>
+<style>
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 10px;
+}
+
+th, td {
+	padding: 5px;
+	border: 1px solid #ddd;
+	text-align: center;
+}
+
+.btn {
+	padding: 5px 10px;
+	cursor: pointer;
+	margin: 2px;
+}
+
+form {
+	display: inline;
+}
+</style>
+</head>
+<body>
+	<h2>Invoices</h2>
+
+	<form th:action="@{/invoice}" method="get">
+		<input type="text" name="q" placeholder="Search..."
+			th:value="${query}" />
+		<button type="submit">Search</button>
+	</form>
+
+	<a th:href="@{/invoice/new}" class="btn">New Invoice</a>
+
+	<form th:action="@{/invoice}" method="get">
+		<input type="text" name="q" placeholder="Search..."
+			th:value="${query}" /> <select name="status">
+			<option value="">All</option>
+			<option value="DRAFT" th:selected="${status == 'DRAFT'}">Draft</option>
+			<option value="PAID" th:selected="${status == 'PAID'}">Paid</option>
+		</select>
+		<button type="submit">Filter</button>
+	</form>
+
+	<table>
+		<tr>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th>Status</th>
+			<th>Total</th>
+			<th>Actions</th>
+		</tr>
+		<tr th:each="invoice : ${invoicePage.content}">
+			<td th:text="${invoice.invoiceNumber}"></td>
+			<td th:text="${invoice.customer.name}"></td>
+			<td th:text="${invoice.invoiceDate}"></td>
+			<td th:text="${invoice.status}"></td>
+			<td th:text="${invoice.totalAmount.add(invoice.taxAmount)}"></td>
+			<td><a th:href="@{'/invoice/' + ${invoice.id}}" class="btn">View</a>
+				<form
+					th:if="${invoice.status == T(com.example.invoicemodule.model.InvoiceStatus).DRAFT}"
+					th:action="@{'/invoice/' + ${invoice.id} + '/mark-paid'}"
+					method="post">
+					<button type="submit" class="btn">Mark Paid</button>
+				</form> <a th:href="@{'/invoice/' + ${invoice.id} + '/pdf'}" class="btn">PDF</a>
+			</td>
+		</tr>
+	</table>
+
+	<!-- Pagination -->
+	<div>
+		<span
+			th:text="'Page ' + ${invoicePage.number + 1} + ' of ' + ${invoicePage.totalPages}"></span>
+		<div>
+			<a th:if="${!invoicePage.first}"
+				th:href="@{/invoice(page=${invoicePage.number-1},size=${invoicePage.size},sort=${sort},dir=${dir},q=${query},status=${status})}">Prev</a>
+			<a th:if="${!invoicePage.last}"
+				th:href="@{/invoice(page=${invoicePage.number+1},size=${invoicePage.size},sort=${sort},dir=${dir},q=${query},status=${status})}">Next</a>
+		</div>
+	</div>
+
+</body>
+</html>

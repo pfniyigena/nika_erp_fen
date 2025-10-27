@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New Invoice</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+        th, td { padding: 5px; border: 1px solid #ddd; text-align: center; }
+        input { width: 100%; }
+        .btn { padding: 5px 10px; cursor: pointer; margin: 2px; }
+        .totals { text-align: right; margin-top: 10px; }
+    </style>
+</head>
+<body>
+<h2>Create New Invoice</h2>
+
+<form th:action="@{/invoice/save}" th:object="${invoice}" method="post">
+    <label>Invoice Number:</label>
+    <input type="text" th:field="*{invoiceNumber}" required/><br/>
+
+    <label>Invoice Date:</label>
+    <input type="date" th:field="*{invoiceDate}" required/><br/>
+
+    
+
+    <label>Customer:</label>
+    <select th:field="*{customer}" required>
+        <option th:each="cust : ${customers}" th:value="${cust}" th:text="${cust.name}"></option>
+    </select><br/><br/>
+
+    <h3>Invoice Lines</h3>
+    <table id="lines-table">
+        <tr>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Line Total</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="line, iterStat : *{invoiceLines}">
+            <td><input type="text" th:field="*{invoiceLines[__${iterStat.index}__].description}" /></td>
+            <td><input type="number" th:field="*{invoiceLines[__${iterStat.index}__].quantity}" min="0" oninput="updateTotals()" /></td>
+            <td><input type="number" step="0.01" th:field="*{invoiceLines[__${iterStat.index}__].unitPrice}" min="0" oninput="updateTotals()" /></td>
+            <td><input type="number" step="0.01" name="lineTotal" readonly /></td>
+            <td><button type="button" class="btn" onclick="removeLine(this)">Remove</button></td>
+        </tr>
+    </table>
+
+    <button type="button" class="btn" onclick="addLine()">Add Line</button>
+
+    <div class="totals">
+        <p>Subtotal: <span id="subtotal">0.00</span></p>
+        <p>Tax (10%): <span id="tax">0.00</span></p>
+        <p><strong>Total: <span id="total">0.00</span></strong></p>
+    </div>
+
+    <button type="submit">Save Invoice</button>
+</form>
+
+<script>
+let lineIndex = /*[[${invoice.invoiceLines.size()}]]*/ 1;
+
+// Add new line
+function addLine() {
+    const table = document.getElementById('lines-table');
+    const row = table.insertRow();
+    row.innerHTML = `
+        <td><input type="text" name="invoiceLines[${lineIndex}].description" /></td>
+        <td><input type="number" name="invoiceLines[${lineIndex}].quantity" min="0" oninput="updateTotals()" /></td>
+        <td><input type="number" step="0.01" name="invoiceLines[${lineIndex}].unitPrice" min="0" oninput="updateTotals()" /></td>
+        <td><input type="number" step="0.01" name="lineTotal" readonly /></td>
+        <td><button type="button" class="btn" onclick="removeLine(this)">Remove</button></td>
+    `;
+    lineIndex++;
+    updateTotals();
+}
+
+// Remove line
+function removeLine(btn) {
+    const row = btn.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+    updateTotals();
+}
+
+// Calculate totals
+function updateTotals() {
+    const table = document.getElementById('lines-table');
+    let subtotal = 0;
+    for (let i = 1; i < table.rows.length; i++) {
+        const qty = parseFloat(table.rows[i].cells[1].querySelector('input').value) || 0;
+        const price = parseFloat(table.rows[i].cells[2].querySelector('input').value) || 0;
+        const lineTotal = qty * price;
+        table.rows[i].cells[3].querySelector('input').value = lineTotal.toFixed(2);
+        subtotal += lineTotal;
+    }
+    const tax = subtotal * 0.1;
+    const total = subtotal + tax;
+    document.getElementById('subtotal').innerText = subtotal.toFixed(2);
+    document.getElementById('tax').innerText = tax.toFixed(2);
+    document.getElementById('total').innerText = total.toFixed(2);
+}
+
+// Initialize totals on page load
+updateTotals();
+</script>
+
+</body>
+</html>

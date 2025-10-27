@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title th:text="#{nika_erp.app.title}">Nika Erp</title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="description" content="Nika Erp" />
+<meta name="keywords" content="Nika Erp" />
+<meta name="author" content="Mangatek Ltd" />
+<!-- Favicon icon -->
+<link rel="icon" th:href="@{/assets/images/favicon.ico}"
+	type="image/x-icon">
+<!-- Google font-->
+<!-- Google font-->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/css}">
+
+<!-- waves.css -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/pages/waves/css/waves.min.css}" media="all">
+<!-- Required Fremwork -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/bootstrap/css/bootstrap.min.css}">
+<!-- waves.css -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/pages/waves/css/waves.min.css}" media="all">
+<!-- themify icon -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/icon/themify-icons/themify-icons.css}">
+
+<!-- ico font -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/icon/icofont/css/icofont.css}">
+<!-- Font Awesome -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/icon/font-awesome/css/font-awesome.min.css}">
+<!-- scrollbar.css -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/jquery.mCustomScrollbar.css}">
+<!-- jquery file upload Frame work -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/jquery.filer.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/jquery.filer-dragdropbox-theme.css}">
+<!-- animation nifty modal window effects css -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/component.css}">
+<!-- Select 2 css -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/pages/select/css/select2.min.css}">
+<!-- Data Table Css -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/bootstrap/css/dataTables.bootstrap4.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/bootstrap/css/responsive.bootstrap4.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/pages/data-table/css/jquery.mCustomScrollbar.css}">
+<!-- am chart export.css -->
+<link rel="stylesheet" type="text/css"
+	href="https://www.amcharts.com/lib/3/plugins/export/export.css"
+	media="all" />
+<!-- Style.css -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
+<!-- animation nifty modal window effects css -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/style.css}">
+</head>
+<body>
+	<div th:fragment="pre-loader">
+		<!-- Pre-loader start -->
+		<div class="theme-loader">
+			<div class="loader-track">
+				<div class="preloader-wrapper">
+					<div class="spinner-layer spinner-blue">
+						<div class="circle-clipper left">
+							<div class="circle"></div>
+						</div>
+						<div class="gap-patch">
+							<div class="circle"></div>
+						</div>
+						<div class="circle-clipper right">
+							<div class="circle"></div>
+						</div>
+					</div>
+					<div class="spinner-layer spinner-red">
+						<div class="circle-clipper left">
+							<div class="circle"></div>
+						</div>
+						<div class="gap-patch">
+							<div class="circle"></div>
+						</div>
+						<div class="circle-clipper right">
+							<div class="circle"></div>
+						</div>
+					</div>
+
+					<div class="spinner-layer spinner-yellow">
+						<div class="circle-clipper left">
+							<div class="circle"></div>
+						</div>
+						<div class="gap-patch">
+							<div class="circle"></div>
+						</div>
+						<div class="circle-clipper right">
+							<div class="circle"></div>
+						</div>
+					</div>
+
+					<div class="spinner-layer spinner-green">
+						<div class="circle-clipper left">
+							<div class="circle"></div>
+						</div>
+						<div class="gap-patch">
+							<div class="circle"></div>
+						</div>
+						<div class="circle-clipper right">
+							<div class="circle"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Pre-loader end -->
+	</div>
+	<div id="pcoded" class="pcoded">
+		<div class="pcoded-overlay-box"></div>
+		<div class="pcoded-container navbar-wrapper">
+			<div th:fragment="navbar-top">
+				<nav aria-label="Nika Erp menu"
+					class="navbar header-navbar pcoded-header">
+					<div class="navbar-wrapper">
+						<div class="navbar-logo">
+							<a class="mobile-menu waves-effect waves-light"
+								id="mobile-collapse" href="#!"> <em class="ti-menu"></em>
+							</a>
+							<div class="mobile-search waves-effect waves-light">
+								<div class="header-search">
+									<div class="main-search morphsearch-search">
+										<div class="input-group">
+											<span class="input-group-addon search-close"><em
+												class="ti-close"></em></span> <input type="text"
+												class="form-control"
+												th:placeholder="#{label.search.placeholder}"> <span
+												class="input-group-addon search-btn"><em
+												class="ti-search"></em></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<a href="index.html"> <img class="img-fluid"
+								th:src="@{/assets/images/logo.png}" alt="Theme-Logo" />
+							</a> <a class="mobile-options waves-effect waves-light"> <em
+								class="ti-more"></em>
+							</a>
+						</div>
+
+						<div class="navbar-container container-fluid">
+							<ul class="nav-left">
+								<li>
+									<div class="sidebar_toggle">
+										<a href="javascript:void(0)"><em class="ti-menu"></em></a>
+									</div>
+								</li>
+								<li class="header-search">
+									<div class="main-search morphsearch-search">
+										<div class="input-group">
+											<span class="input-group-addon search-close"><em
+												class="ti-close"></em></span> <input type="text"
+												class="form-control"> <span
+												class="input-group-addon search-btn"><em
+												class="ti-search"></em></span>
+										</div>
+									</div>
+								</li>
+								<li><a href="#!" onclick="javascript:toggleFullScreen()"
+									class="waves-effect waves-light"> <em class="ti-fullscreen"></em>
+								</a></li>
+							</ul>
+							<ul class="nav-right">
+								<li class="header-notification"><a href="#!"
+									class="waves-effect waves-light"> <em class="ti-bell"></em>
+										<span class="badge bg-c-red"></span>
+								</a>
+									<ul class="show-notification">
+										<li>
+											<h6>Notifications</h6> <label class="label label-danger">New</label>
+										</li>
+										<li class="waves-effect waves-light">
+											<div class="media">
+												<img class="d-flex align-self-center img-radius"
+													th:src="@{/assets/images/avatar-2.jpg}"
+													alt="Generic placeholder image">
+												<div class="media-body">
+													<h5 class="notification-user">John Doe</h5>
+													<p class="notification-msg">Lorem ipsum dolor sit amet,
+														consectetuer elit.</p>
+													<span class="notification-time">30 minutes ago</span>
+												</div>
+											</div>
+										</li>
+										<li class="waves-effect waves-light">
+											<div class="media">
+												<img class="d-flex align-self-center img-radius"
+													th:src="@{/assets/images/avatar-4.jpg}"
+													alt="Generic placeholder image">
+												<div class="media-body">
+													<h5 class="notification-user">Joseph William</h5>
+													<p class="notification-msg">Lorem ipsum dolor sit amet,
+														consectetuer elit.</p>
+													<span class="notification-time">30 minutes ago</span>
+												</div>
+											</div>
+										</li>
+										<li class="waves-effect waves-light">
+											<div class="media">
+												<img class="d-flex align-self-center img-radius"
+													th:src="@{/assets/images/avatar-3.jpg}"
+													alt="Generic placeholder image">
+												<div class="media-body">
+													<h5 class="notification-user">Sara Soudein</h5>
+													<p class="notification-msg">Lorem ipsum dolor sit amet,
+														consectetuer elit.</p>
+													<span class="notification-time">30 minutes ago</span>
+												</div>
+											</div>
+										</li>
+									</ul></li>
+								<li sec:authorize="isAuthenticated()"
+									class="user-profile header-notification"><a href="#!"
+									class="waves-effect waves-light"> <img
+										th:src="@{/assets/images/fourier.png}" class="img-radius"
+										alt="User-Profile-Image"> <span
+										sec:authentication="name">Fourier</span> <em
+										class="ti-angle-down"></em>
+								</a>
+									<ul class="show-notification profile-notification">
+										<li class="waves-effect waves-light"><a href="#!"> <em
+												class="ti-settings"></em> Settings
+										</a></li>
+										<li class="waves-effect waves-light"><a
+											href="user-profile.html"> <em class="ti-user"></em>
+												Profile
+										</a></li>
+										<li class="waves-effect waves-light"><a
+											href="email-inbox.html"> <em class="ti-email"></em> My
+												Messages
+										</a></li>
+										<li class="waves-effect waves-light"><a
+											href="auth-lock-screen.html"> <em class="ti-lock"></em>
+												Lock Screen
+										</a></li>
+										<li class="waves-effect waves-light"><a href="#"
+											th:href="@{/logout}"> <em class="ti-layout-sidebar-left"></em>
+												Logout
+										</a></li>
+									</ul></li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			</div>
+			<div class="pcoded-main-container">
+				<div class="pcoded-wrapper">
+					<div th:fragment="navbar-left">
+						<nav aria-label="Related links" class="pcoded-navbar">
+							<div class="sidebar_toggle">
+								<a href="#"><em class="icon-close icons"></em></a>
+							</div>
+							<div class="pcoded-inner-navbar main-menu">
+								<div class="p-15 p-b-0">
+									<form class="form-material">
+										<div class="form-group form-primary">
+											<input type="text" name="footer-email"
+												th:placeholder="#{label.search.placeholder}"
+												class="form-control" required> <span
+												class="form-bar"></span> <label class="float-label"><em
+												class="fa fa-search m-r-10"></em></label>
+										</div>
+									</form>
+								</div>
+								<div class="pcoded-navigation-label"
+									data-i18n="nav.category.navigation"></div>
+								<ul class="pcoded-item pcoded-left-item">
+									<li class="active"><a href="#" th:href="@{/}"
+										class="waves-effect waves-dark"> <span
+											class="pcoded-micon"><em class="ti-home"></em><strong>D</strong></span>
+											<span class="pcoded-mtext" data-i18n="nav.dash.main"
+											th:text="#{menu.dashboard}"></span> <span
+											class="pcoded-mcaret"></span>
+									</a></li>
+								</ul>
+								<ul class="pcoded-item pcoded-left-item">
+									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
+										class="waves-effect waves-dark"> <span
+											class="pcoded-micon"><em class="ti-user"></em></span> <span
+											class="pcoded-mtext" data-i18n="nav.basic-components.main"
+											th:text="#{menu.settings}"></span> <span
+											class="pcoded-mcaret"></span>
+									</a>
+										<ul class="pcoded-submenu">
+											<li class=" "><a href="#" th:href="@{/taxpayers/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.breadcrumbs" th:text="#{menu.taxpayers}">
+														</span> <span class="pcoded-mcaret"></span>
+											</a></li>
+											<li class=" "><a href="#" th:href="@{/taxpayer-branches/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.taxpayer-branches}"></span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
+											<li class=" "><a href="#" th:href="@{/users/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.breadcrumbs"
+													th:text="#{users}">Users</span> <span class="pcoded-mcaret"></span>
+											</a></li>
+											<li class=" "><a href="#" th:href="@{/insurances/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert">Insurances</span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
+											<li class=" "><a href="#" th:href="@{/items/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.breadcrumbs">Items</span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
+
+
+										</ul></li>
+
+									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
+										class="waves-effect waves-dark"> <span
+											class="pcoded-micon"><em class="fa fa-shopping-cart"></em></span>
+											<span class="pcoded-mtext"
+											data-i18n="nav.basic-components.main">Sales</span> <span
+											class="pcoded-mcaret"></span>
+									</a>
+										<ul class="pcoded-submenu">
+											<li class=" "><a href="#" th:href="@{/invoices/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert">Invoices</span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
+
+
+										</ul></li>
+									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
+										class="waves-effect waves-dark"> <span
+											class="pcoded-micon"><em class="fa fa-suitcase"></em></span>
+											<span class="pcoded-mtext"
+											data-i18n="nav.basic-components.main">Purchases</span> <span
+											class="pcoded-mcaret"></span>
+									</a>
+										<ul class="pcoded-submenu">
+											<li class=" "><a href="accordion.html"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert">Bills</span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
+
+
+										</ul></li>
+									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
+										class="waves-effect waves-dark"> <span
+											class="pcoded-micon"><em class="ti-agenda"></em></span> <span
+											class="pcoded-mtext" data-i18n="nav.basic-components.main">Stock</span>
+											<span class="pcoded-mcaret"></span>
+									</a>
+										<ul class="pcoded-submenu">
+											<li class=" "><a href="#" th:href="@{/stockMoves/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert">Stock Moves</span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
+
+
+										</ul></li>
+
+									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
+										class="waves-effect waves-dark"> <span
+											class="pcoded-micon"><em class="fa fa-truck"></em></span> <span
+											class="pcoded-mtext" data-i18n="nav.basic-components.main">Importations</span>
+											<span class="pcoded-mcaret"></span>
+									</a>
+										<ul class="pcoded-submenu">
+											<li class=" "><a href="#"
+												th:href="@{/importations/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert">Imports</span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
+
+
+										</ul></li>
+									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
+										class="waves-effect waves-dark"> <span
+											class="pcoded-micon"><em class="ti-bar-chart"></em></span> <span
+											class="pcoded-mtext" data-i18n="nav.basic-components.main">Reports</span>
+											<span class="pcoded-mcaret"></span>
+									</a>
+										<ul class="pcoded-submenu">
+											<li class=" "><a href="accordion.html"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert">Invoices</span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
+
+
+										</ul></li>
+
+									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
+										class="waves-effect waves-dark"> <span
+											class="pcoded-micon"><em class="ti-direction-alt"></em></span>
+											<span class="pcoded-mtext"
+											data-i18n="nav.basic-components.main">Settings</span> <span
+											class="pcoded-mcaret"></span>
+									</a>
+										<ul class="pcoded-submenu">
+
+											<li class=" "><a href="#"
+												th:href="@{/itemClassifications/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.breadcrumbs"> Item
+														Class</span> <span class="pcoded-mcaret"></span>
+											</a></li>
+											<li class=" "><a href="#" th:href="@{/codeTypes/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.breadcrumbs"> Code
+														Types</span> <span class="pcoded-mcaret"></span>
+											</a></li>
+											<li class=" "><a href="#" th:href="@{/systemCodes/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.breadcrumbs"> System
+														Codes</span> <span class="pcoded-mcaret"></span>
+											</a></li>
+
+
+										</ul></li>
+									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
+										class="waves-effect waves-dark"> <span
+											class="pcoded-micon"><em class="ti-settings"></em></span> <span
+											class="pcoded-mtext" data-i18n="nav.basic-components.main">Configurations</span>
+											<span class="pcoded-mcaret"></span>
+									</a>
+										<ul class="pcoded-submenu">
+											<li class=" "><a href="#" th:href="@{/settings/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert">Settings</span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
+
+										</ul></li>
+								</ul>
+
+							</div>
+						</nav>
+					</div>
+					<div class="pcoded-content">
+						<!-- Page-header start -->
+						<div class="page-header">
+							<div class="page-block">
+								<div class="row align-items-center">
+									<div class="col-md-8">
+										<div class="page-header-title">
+											<h5 class="m-b-10">Dashboard</h5>
+											<p class="m-b-0">Welcome to My RRA</p>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<ul class="breadcrumb-title">
+											<li class="breadcrumb-item"><a href="index.html"> <em
+													class="fa fa-home"></em>
+											</a></li>
+											<li class="breadcrumb-item"><a href="#!">Dashboard</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Page-header end -->
+						<div class="pcoded-inner-content">
+							<!-- Main-body start -->
+							<div class="main-body">
+								<div class="page-wrapper">
+									<!-- Page-body start -->
+									<div class="page-body">
+										<div class="row">
+											<!-- task, page, download counter  start -->
+											<div class="col-xl-3 col-md-6">
+												<div class="card">
+													<div class="card-block">
+														<div class="row align-items-center">
+															<div class="col-8">
+																<h4 class="text-c-purple">$30200</h4>
+																<h6 class="text-muted m-b-0">All Earnings</h6>
+															</div>
+															<div class="col-4 text-right">
+																<em class="fa fa-bar-chart f-28"></em>
+															</div>
+														</div>
+													</div>
+													<div class="card-footer bg-c-purple">
+														<div class="row align-items-center">
+															<div class="col-9">
+																<p class="text-white m-b-0">% change</p>
+															</div>
+															<div class="col-3 text-right">
+																<em class="fa fa-line-chart text-white f-16"></em>
+															</div>
+														</div>
+
+													</div>
+												</div>
+											</div>
+											<div class="col-xl-3 col-md-6">
+												<div class="card">
+													<div class="card-block">
+														<div class="row align-items-center">
+															<div class="col-8">
+																<h4 class="text-c-green">290+</h4>
+																<h6 class="text-muted m-b-0">Page Views</h6>
+															</div>
+															<div class="col-4 text-right">
+																<em class="fa fa-file-text-o f-28"></em>
+															</div>
+														</div>
+													</div>
+													<div class="card-footer bg-c-green">
+														<div class="row align-items-center">
+															<div class="col-9">
+																<p class="text-white m-b-0">% change</p>
+															</div>
+															<div class="col-3 text-right">
+																<em class="fa fa-line-chart text-white f-16"></em>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-xl-3 col-md-6">
+												<div class="card">
+													<div class="card-block">
+														<div class="row align-items-center">
+															<div class="col-8">
+																<h4 class="text-c-red">145</h4>
+																<h6 class="text-muted m-b-0">Task Completed</h6>
+															</div>
+															<div class="col-4 text-right">
+																<em class="fa fa-calendar-check-o f-28"></em>
+															</div>
+														</div>
+													</div>
+													<div class="card-footer bg-c-red">
+														<div class="row align-items-center">
+															<div class="col-9">
+																<p class="text-white m-b-0">% change</p>
+															</div>
+															<div class="col-3 text-right">
+																<em class="fa fa-line-chart text-white f-16"></em>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-xl-3 col-md-6">
+												<div class="card">
+													<div class="card-block">
+														<div class="row align-items-center">
+															<div class="col-8">
+																<h4 class="text-c-blue">500</h4>
+																<h6 class="text-muted m-b-0">Downloads</h6>
+															</div>
+															<div class="col-4 text-right">
+																<em class="fa fa-hand-o-down f-28"></em>
+															</div>
+														</div>
+													</div>
+													<div class="card-footer bg-c-blue">
+														<div class="row align-items-center">
+															<div class="col-9">
+																<p class="text-white m-b-0">% change</p>
+															</div>
+															<div class="col-3 text-right">
+																<em class="fa fa-line-chart text-white f-16"></em>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- task, page, download counter  end -->
+
+											<!--  sale analytics start -->
+											<div class="col-xl-8 col-md-12">
+												<div class="card">
+													<div class="card-header">
+														<h5>Sales Analytics</h5>
+														<span class="text-muted">Get 15% Off on <a
+															href="https://www.amcharts.com/" target="_blank">amCharts</a>
+															licences. Use code "codedthemes" and get the discount.
+														</span>
+														<div class="card-header-right">
+															<ul class="list-unstyled card-option">
+																<li><em class="fa fa fa-wrench open-card-option"></em></li>
+																<li><em class="fa fa-window-maximize full-card"></em></li>
+																<li><em class="fa fa-minus minimize-card"></em></li>
+																<li><em class="fa fa-refresh reload-card"></em></li>
+																<li><em class="fa fa-trash close-card"></em></li>
+															</ul>
+														</div>
+													</div>
+													<div class="card-block">
+														<div id="sales-analytics" style="height: 400px;"></div>
+													</div>
+												</div>
+											</div>
+											<div class="col-xl-4 col-md-12">
+												<div class="card">
+													<div class="card-block">
+														<div class="row">
+															<div class="col">
+																<h4>$256.23</h4>
+																<p class="text-muted">This Month</p>
+															</div>
+															<div class="col-auto">
+																<label class="label label-success">+20%</label>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-8">
+																<canvas id="this-month" style="height: 150px;"></canvas>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="card quater-card">
+													<div class="card-block">
+														<h6 class="text-muted m-b-15">This Quarter</h6>
+														<h4>$3,9452.50</h4>
+														<p class="text-muted">$3,9452.50</p>
+														<h5>87</h5>
+														<p class="text-muted">
+															Online Revenue<span class="f-right">80%</span>
+														</p>
+														<div class="progress">
+															<div class="progress-bar bg-c-blue" style="width: 80%"></div>
+														</div>
+														<h5 class="m-t-15">68</h5>
+														<p class="text-muted">
+															Offline Revenue<span class="f-right">50%</span>
+														</p>
+														<div class="progress">
+															<div class="progress-bar bg-c-green" style="width: 50%"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!--  sale analytics end -->
+
+											<!--  project and team member start -->
+											<div class="col-xl-8 col-md-12">
+												<div class="card table-card">
+													<div class="card-header">
+														<h5>Projects</h5>
+														<div class="card-header-right">
+															<ul class="list-unstyled card-option">
+																<li><em class="fa fa fa-wrench open-card-option"></em></li>
+																<li><em class="fa fa-window-maximize full-card"></em></li>
+																<li><em class="fa fa-minus minimize-card"></em></li>
+																<li><em class="fa fa-refresh reload-card"></em></li>
+																<li><em class="fa fa-trash close-card"></em></li>
+															</ul>
+														</div>
+													</div>
+													<div class="card-block">
+														<div class="table-responsive">
+															<table class="table table-hover">
+																<caption></caption>
+																<thead>
+																	<tr>
+																		<th scope="col">
+																			<div class="chk-option">
+																				<div class="checkbox-fade fade-in-primary">
+																					<label class="check-task"> <input
+																						type="checkbox" value=""> <span class="cr">
+																							<em class="cr-icon fa fa-check txt-default"></em>
+																					</span>
+																					</label>
+																				</div>
+																			</div> Assigned
+																		</th>
+																		<th scope="col">Name</th>
+																		<th scope="col">Due Date</th>
+																		<th scope="col" class="text-right">Priority</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr>
+																		<td>
+																			<div class="chk-option">
+																				<div class="checkbox-fade fade-in-primary">
+																					<label class="check-task"> <input
+																						type="checkbox" value=""> <span class="cr">
+																							<em class="cr-icon fa fa-check txt-default"></em>
+																					</span>
+																					</label>
+																				</div>
+																			</div>
+																			<div class="d-inline-block align-middle">
+																				<img src="assets/images/avatar-4.jpg"
+																					alt="user image"
+																					class="img-radius img-40 align-top m-r-15">
+																				<div class="d-inline-block">
+																					<h6>John Deo</h6>
+																					<p class="text-muted m-b-0">Graphics Designer</p>
+																				</div>
+																			</div>
+																		</td>
+																		<td>Able Pro</td>
+																		<td>Jun, 26</td>
+																		<td class="text-right"><label
+																			class="label label-danger">Low</label></td>
+																	</tr>
+																	<tr>
+																		<td>
+																			<div class="chk-option">
+																				<div class="checkbox-fade fade-in-primary">
+																					<label class="check-task"> <input
+																						type="checkbox" value=""> <span class="cr">
+																							<em class="cr-icon fa fa-check txt-default"></em>
+																					</span>
+																					</label>
+																				</div>
+																			</div>
+																			<div class="d-inline-block align-middle">
+																				<img src="assets/images/avatar-5.jpg"
+																					alt="user image"
+																					class="img-radius img-40 align-top m-r-15">
+																				<div class="d-inline-block">
+																					<h6>Jenifer Vintage</h6>
+																					<p class="text-muted m-b-0">Web Designer</p>
+																				</div>
+																			</div>
+																		</td>
+																		<td>Mashable</td>
+																		<td>March, 31</td>
+																		<td class="text-right"><label
+																			class="label label-primary">high</label></td>
+																	</tr>
+																	<tr>
+																		<td>
+																			<div class="chk-option">
+																				<div class="checkbox-fade fade-in-primary">
+																					<label class="check-task"> <input
+																						type="checkbox" value=""> <span class="cr">
+																							<em class="cr-icon fa fa-check txt-default"></em>
+																					</span>
+																					</label>
+																				</div>
+																			</div>
+																			<div class="d-inline-block align-middle">
+																				<img src="assets/images/avatar-3.jpg"
+																					alt="user image"
+																					class="img-radius img-40 align-top m-r-15">
+																				<div class="d-inline-block">
+																					<h6>William Jem</h6>
+																					<p class="text-muted m-b-0">Developer</p>
+																				</div>
+																			</div>
+																		</td>
+																		<td>Flatable</td>
+																		<td>Aug, 02</td>
+																		<td class="text-right"><label
+																			class="label label-success">medium</label></td>
+																	</tr>
+																	<tr>
+																		<td>
+																			<div class="chk-option">
+																				<div class="checkbox-fade fade-in-primary">
+																					<label class="check-task"> <input
+																						type="checkbox" value=""> <span class="cr">
+																							<em class="cr-icon fa fa-check txt-default"></em>
+																					</span>
+																					</label>
+																				</div>
+																			</div>
+																			<div class="d-inline-block align-middle">
+																				<img src="assets/images/avatar-2.jpg"
+																					alt="user image"
+																					class="img-radius img-40 align-top m-r-15">
+																				<div class="d-inline-block">
+																					<h6>David Jones</h6>
+																					<p class="text-muted m-b-0">Developer</p>
+																				</div>
+																			</div>
+																		</td>
+																		<td>Guruable</td>
+																		<td>Sep, 22</td>
+																		<td class="text-right"><label
+																			class="label label-primary">high</label></td>
+																	</tr>
+																</tbody>
+															</table>
+															<div class="text-right m-r-20">
+																<a href="#!" class=" b-b-primary text-primary">View
+																	all Projects</a>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-xl-4 col-md-12">
+												<div class="card ">
+													<div class="card-header">
+														<h5>Team Members</h5>
+														<div class="card-header-right">
+															<ul class="list-unstyled card-option">
+																<li><em class="fa fa fa-wrench open-card-option"></em></li>
+																<li><em class="fa fa-window-maximize full-card"></em></li>
+																<li><em class="fa fa-minus minimize-card"></em></li>
+																<li><em class="fa fa-refresh reload-card"></em></li>
+																<li><em class="fa fa-trash close-card"></em></li>
+															</ul>
+														</div>
+													</div>
+													<div class="card-block">
+														<div class="align-middle m-b-30">
+															<img src="assets/images/avatar-2.jpg" alt="user image"
+																class="img-radius img-40 align-top m-r-15">
+															<div class="d-inline-block">
+																<h6>David Jones</h6>
+																<p class="text-muted m-b-0">Developer</p>
+															</div>
+														</div>
+														<div class="align-middle m-b-30">
+															<img src="assets/images/avatar-1.jpg" alt="user image"
+																class="img-radius img-40 align-top m-r-15">
+															<div class="d-inline-block">
+																<h6>David Jones</h6>
+																<p class="text-muted m-b-0">Developer</p>
+															</div>
+														</div>
+														<div class="align-middle m-b-30">
+															<img src="assets/images/avatar-3.jpg" alt="user image"
+																class="img-radius img-40 align-top m-r-15">
+															<div class="d-inline-block">
+																<h6>David Jones</h6>
+																<p class="text-muted m-b-0">Developer</p>
+															</div>
+														</div>
+														<div class="align-middle m-b-30">
+															<img src="assets/images/avatar-4.jpg" alt="user image"
+																class="img-radius img-40 align-top m-r-15">
+															<div class="d-inline-block">
+																<h6>David Jones</h6>
+																<p class="text-muted m-b-0">Developer</p>
+															</div>
+														</div>
+														<div class="align-middle m-b-10">
+															<img src="assets/images/avatar-5.jpg" alt="user image"
+																class="img-radius img-40 align-top m-r-15">
+															<div class="d-inline-block">
+																<h6>David Jones</h6>
+																<p class="text-muted m-b-0">Developer</p>
+															</div>
+														</div>
+														<div class="text-center">
+															<a href="#!" class="b-b-primary text-primary">View
+																all Projects</a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!--  project and team member end -->
+										</div>
+									</div>
+									<!-- Page-body end -->
+								</div>
+								<div id="styleSelector"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:fragment="footer">
+		<!-- Warning Section Starts -->
+		<!-- Older IE warning message -->
+		<!--[if lt IE 10]>
+    <div class="ie-warning">
+        <h1>Warning!!</h1>
+        <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
+        <div class="iew-container">
+            <ul class="iew-download">
+                <li>
+                    <a href="http://www.google.com/chrome/">
+                        <img src="assets/images/browser/chrome.png" alt="Chrome">
+                        <div>Chrome</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.mozilla.org/en-US/firefox/new/">
+                        <img src="assets/images/browser/firefox.png" alt="Firefox">
+                        <div>Firefox</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.opera.com">
+                        <img src="assets/images/browser/opera.png" alt="Opera">
+                        <div>Opera</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.apple.com/safari/">
+                        <img src="assets/images/browser/safari.png" alt="Safari">
+                        <div>Safari</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                        <img src="assets/images/browser/ie.png" alt="">
+                        <div>IE (9 & above)</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <p>Sorry for the inconvenience!</p>
+    </div>
+    <![endif]-->
+		<!-- Warning Section Ends -->
+
+		<!-- Required Jquery -->
+		<script type="text/javascript"
+			th:src="@{/assets/js/jquery/jquery.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/js/jquery-ui/jquery-ui.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/js/popper.js/popper.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/js/bootstrap/js/bootstrap.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/widget/excanvas.js}"></script>
+		<!-- waves js -->
+		<script th:src="@{/assets/pages/waves/js/waves.min.js}"></script>
+		<!-- jquery slimscroll js -->
+		<script type="text/javascript"
+			th:src="@{/assets/js/jquery-slimscroll/jquery.slimscroll.js}"></script>
+		<!-- modernizr js -->
+		<script type="text/javascript"
+			th:src="@{/assets/js/modernizr/modernizr.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/js/modernizr/css-scrollbars.js}"></script>
+		<!-- slimscroll js -->
+		<script type="text/javascript" th:src="@{/assets/js/SmoothScroll.js}"></script>
+		<script th:src="@{/assets/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+		<!-- Chart js -->
+		<script type="text/javascript"
+			th:src="@{/assets/js/chart.js/Chart.js}"></script>
+		<!-- amchart js -->
+		<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+		<script th:src="@{/assets/pages/widget/amchart/gauge.js}"></script>
+		<script th:src="@{/assets/pages/widget/amchart/serial.js}"></script>
+		<script th:src="@{/assets/pages/widget/amchart/light.js}"></script>
+		<script th:src="@{/assets/pages/widget/amchart/pie.min.js}"></script>
+		<script
+			src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+		<!-- menu js -->
+		<script th:src="@{/assets/js/pcoded.min.js}"></script>
+		<script th:src="@{/assets/js/vertical-layout.min.js}"></script>
+		<!-- data-table js -->
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/jquery.dataTables.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/dataTables.buttons.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/jszip.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/pdfmake.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/vfs_fonts.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/buttons.print.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/buttons.html5.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/dataTables.bootstrap4.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/dataTables.responsive.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/responsive.bootstrap4.min.js}"></script>
+		<!-- jquery file upload js -->
+		<script type="text/javascript"
+			th:src="@{/assets/js/jquery/jquery.filer.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/js/jquery/custom-filer.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/js/jquery/jquery.fileuploads.init.js}"></script>
+
+		<!-- Select 2 js -->
+		<script type="text/javascript"
+			th:src="@{/assets/pages/select/js/select2.full.min.js}"></script>
+		<!-- custom js -->
+		<script type="text/javascript"
+			th:src="@{/assets/pages/select/js/select2-custom.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/data-table-custom.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/dashboard/custom-dashboard.js}"></script>
+		<script type="text/javascript" th:src="@{/assets/js/script.js}"></script>
+		<!-- Model animation js -->
+		<script type="text/javascript" th:src="@{/assets/js/classie.js}"></script>
+		<script type="text/javascript" th:src="@{/assets/js/modalEffects.js}"></script>
+		<div id="mfa_inject_cartdata" hidden="hidden"></div>
+		<div id="mfa_inject" hidden="hidden"></div>
+		<!-- Editable-table js -->
+		<script type="text/javascript"
+			th:src="@{/assets/pages/edit-table/editable2.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/edit-table/editable.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/edit-table/jquery.tabledit.js}"></script>
+
+
+	</div>
+</body>
+
+</html>

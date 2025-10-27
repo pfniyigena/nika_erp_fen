@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Invoice</title>
+<style>
+body {
+	font-family: Arial;
+}
+
+.invoice-box {
+	max-width: 800px;
+	margin: auto;
+	padding: 30px;
+	border: 1px solid #eee;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+td, th {
+	padding: 8px;
+	border-bottom: 1px solid #ddd;
+}
+
+th {
+	background: #eee;
+}
+
+.total {
+	font-weight: bold;
+}
+</style>
+</head>
+<body>
+	<div class="invoice-box">
+		<h2 th:text="${invoice.customer.name}">Customer Name</h2>
+		<p th:text="${invoice.customer.address}">Customer Address</p>
+
+		<h1>Invoice</h1>
+		<p>
+			Invoice #: <span th:text="${invoice.invoiceNumber}">INV0001</span>
+		</p>
+		<p>
+			Date: <span th:text="${invoice.invoiceDate}">2025-01-01</span>
+		</p>
+		<p>
+			Due: <span th:text="${invoice.dueDate}">2025-01-10</span>
+		</p>
+		<p>
+			Status: <span th:text="${invoice.status}">DRAFT</span>
+		</p>
+
+		<!-- Add a "Mark as Paid" button if draft -->
+		<div
+			th:if="${invoice.status == T(com.example.invoicemodule.model.InvoiceStatus).DRAFT}">
+			<form th:action="@{'/invoice/' + ${invoice.id} + '/mark-paid'}"
+				method="post">
+				<button type="submit">Mark as Paid</button>
+			</form>
+		</div>
+		<table>
+			<tr>
+				<th>Description</th>
+				<th>Quantity</th>
+				<th>Unit Price</th>
+				<th>Total</th>
+			</tr>
+			<tr th:each="line : ${invoice.invoiceLines}">
+				<td th:text="${line.description}">Product</td>
+				<td th:text="${line.quantity}">1</td>
+				<td th:text="${line.unitPrice}">100.00</td>
+				<td th:text="${line.lineTotal}">100.00</td>
+			</tr>
+			<tr>
+				<td colspan="3" class="total">Subtotal</td>
+				<td th:text="${invoice.totalAmount}">100.00</td>
+			</tr>
+			<tr>
+				<td colspan="3" class="total">Tax</td>
+				<td th:text="${invoice.taxAmount}">10.00</td>
+			</tr>
+			<tr>
+				<td colspan="3" class="total">Total</td>
+				<td th:text="${invoice.totalAmount.add(invoice.taxAmount)}">110.00</td>
+			</tr>
+		</table>
+
+		<p>
+			<a th:href="@{'/invoice/' + ${invoice.id} + '/pdf'}">Download PDF</a>
+		</p>
+	</div>
+</body>
+</html>
