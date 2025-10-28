@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<title th:text="#{label.countries.list}"></title>
+<th:block th:include="fragments/header :: head"></th:block>
+</head>
+<body>
+	<th:block th:include="fragments/header :: pre-loader"></th:block>
+	<div id="pcoded" class="pcoded">
+		<div class="pcoded-overlay-box"></div>
+		<div class="pcoded-container navbar-wrapper">
+
+			<th:block th:include="fragments/header :: navbar-top"></th:block>
+
+			<div class="pcoded-main-container">
+				<div class="pcoded-wrapper">
+					<th:block th:include="fragments/header :: navbar-left"></th:block>
+
+					<div class="pcoded-content">
+						<div class="pcoded-inner-content">
+							<!-- Main-body start -->
+							<div class="main-body">
+								<div class="page-wrapper">
+									<!-- Page-body start -->
+									<div class="page-body">
+
+										<!-- Hover table card start -->
+										<div class="card">
+											<div class="card-header">
+												<h5 th:text="#{label.countries.list}"></h5>
+												<a href="#" th:href="@{/countries/new}"
+													class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger"><em
+													class="icofont icofont-plus m-r-5"></em> <span
+													th:text="#{label.button.new}"></span></a>
+
+											</div>
+											<div class="dt-responsive table-responsive">
+												<table id="code-type-table"
+													class="table table-striped table-bordered compact nowrap"
+													th:if="${lists != null}">
+													<caption></caption>
+													<thead>
+														<tr>
+															<th scope="col" th:text="#{label.general.displayName}"></th>
+															<th scope="col"
+																th:text="#{label.classification.frenchName}"></th>
+															<th scope="col"
+																th:text="#{label.classification.englishName}"></th>
+															<th scope="col" th:text="#{label.general.code}"></th>
+															<th scope="col" th:text="#{label.button.actions}"></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="list : ${lists}">
+															<td th:text="${list.displayName}"></td>
+															<td th:text="${list.frenchName}"></td>
+															<td th:text="${list.englishName}"></td>
+															<td th:text="${list.code}"></td>
+															<td><a href="#"
+																th:href="@{'/countries/update/' + ${list.id}}"
+																class="waves-effect waves-dark"><span
+																	class="pcoded-micon"><em class="fa fa-pencil"></em></span></a>
+															</td>
+														</tr>
+
+													</tbody>
+												</table>
+											</div>
+										</div>
+
+									</div>
+									<!-- Hover table card end -->
+
+								</div>
+
+								<!-- Page-body end -->
+							</div>
+							<div id="styleSelector"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<th:block th:include="fragments/header :: footer"></th:block>
+</body>
+
+</html>

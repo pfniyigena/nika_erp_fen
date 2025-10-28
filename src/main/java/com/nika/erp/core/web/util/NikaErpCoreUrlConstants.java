@@ -43,4 +43,25 @@ public class NikaErpCoreUrlConstants {
 	 */
 	public static final String ITEM_CLASSIFICATIONS_LIST_REDITECT_URL = "redirect:/itemClassifications/list";
 	
+	/**
+	 * The COUNTRIES_URL
+	 */
+	public static final String COUNTRIES_URL = "countries";
+	/**
+	 * The COUNTRIES_LIST_PAGE
+	 */
+	public static final String COUNTRIES_LIST_PAGE = "countries/list";
+	/**
+	 * The COUNTRIES_ADD_FORM_PAGE
+	 */
+	public static final String COUNTRIES_ADD_FORM_PAGE = "countries/add-form";
+
+	/**
+	 * The COUNTRIES_LIST_REDITECT_URL
+	 */
+	public static final String COUNTRIES_LIST_REDITECT_URL = "redirect:/countries/list";
+	
+	
+	
+	
 }
