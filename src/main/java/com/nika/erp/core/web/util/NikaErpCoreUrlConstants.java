@@ -61,6 +61,25 @@ public class NikaErpCoreUrlConstants {
 	 */
 	public static final String COUNTRIES_LIST_REDITECT_URL = "redirect:/countries/list";
 	
+	/**
+	 * The QUANTITYUNITS_URL
+	 */
+	public static final String QUANTITYUNITS_URL = "quantityUnits";
+	/**
+	 * The QUANTITYUNITS_LIST_PAGE
+	 */
+	public static final String QUANTITYUNITS_LIST_PAGE = "quantityUnits/list";
+
+	/**
+	 * The QUANTITYUNITS_ADD_FORM_PAGE
+	 */
+	public static final String QUANTITYUNITS_ADD_FORM_PAGE = "quantityUnits/add-form";
+	
+	/**
+	 * The QUANTITYUNITS_LIST_REDITECT_URL
+	 */
+	public static final String QUANTITYUNITS_LIST_REDITECT_URL = "redirect:/quantityUnits/list";
+	
 	
 	
 	
