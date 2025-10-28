@@ -90,7 +90,6 @@ $(document).ready(function () {
 
         if (query.length >= 2) {
             $.get('[[@{/items/search}]]', {query}, function (data) {
-            	alert(data);
                 let list = data.map(item =>
                     `<div class="suggestion" data-id="${item.id}" data-price="${item.price}" data-name="${item.name}">
                         ${item.name} (${item.price})

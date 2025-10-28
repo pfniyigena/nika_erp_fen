@@ -25,7 +25,10 @@ public class CoreCountryService {
 	public CoreCountry findById(String id) {
 		return coreCountryRepository.getReferenceById(UUID.fromString(id));
 	}
-
+	public CoreCountry findById(UUID id) {
+		 
+		return coreCountryRepository.getReferenceById(id);
+	}
 	public CoreCountry save(CoreCountry country) {
 		if(country.getId()!=null) {
 			CoreCountry  exist=coreCountryRepository.getReferenceById(country.getId());

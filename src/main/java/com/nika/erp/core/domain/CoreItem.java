@@ -74,25 +74,37 @@ public class CoreItem  extends AbstractEntity {
 	 */
 	@ManyToOne
 	@JoinColumn(name = "TAX_RATE_ID")
-	private TaxRate taxRate;
+	private TaxRate tax;
 	/**
 	 * The 	itemNature
 	 */
-	@Column(name = "ITEM_NATURE", nullable = false)
-	@Builder.Default
-	private EItemNature itemNature=EItemNature.ITEM_NATURE_GOOD;
+	@ManyToOne
+	@JoinColumn(name = "ITEM_NATURE_ID")
+	private CoreItemNature nature;
 	/**
 	 * The classification
 	 */
 	@ManyToOne
 	@JoinColumn(name = "ITEM_CLASSIFICATION_ID")
 	private CoreItemClassification classification;
+	
+	/**
+	 * The taxpayer
+	 */
+	@JoinColumn(name = "QUANTITY_UNIT_ID", nullable = false)
+	private CoreQuantityUnit unit;
 	/**
 	 * The irpp
 	 */
 	@Column(name = "IRPP", nullable = false)
 	@Builder.Default
 	private Boolean irpp = Boolean.FALSE;
+	/**
+	 * The taxpayer
+	 */
+	@JoinColumn(name = "COUNTY_ID", nullable = false)
+	private CoreCountry country;
+	
 	/**
 	 * The taxpayer
 	 */

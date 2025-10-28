@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<th:block th:insert="~{fragments/header :: head}"></th:block>
+</head>
+<body>
+	<th:block th:insert="~{fragments/header :: pre-loader}"></th:block>
+	<div id="pcoded" class="pcoded">
+		<div class="pcoded-overlay-box"></div>
+		<div class="pcoded-container navbar-wrapper">
+
+			<th:block th:insert="~{fragments/header :: navbar-top}"></th:block>
+
+			<div class="pcoded-main-container">
+				<div class="pcoded-wrapper">
+					<th:block th:insert="~{fragments/header :: navbar-left}"></th:block>
+					<div class="pcoded-content">
+						<div class="pcoded-inner-content">
+							<!-- Main-body start -->
+							<div class="main-body">
+								<div class="page-wrapper">
+									<!-- Page-body start -->
+									<div class="page-body">
+										<!-- Input Alignment card start -->
+										<div class="card">
+											<div class="card-header">
+												<h5 th:text="#{label.item.details}"></h5>
+											</div>
+											<div class="card-block">
+												<form th:object="${item}" th:action="@{/items/new}"
+													method="post">
+													<input type="hidden" th:field="*{id}" />
+
+													<div class="row">
+														<!-- Column 1 -->
+														<div class="col-md-6">
+															<div class="form-group row">
+																<label class="col-sm-4 col-form-label" for="itemName"
+																	th:text="#{label.general.name}"></label>
+																<div class="col-sm-8 has-danger">
+																	<input type="text" th:field="*{itemName}" id="itemName"
+																		class="form-control form-control-bold"
+																		th:placeholder="#{label.general.name}"> <span
+																		class="col-form-label"
+																		th:if="${#fields.hasErrors('itemName')}"
+																		th:errors="*{itemName}"></span>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label class="col-sm-4 col-form-label" for="unitPrice"
+																	th:text="#{label.general.unitPrice}"></label>
+																<div class="col-sm-8 has-danger">
+																	<input type="text" th:field="*{unitPrice}" id="unitPrice"
+																		class="form-control form-control-bold"
+																		th:placeholder="#{label.general.name}"> <span
+																		class="col-form-label"
+																		th:if="${#fields.hasErrors('unitPrice')}"
+																		th:errors="*{unitPrice}"></span>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label class="col-sm-4 col-form-label" for="nature"
+																	th:text="#{label.general.nature}"></label>
+																<div class="col-sm-8 has-danger">
+																	<select th:field="*{nature}">
+																		<option value="">-- Select --</option>
+																		<option th:each="it : ${natures}" th:value="${it.id}"
+																			th:text="${it.name}">Option</option>
+																	</select> <span class="col-form-label"
+																		th:if="${#fields.hasErrors('nature')}"
+																		th:errors="*{nature}"></span>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label class="col-sm-4 col-form-label"
+																	for="classification" th:text="#{label.general.tax}"></label>
+																<div class="col-sm-8 has-danger">
+																	<select th:field="*{tax}">
+																		<option value="">-- Select --</option>
+																		<option th:each="it : ${taxes}" th:value="${it.id}"
+																			th:text="${it.displayName}">Option</option>
+																	</select> <span class="col-form-label"
+																		th:if="${#fields.hasErrors('tax')}" th:errors="*{tax}"></span>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label class="col-sm-4 col-form-label"
+																	for="classification" th:text="#{label.general.taxpayer}"></label>
+																<div class="col-sm-8 has-danger">
+																	<select th:field="*{taxpayer}">
+																		<option value="">-- Select --</option>
+																		<option th:each="it : ${taxpayers}" th:value="${it.id}"
+																			th:text="${it.taxpayerName}">Option</option>
+																	</select> <span class="col-form-label"
+																		th:if="${#fields.hasErrors('taxpayer')}" th:errors="*{taxpayer}"></span>
+																</div>
+															</div>
+														</div>
+
+														<!-- Column 2 -->
+														<div class="col-md-6">
+															<div class="form-group row">
+																<label class="col-sm-4 col-form-label" for="itemCode"
+																	th:text="#{label.general.code}"></label>
+																<div class="col-sm-8 has-danger">
+																	<input type="text" th:field="*{itemCode}" id="itemCode"
+																		class="form-control form-control-bold"
+																		th:placeholder="#{label.general.code}"> <span
+																		class="col-form-label"
+																		th:if="${#fields.hasErrors('itemCode')}"
+																		th:errors="*{itemCode}"></span>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label class="col-sm-4 col-form-label" for="unitCost"
+																	th:text="#{label.general.unitCost}"></label>
+																<div class="col-sm-8 has-danger">
+																	<input type="text" th:field="*{unitCost}" id="unitCost"
+																		class="form-control form-control-bold"
+																		th:placeholder="#{label.general.unitCost}"> <span
+																		class="col-form-label"
+																		th:if="${#fields.hasErrors('unitCost')}"
+																		th:errors="*{unitCost}"></span>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label class="col-sm-4 col-form-label" for="country"
+																	th:text="#{label.general.country}"></label>
+																<div class="col-sm-8 has-danger">
+																	<select th:field="*{country}">
+																		<option value="">-- Select --</option>
+																		<option th:each="it : ${countries}"
+																			th:value="${it.id}" th:text="${it.displayName}">Option</option>
+																	</select> <span class="col-form-label"
+																		th:if="${#fields.hasErrors('country')}"
+																		th:errors="*{country}"></span>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label class="col-sm-4 col-form-label"
+																	for="classification"
+																	th:text="#{label.general.classification}"></label>
+																<div class="col-sm-8 has-danger">
+																	<select th:field="*{classification}">
+																		<option value="">-- Select --</option>
+																		<option th:each="it : ${classifications}"
+																			th:value="${it.id}" th:text="${it.displayName}">Option</option>
+																	</select> <span class="col-form-label"
+																		th:if="${#fields.hasErrors('classification')}"
+																		th:errors="*{classification}"></span>
+																</div>
+															</div>
+															<div class="form-group row">
+																<label class="col-sm-4 col-form-label"
+																	for="classification"
+																	th:text="#{label.general.unit}"></label>
+																<div class="col-sm-8 has-danger">
+																	<select th:field="*{unit}">
+																		<option value="">-- Select --</option>
+																		<option th:each="it : ${units}"
+																			th:value="${it.id}" th:text="${it.name}">Option</option>
+																	</select> <span class="col-form-label"
+																		th:if="${#fields.hasErrors('unit')}"
+																		th:errors="*{unit}"></span>
+																</div>
+															</div>
+														</div>
+													</div>
+
+													<div class="card-block text-center mt-3">
+														<button type="submit"
+															class="btn btn-success btn-round waves-effect waves-light"
+															th:text="#{label.button.save}"></button>
+
+														<a th:href="@{/items/list}"
+															class="btn btn-danger btn-round waves-effect waves-light"
+															th:text="#{label.button.cancel}"></a>
+													</div>
+												</form>
+											</div>
+
+										</div>
+										<!-- Input Alignment card end -->
+
+									</div>
+									<!-- Page-body end -->
+								</div>
+								<div id="styleSelector"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:insert="~{fragments/header :: footer}"></th:block>
+</body>
+
+</html>

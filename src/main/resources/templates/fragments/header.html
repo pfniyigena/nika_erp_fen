@@ -318,13 +318,39 @@
 													th:text="#{menu.taxpayer-branches}"></span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
-											<li class=" "><a href="#"
-												th:href="@{/countries/list}"
+											<li class=" "><a href="#" th:href="@{/countries/list}"
 												class="waves-effect waves-dark"> <span
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
 													<span class="pcoded-mtext"
 													data-i18n="nav.basic-components.alert"
 													th:text="#{menu.countries}"></span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
+
+
+										</ul></li>
+									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
+										class="waves-effect waves-dark"> <span
+											class="pcoded-micon"><em class="fa fa-th-list"></em></span> <span
+											class="pcoded-mtext" data-i18n="nav.basic-components.main"
+											th:text="#{menu.items}"></span> <span class="pcoded-mcaret"></span>
+									</a>
+										<ul class="pcoded-submenu">
+											<li class=" "><a href="#"
+												th:href="@{/items/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.items}"></span> <span class="pcoded-mcaret"></span>
+											</a></li>
+											<li class=" "><a href="#"
+												th:href="@{/itemClassifications/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.item.classifications}"></span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
 											<li class=" "><a href="#"
@@ -336,39 +362,15 @@
 													th:text="#{menu.quantity.units}"></span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
-											
-										</ul></li>
-									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
-										class="waves-effect waves-dark"> <span
-											class="pcoded-micon"><em class="fa fa-th-list"></em></span> <span
-											class="pcoded-mtext" data-i18n="nav.basic-components.main"
-											th:text="#{menu.items}"></span>
-											<span class="pcoded-mcaret"></span>
-									</a>
-										<ul class="pcoded-submenu">
-											<li class=" "><a href="#"
-												th:href="@{/importations/list}"
+
+											<li class=" "><a href="#" th:href="@{/itemNatures/list}"
 												class="waves-effect waves-dark"> <span
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
 													<span class="pcoded-mtext"
 													data-i18n="nav.basic-components.alert"
-													th:text="#{menu.items}"></span> <span
+													th:text="#{menu.item.natures}"></span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
-
-										</ul>
-										<ul class="pcoded-submenu">
-											<li class=" "><a href="#"
-												th:href="@{/itemClassifications/list}"
-												class="waves-effect waves-dark"> <span
-													class="pcoded-micon"><em class="ti-angle-right"></em></span>
-													<span class="pcoded-mtext"
-													data-i18n="nav.basic-components.alert"
-													th:text="#{menu.item.classifications}"></span> <span
-													class="pcoded-mcaret"></span>
-											</a></li>
-
-
 										</ul></li>
 									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
 										class="waves-effect waves-dark"> <span

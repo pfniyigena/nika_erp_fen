@@ -3,7 +3,7 @@
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-<title th:text="#{label.quantity.units.list}"></title>
+<title th:text="#{label.nature.list}"></title>
 <th:block th:include="fragments/header :: head"></th:block>
 </head>
 <body>
@@ -29,8 +29,8 @@
 										<!-- Hover table card start -->
 										<div class="card">
 											<div class="card-header">
-												<h5 th:text="#{label.quantity.units.list}"></h5>
-												<a href="#" th:href="@{/quantityUnits/new}"
+												<h5 th:text="#{label.nature.list}"></h5>
+												<a href="#" th:href="@{/itemNatures/new}"
 													class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger"><em
 													class="icofont icofont-plus m-r-5"></em><span
 													th:text="#{label.button.new}"></span></a>
@@ -53,7 +53,7 @@
 															<td th:text="${list.name}"></td>
 															<td th:text="${list.code}"></td>
 															<td><a href="#"
-																th:href="@{'/quantityUnits/update/' + ${list.id}}"
+																th:href="@{'/itemNatures/update/' + ${list.id}}"
 																class="waves-effect waves-dark"><span
 																	class="pcoded-micon"><em class="fa fa-pencil"></em></span></a>
 															</td>

@@ -1,4 +1,5 @@
 package com.nika.erp.web.config;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -7,6 +8,8 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import com.nika.erp.core.converter.StringToItemClassificationConverter;
+import com.nika.erp.core.converter.StringToItemCountryConverter;
+import com.nika.erp.core.service.CoreCountryService;
 import com.nika.erp.core.service.CoreItemClassificationService;
 
 import lombok.AllArgsConstructor;
@@ -20,28 +23,30 @@ import java.util.Locale;
 @AllArgsConstructor
 public class NikaErpLocaleConfig implements WebMvcConfigurer {
 	private final CoreItemClassificationService coreItemClassificationService;
-    @Bean
-    public LocaleResolver localeResolver() {
-        CookieLocaleResolver resolver = new CookieLocaleResolver();
-        resolver.setDefaultLocale(Locale.ENGLISH);
-        return resolver;
-    }
+	private final CoreCountryService coreCountryService;
 
-    @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor() {
-        LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
-        interceptor.setParamName("lang");
-        return interceptor;
-    }
+	@Bean
+	public LocaleResolver localeResolver() {
+		CookieLocaleResolver resolver = new CookieLocaleResolver();
+		resolver.setDefaultLocale(Locale.ENGLISH);
+		return resolver;
+	}
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor());
-    }
-    
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new StringToItemClassificationConverter(coreItemClassificationService));
-    }
+	@Bean
+	public LocaleChangeInterceptor localeChangeInterceptor() {
+		LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
+		interceptor.setParamName("lang");
+		return interceptor;
+	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(localeChangeInterceptor());
+	}
+
+	@Override
+	public void addFormatters(FormatterRegistry registry) {
+		registry.addConverter(new StringToItemCountryConverter(coreCountryService));
+		registry.addConverter(new StringToItemClassificationConverter(coreItemClassificationService));
+	}
 }
-
