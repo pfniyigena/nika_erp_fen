@@ -32,7 +32,8 @@
 												<h5 th:text="#{label.taxpayers.list}"></h5>
 												<a href="#" th:href="@{/companies/new}"
 													class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger"><em
-													class="icofont icofont-plus m-r-5"></em> Add Company</a>
+													class="icofont icofont-plus m-r-5"></em> <span
+													th:text="#{label.button.new}"></span></a>
 
 											</div>
 											<div class="dt-responsive table-responsive">
@@ -43,7 +44,7 @@
 													<thead>
 														<tr>
 															<th scope="col" th:text="#{label.general.name}"></th>
-															<th scope="col" th:text="#{label.general.actions}"></th>
+															<th scope="col" th:text="#{label.button.actions}"></th>
 														</tr>
 													</thead>
 													<tbody>

@@ -295,7 +295,7 @@
 								<ul class="pcoded-item pcoded-left-item">
 									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
 										class="waves-effect waves-dark"> <span
-											class="pcoded-micon"><em class="ti-user"></em></span> <span
+											class="pcoded-micon"><em class="fa fa-wrench"></em></span> <span
 											class="pcoded-mtext" data-i18n="nav.basic-components.main"
 											th:text="#{menu.settings}"></span> <span
 											class="pcoded-mcaret"></span>
@@ -305,10 +305,12 @@
 												class="waves-effect waves-dark"> <span
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
 													<span class="pcoded-mtext"
-													data-i18n="nav.basic-components.breadcrumbs" th:text="#{menu.taxpayers}">
-														</span> <span class="pcoded-mcaret"></span>
+													data-i18n="nav.basic-components.breadcrumbs"
+													th:text="#{menu.taxpayers}"> </span> <span
+													class="pcoded-mcaret"></span>
 											</a></li>
-											<li class=" "><a href="#" th:href="@{/taxpayer-branches/list}"
+											<li class=" "><a href="#"
+												th:href="@{/taxpayer-branches/list}"
 												class="waves-effect waves-dark"> <span
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
 													<span class="pcoded-mtext"
@@ -316,36 +318,46 @@
 													th:text="#{menu.taxpayer-branches}"></span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
-											<li class=" "><a href="#" th:href="@{/users/list}"
+											
+										</ul></li>
+									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
+										class="waves-effect waves-dark"> <span
+											class="pcoded-micon"><em class="fa fa-th-list"></em></span> <span
+											class="pcoded-mtext" data-i18n="nav.basic-components.main"
+											th:text="#{menu.items}"></span>
+											<span class="pcoded-mcaret"></span>
+									</a>
+										<ul class="pcoded-submenu">
+											<li class=" "><a href="#"
+												th:href="@{/importations/list}"
 												class="waves-effect waves-dark"> <span
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
 													<span class="pcoded-mtext"
-													data-i18n="nav.basic-components.breadcrumbs"
-													th:text="#{users}">Users</span> <span class="pcoded-mcaret"></span>
-											</a></li>
-											<li class=" "><a href="#" th:href="@{/insurances/list}"
-												class="waves-effect waves-dark"> <span
-													class="pcoded-micon"><em class="ti-angle-right"></em></span>
-													<span class="pcoded-mtext"
-													data-i18n="nav.basic-components.alert">Insurances</span> <span
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.items}"></span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
-											<li class=" "><a href="#" th:href="@{/items/list}"
+
+										</ul>
+										<ul class="pcoded-submenu">
+											<li class=" "><a href="#"
+												th:href="@{/itemClassifications/list}"
 												class="waves-effect waves-dark"> <span
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
 													<span class="pcoded-mtext"
-													data-i18n="nav.basic-components.breadcrumbs">Items</span> <span
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.item.classifications}"></span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
 
 
 										</ul></li>
-
 									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
 										class="waves-effect waves-dark"> <span
 											class="pcoded-micon"><em class="fa fa-shopping-cart"></em></span>
 											<span class="pcoded-mtext"
-											data-i18n="nav.basic-components.main" th:text="#{menu.invoicing}"></span> <span
+											data-i18n="nav.basic-components.main"
+											th:text="#{menu.invoicing}"></span> <span
 											class="pcoded-mcaret"></span>
 									</a>
 										<ul class="pcoded-submenu">
@@ -353,8 +365,16 @@
 												class="waves-effect waves-dark"> <span
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
 													<span class="pcoded-mtext"
-													data-i18n="nav.basic-components.alert" th:text="#{menu.invoices}"></span> <span
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.invoices}"></span> <span
 													class="pcoded-mcaret"></span>
+											</a></li>
+											<li class=" "><a href="#" th:href="@{/taxRates/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.taxes}"></span> <span class="pcoded-mcaret"></span>
 											</a></li>
 
 

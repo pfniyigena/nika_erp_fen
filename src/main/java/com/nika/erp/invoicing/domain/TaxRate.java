@@ -32,13 +32,20 @@ public class TaxRate extends AbstractEntity {
 	/**
 	 * The taxName
 	 */
-	@Column(name = "TAX_NAME", nullable = false)
+	@Column(name = "TAX_NAME", nullable = false,unique = true)
 	private String taxName;
+	
 	/**
-	 * The description
+	 * The displayName
 	 */
-	@Column(name = "DESCRIPTION", nullable = false)
-	private String description;
+	@Column(name = "DISPLAY_NAME", nullable = true)
+	private String displayName;
+	
+	/**
+	 * The code
+	 */
+	@Column(name = "CODE", nullable = false,unique = true)
+	private String code;
 	/**
 	 * The taxValue
 	 */
@@ -46,9 +53,11 @@ public class TaxRate extends AbstractEntity {
 	@Builder.Default
 	private BigDecimal taxValue = BigDecimal.ZERO;
 	/**
-	 * The code
+	 * The description
 	 */
-	@Column(name = "CODE", nullable = false)
-	private String code;
+	@Column(name = "DESCRIPTION", nullable = false)
+	private String description;
+
+
 
 }

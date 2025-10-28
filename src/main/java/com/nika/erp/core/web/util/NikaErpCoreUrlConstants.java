@@ -25,5 +25,22 @@ public class NikaErpCoreUrlConstants {
 	 * The ITEMS_URL
 	 */
 	public static final String ITEMS_URL = "items";
+	/**
+	 * The ITEM_CLASSIFICATIONS_URL
+	 */
+	
+	public static final String ITEM_CLASSIFICATIONS_URL ="itemClassifications";
+	/**
+	 * The ITEM_CLASSIFICATIONS_LIST_PAGE
+	 */
+	public static final String ITEM_CLASSIFICATIONS_LIST_PAGE = "itemClassifications/list";
+	/**
+	 * The ITEM_CLASSIFICATIONS_ADD_FORM_PAGE
+	 */
+	public static final String ITEM_CLASSIFICATIONS_ADD_FORM_PAGE = "itemClassifications/add-form";
+	/**
+	 * The ITEM_CLASSIFICATIONS_LIST_REDITECT_URL
+	 */
+	public static final String ITEM_CLASSIFICATIONS_LIST_REDITECT_URL = "redirect:/itemClassifications/list";
 	
 }

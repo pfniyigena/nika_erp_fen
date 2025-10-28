@@ -21,6 +21,7 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 @EntityListeners(AuditingEntityListener.class)
@@ -39,7 +40,7 @@ public abstract class AbstractEntity implements Serializable {
 	@Id
 	@UuidGenerator
 	@Column(name = "id", nullable = false, unique = true, updatable = false)
-
+	@EqualsAndHashCode.Include 
 	private UUID id;
 
 	/**

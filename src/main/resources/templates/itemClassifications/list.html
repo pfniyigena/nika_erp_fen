@@ -3,7 +3,7 @@
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-<title th:text="#{label.taxpayers.list}"></title>
+<title th:text="#{label.classification.list}"></title>
 <th:block th:include="fragments/header :: head"></th:block>
 </head>
 <body>
@@ -29,8 +29,8 @@
 										<!-- Hover table card start -->
 										<div class="card">
 											<div class="card-header">
-												<h5 th:text="#{label.taxpayers.list}"></h5>
-												<a href="#" th:href="@{/companies/new}"
+												<h5 th:text="#{label.classification.list}"></h5>
+												<a href="#" th:href="@{/itemClassifications/new}"
 													class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger"><em
 													class="icofont icofont-plus m-r-5"></em> <span
 													th:text="#{label.button.new}"></span></a>
@@ -43,16 +43,27 @@
 													<caption></caption>
 													<thead>
 														<tr>
-															<th scope="col" th:text="#{label.general.name}"></th>
+															<th scope="col" th:text="#{label.general.displayName}"></th>
+															<th scope="col"
+																th:text="#{label.classification.frenchName}"></th>
+															<th scope="col"
+																th:text="#{label.classification.englishName}"></th>
+															<th scope="col" th:text="#{label.general.code}"></th>
+															<th scope="col" th:text="#{label.general.parent}"></th>
 															<th scope="col" th:text="#{label.button.actions}"></th>
 														</tr>
 													</thead>
 													<tbody>
 														<tr th:each="list : ${lists}">
-															<td th:text="${list.taxpayerName}"></td>
-
+															<td th:text="${list.displayName}"></td>
+															<td th:text="${list.frenchName}"></td>
+															<td th:text="${list.englishName}"></td>
+															<td th:text="${list.code}"></td>
+															<td th:text="${list.parent.displayName}"
+																th:if="${list.parent != null}"></td>
+															<td th:if="${list.parent == null}"></td>
 															<td><a href="#"
-																th:href="@{'/companies/update/' + ${list.id}}"
+																th:href="@{'/itemClassifications/update/' + ${list.id}}"
 																class="waves-effect waves-dark"><span
 																	class="pcoded-micon"><em class="fa fa-pencil"></em></span></a>
 															</td>

@@ -28,9 +28,14 @@ public class CoreItemClassification extends AbstractEntity {
 	*/
 	private static final long serialVersionUID = 1L;
 	/**
+	 * The code
+	 */
+	@Column(name = "CODE", nullable = false)
+	private String code;
+	/**
 	 * The displayName
 	 */
-	@Column(name = "DISPLAY_NAM", nullable = true)
+	@Column(name = "DISPLAY_NAME", nullable = true)
 	private String displayName;
 	/**
 	 * The frenchName

@@ -29,10 +29,10 @@
 										<!-- Hover table card start -->
 										<div class="card">
 											<div class="card-header">
-												<h5 th:text="#{label.taxpayers.list}"></h5>
-												<a href="#" th:href="@{/companies/new}"
+												<h5 th:text="#{label.taxRates.list}"></h5>
+												<a href="#" th:href="@{/taxRates/new}"
 													class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger"><em
-													class="icofont icofont-plus m-r-5"></em> <span
+													class="icofont icofont-plus m-r-5"></em><span
 													th:text="#{label.button.new}"></span></a>
 
 											</div>
@@ -44,15 +44,18 @@
 													<thead>
 														<tr>
 															<th scope="col" th:text="#{label.general.name}"></th>
+															<th scope="col" th:text="#{label.general.code}"></th>
+															<th scope="col" th:text="#{label.tax.rate}"></th>
 															<th scope="col" th:text="#{label.button.actions}"></th>
 														</tr>
 													</thead>
 													<tbody>
 														<tr th:each="list : ${lists}">
-															<td th:text="${list.taxpayerName}"></td>
-
+															<td th:text="${list.taxName}"></td>
+															<td th:text="${list.code}"></td>
+															<td th:text="${list.taxValue}"></td>
 															<td><a href="#"
-																th:href="@{'/companies/update/' + ${list.id}}"
+																th:href="@{'/taxRates/update/' + ${list.id}}"
 																class="waves-effect waves-dark"><span
 																	class="pcoded-micon"><em class="fa fa-pencil"></em></span></a>
 															</td>
