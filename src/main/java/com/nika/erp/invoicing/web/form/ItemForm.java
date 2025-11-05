@@ -16,6 +16,8 @@ import lombok.experimental.SuperBuilder;
 public class ItemForm {
 	private String name;
 	private String code;
+	private String tax;
+	private BigDecimal rate;
 	private BigDecimal price;
 
 }

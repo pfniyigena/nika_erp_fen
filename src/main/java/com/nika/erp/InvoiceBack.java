@@ -41,5 +41,5 @@ public class InvoiceBack {
 	private BigDecimal taxAmount;
 
 	@Enumerated(EnumType.STRING)
-	private InvoiceStatus status = InvoiceStatus.DRAFT; // Default status
+	private InvoiceStatusBack status = InvoiceStatusBack.DRAFT; // Default status
 }

@@ -67,4 +67,9 @@ public class SequenceNumberService {
 		String sequence = this.getNextSequenceNumber(ESequenceType.ITEM);
 		return "ITEM" + StringUtils.leftPad(sequence, 9, "0");
 	}
+	public String getNextInvoiceCode() {
+
+		String sequence = this.getNextSequenceNumber(ESequenceType.INVOICE);
+		return "INV" + StringUtils.leftPad(sequence, 9, "0");
+	}
 }

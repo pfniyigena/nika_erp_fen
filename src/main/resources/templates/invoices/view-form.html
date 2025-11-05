@@ -29,68 +29,71 @@
 										<div class="card">
 											<div class="card-header">
 												<h5 th:text="#{label.invoice.details}"></h5>
+												<div class="card-header">
+													<h5 th:text="#{label.invoice.details}"></h5>
+													<div class="dropdown-primary dropdown open">
+														<button
+															class="btn btn-primary dropdown-toggle waves-effect waves-light "
+															type="button" id="dropdown-2" data-toggle="dropdown"
+															aria-haspopup="true" aria-expanded="true">Actions</button>
+														<div class="dropdown-menu" aria-labelledby="dropdown-2"
+															data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+															<a class="dropdown-item waves-light waves-effect"
+																href="#">View</a> <a
+																class="dropdown-item waves-light waves-effect" href="#">Edit</a>
+															<a class="dropdown-item waves-light waves-effect"
+																href="#">Print</a>
+
+														</div>
+													</div>
+												</div>
 											</div>
 											<div class="card-block">
-												<form th:action="@{/invoices/new}" th:object="${invoice}"
-													method="post">
-													<h3>Invoice Lines</h3>
-													<table id="lines-table">
-														<tr>
-															<th>Item</th>
-															<th>Quantity</th>
-															<th>Unit Price</th>
-															<th>Tax Rate</th>
-															<th>Line Total</th>
-															<th>Action</th>
-														</tr>
-														<tr th:each="line, iterStat : *{invoiceLines}">
-															<td><input type="text"
-																th:field="*{invoiceLines[__${iterStat.index}__].itemName}" class="item-search" autocomplete="off"/>
-																<div class="suggestions"></div> 
-																<input type="hidden"
-																th:field="*{invoiceLines[__${iterStat.index}__].itemCode}"
-																class="code"/>
-																<input type="hidden"
-																th:field="*{invoiceLines[__${iterStat.index}__].taxCode}"
-																class="tax"/>
-																<input type="hidden"
-																th:field="*{invoiceLines[__${iterStat.index}__].taxRate}"
-																class="rate"/>
-																</td>
-															<td><input type="number"
-																th:field="*{invoiceLines[__${iterStat.index}__].quantity}"
-																min="0" oninput="updateTotals()"  class="qty"/></td>
-															<td><input type="number" step="0.01"
-																th:field="*{invoiceLines[__${iterStat.index}__].unitPrice}"
-																min="0" oninput="updateTotals()"  class="price"/></td>
-															<td><input type="number" step="0.01" 
-															    th:field="*{invoiceLines[__${iterStat.index}__].taxRate}"  
-															    class="rate" readonly/></td>
-															
-															<td><input type="number" step="0.01"
-																name="lineTotal" readonly /></td>
-															<td><button type="button" class="btn"
-																	onclick="removeLine(this)">Remove</button></td>
-														</tr>
+												<div>
+													<!-- 
+													<h2>
+														Invoice #<span th:text="${invoice.id}"></span>
+													</h2>
+													<p>
+														<strong>Customer:</strong> <span
+															th:text="${invoice.customerName}"></span>
+													</p>
+													<p>
+														<strong>Date:</strong> <span
+															th:text="${#dates.format(invoice.date, 'yyyy-MM-dd')}"></span>
+													</p>
+-->
+													<table>
+														<thead>
+															<tr>
+																<th>#</th>
+																<th>Item</th>
+																<th>Qty</th>
+																<th>Unit Price</th>
+																<th>Total</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr th:each="line, stat : ${invoice.invoiceLines}">
+																<td th:text="${stat.index + 1}"></td>
+																<td th:text="${line.itemName}"></td>
+																<td th:text="${line.quantity}"></td>
+																<td th:text="${line.unitPrice}"></td>
+																<td th:text="${line.quantity * line.unitPrice}"></td>
+															</tr>
+														</tbody>
 													</table>
 
-													<button type="button" class="btn" onclick="addLine()">Add
-														Line</button>
+													<h3>
+														<!--  							Total: <span th:text="${invoice.totalAmount}"></span>-->
+													</h3>
 
-													<div class="totals">
-														<p>
-															Subtotal: <span id="subtotal">0.00</span>
-														</p>
-														<p>
-															Tax: <span id="tax">0.00</span>
-														</p>
-														<p>
-															<strong>Total: <span id="total">0.00</span></strong>
-														</p>
+													<div class="no-print">
+														<button onclick="window.print()">🖨️ Print</button>
+														<a th:href="@{/invoice/edit/{id}(id=${invoice.id})}">✏️
+															Edit</a>
 													</div>
-
-													<button type="submit">Save Invoice</button>
-												</form>
+												</div>
 											</div>
 										</div>
 										<!-- Input Alignment card end -->
@@ -117,8 +120,8 @@
          if (query.length >= 2) {
              $.get('[[@{/items/search}]]', {query}, function (data) {
                  let list = data.map(item =>
-                     `<div class="suggestion" data-id="${item.id}" data-price="${item.price}" data-name="${item.name}" data-code="${item.code}" data-tax="${item.tax}" data-rate="${item.rate}">
-                         ${item.name} (${item.rate}-${item.code})
+                     `<div class="suggestion" data-id="${item.id}" data-price="${item.price}" data-name="${item.name}" data-code="${item.code}">
+                         ${item.name} (${item.price}-${item.code})
                      </div>`).join('');
                  $suggestions.html(list).show();
              });
@@ -133,8 +136,6 @@
         $row.find('.item-search').val($div.data('name'));
         $row.parent().find('.price').val($div.data('price'));
         $row.parent().find('.code').val($div.data('code'));
-        $row.parent().find('.tax').val($div.data('tax'));
-        $row.parent().find('.rate').val($div.data('rate'));
         $row.parent().find('.qty').val(1);
         $row.find('.suggestions').hide();
         updateTotals();
@@ -146,14 +147,9 @@ function addLine() {
     const table = document.getElementById('lines-table');
     const row = table.insertRow();
     row.innerHTML = `
-        <td>
-        <input type="text" name="invoiceLines[${lineIndex}].itemName" class="item-search" autocomplete="off"/><div class="suggestions"></div>
-        <input type="hidden" name="invoiceLines[${lineIndex}].itemCode"  class="code"/>
-        <input type="hidden" name="invoiceLines[${lineIndex}].taxCode"  class="tax"/>	
-        </td>
+        <td><input type="text" name="invoiceLines[${lineIndex}].itemName" class="item-search" autocomplete="off"/><div class="suggestions"></div></td>
         <td><input type="number" name="invoiceLines[${lineIndex}].quantity" min="0" oninput="updateTotals()" class="qty"/></td>
         <td><input type="number" step="0.01" name="invoiceLines[${lineIndex}].unitPrice" min="0" oninput="updateTotals()"  class="price"/></td>
-        <td><input type="number" step="0.01" name="invoiceLines[${lineIndex}].taxRate"  class="rate" readonly/></td>
         <td><input type="number" step="0.01" name="lineTotal" readonly /></td>
         <td><button type="button" class="btn" onclick="removeLine(this)">Remove</button></td>
     `;
@@ -171,22 +167,16 @@ function removeLine(btn) {
 // Calculate totals
 function updateTotals() {
     const table = document.getElementById('lines-table');
-    let total = 0;
-    let tax = 0;
+    let subtotal = 0;
     for (let i = 1; i < table.rows.length; i++) {
         const qty = parseFloat(table.rows[i].cells[1].querySelector('input').value) || 0;
         const price = parseFloat(table.rows[i].cells[2].querySelector('input').value) || 0;
-        const taxRate = parseFloat(table.rows[i].cells[3].querySelector('input').value) || 0;
         const lineTotal = qty * price;
-        const taxPercentage=(taxRate/(100+taxRate)).toFixed(2);
-        const lineTax=lineTotal*taxPercentage;
-        table.rows[i].cells[4].querySelector('input').value = lineTotal.toFixed(2);
-        total += lineTotal;
-        tax += lineTax;
-        
+        table.rows[i].cells[3].querySelector('input').value = lineTotal.toFixed(2);
+        subtotal += lineTotal;
     }
-    //const tax = subtotal * 0.1;
-    const subtotal = total - tax;
+    const tax = subtotal * 0.1;
+    const total = subtotal + tax;
     document.getElementById('subtotal').innerText = subtotal.toFixed(2);
     document.getElementById('tax').innerText = tax.toFixed(2);
     document.getElementById('total').innerText = total.toFixed(2);

@@ -2,16 +2,20 @@ package com.nika.erp.invoicing.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.nika.erp.common.domain.AbstractEntity;
 import com.nika.erp.core.domain.CoreTaxpayer;
 import com.nika.erp.ebm.domain.SdcDailyReport;
 import com.nika.erp.ebm.domain.SdcInformation;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +23,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.Builder.Default;
 import lombok.experimental.SuperBuilder;
 
 @Data
@@ -335,26 +340,30 @@ public class Invoice extends AbstractEntity {
 	@Builder.Default
 	private BigDecimal totalExtraAmount = BigDecimal.ZERO;
 
+	@OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<InvoiceLine> lines;
 	/**
 	 * The sdcDailyReport
 	 */
 	@ManyToOne
-	@JoinColumn(name = "SDC_DAILY_REPORT_ID", nullable = false)
+	@JoinColumn(name = "SDC_DAILY_REPORT_ID", nullable = true)
 	private SdcDailyReport sdcDailyReport;
 	/**
 	 * The sdcInformation
 	 */
 	@ManyToOne
-	@JoinColumn(name = "SDC_INFORMATION_ID", nullable = false)
+	@JoinColumn(name = "SDC_INFORMATION_ID", nullable = true)
 	private SdcInformation sdcInformation;
 
 	/**
 	 * The Taxpayer
 	 */
 	@ManyToOne
-	@JoinColumn(name = "TAXPAYER_ID", nullable = false)
+	@JoinColumn(name = "TAXPAYER_ID", nullable = true)
 	private CoreTaxpayer taxpayer;
-
+	@Column(name = "INVOICE_STATUS", nullable = true)
+	@Default
+	private InvoiceStatus status = InvoiceStatus.DRAFT;
 	public String getTransactionTypeCode() {
 
 		String invoiceNumberPerType = "";

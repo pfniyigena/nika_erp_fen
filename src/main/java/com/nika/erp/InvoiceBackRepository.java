@@ -13,7 +13,7 @@ public interface InvoiceBackRepository extends JpaRepository<InvoiceBack, Long> 
 	            String invoiceNumber, String customerName, Pageable pageable);
 
 	    Page<InvoiceBack> findByInvoiceNumberContainingIgnoreCaseOrCustomerNameContainingIgnoreCaseAndStatus(
-	            String invoiceNumber, String customerName, InvoiceStatus status, Pageable pageable);
+	            String invoiceNumber, String customerName, InvoiceStatusBack status, Pageable pageable);
 
-	    Page<InvoiceBack> findByStatus(InvoiceStatus status, Pageable pageable);
+	    Page<InvoiceBack> findByStatus(InvoiceStatusBack status, Pageable pageable);
 }

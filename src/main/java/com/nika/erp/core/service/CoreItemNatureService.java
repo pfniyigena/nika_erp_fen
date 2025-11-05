@@ -15,27 +15,32 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @Slf4j
 public class CoreItemNatureService {
-	
+
 	private final CoreItemNatureRepository coreItemNatureRepository;
 
 	public List<CoreItemNature> findAll() {
 		return coreItemNatureRepository.findAll();
 	}
 
-	public CoreItemNature  findById(String id) {
+	public CoreItemNature findById(String id) {
 		return coreItemNatureRepository.getReferenceById(UUID.fromString(id));
 	}
 
 	public CoreItemNature save(CoreItemNature coreItemNature) {
-		if(coreItemNature.getId()!=null) {
-			CoreItemNature  exist=coreItemNatureRepository.getReferenceById(coreItemNature.getId());
+		if (coreItemNature.getId() != null) {
+			CoreItemNature exist = coreItemNatureRepository.getReferenceById(coreItemNature.getId());
 			exist.setCode(coreItemNature.getCode());
 			exist.setName(coreItemNature.getName());
 			return coreItemNatureRepository.save(exist);
 		}
-		
+
 		return coreItemNatureRepository.save(coreItemNature);
-		
+
+	}
+
+	public List<CoreItemNature> saveAll(List<CoreItemNature> natures) {
+		return coreItemNatureRepository.saveAll(natures);
+
 	}
 
 }

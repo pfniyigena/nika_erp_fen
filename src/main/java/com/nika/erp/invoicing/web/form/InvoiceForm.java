@@ -1,6 +1,16 @@
 package com.nika.erp.invoicing.web.form;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import com.nika.erp.Customer;
+import com.nika.erp.invoicing.domain.InvoiceStatus;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -12,7 +22,16 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public class InvoiceForm {
-	
-	private String internalCode;
+	private UUID id;
+	private String invoiceNumber;
+	private LocalDate invoiceDate;
+	private LocalDate dueDate;
+	private Customer customer;
+	@Default
+	private List<InvoiceLineForm> invoiceLines = new ArrayList<>();
+	private BigDecimal totalAmount;
+	private BigDecimal taxAmount;
+	@Default
+	private InvoiceStatus status = InvoiceStatus.DRAFT;
 
 }

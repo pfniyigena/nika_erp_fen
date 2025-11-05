@@ -40,7 +40,7 @@ public class CoreItem  extends AbstractEntity {
 	@Column(name = "ITEM_CODE", nullable = true)
 	private String itemCode;
 
-	@Column(name = "EXTERNAL_ITEM_CODE", nullable = true, length = 50)
+	@Column(name = "EXTERNAL_ITEM_CODE", nullable = false, length = 50)
 	private String externalItemCode;
 	/**
 	 * The internalCode

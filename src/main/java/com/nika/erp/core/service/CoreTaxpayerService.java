@@ -1,5 +1,6 @@
 package com.nika.erp.core.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -7,8 +8,10 @@ import org.springframework.stereotype.Service;
 import com.nika.erp.common.service.SequenceNumberService;
 import com.nika.erp.common.util.NikaErpConstants;
 import com.nika.erp.core.domain.CoreItem;
+import com.nika.erp.core.domain.CoreItemNature;
 import com.nika.erp.core.domain.CoreTaxpayer;
 import com.nika.erp.core.domain.CoreTaxpayerBranch;
+import com.nika.erp.core.domain.EItemNature;
 import com.nika.erp.core.repository.CoreTaxpayerRepository;
 
 import lombok.AllArgsConstructor;
@@ -24,8 +27,8 @@ public class CoreTaxpayerService {
 	private final SequenceNumberService sequenceNumberService;
 
 	private final CoreTaxpayerBranchService coreTaxpayerBranchService;
-
 	private final CoreItemService coreItemService;
+	private final CoreItemNatureService coreItemNatureService;
 
 	public void initTaxpayer() {
 
@@ -47,8 +50,15 @@ public class CoreTaxpayerService {
 					.branchCode(NikaErpConstants.NIKA_DEFAULT_TAXPAYER_BRANCH_NAME)
 					.branchName(NikaErpConstants.NIKA_DEFAULT_TAXPAYER_BRANCH_NAME).build());
 
+			List<CoreItemNature> natures = new ArrayList<>();
+			for (EItemNature nature : EItemNature.values()) {
+				natures.add(CoreItemNature.builder().code(nature.name()).name(nature.name()).build());
+
+			}
+
+			List<CoreItemNature> natureList = coreItemNatureService.saveAll(natures);
 			coreItemService.saveNew(CoreItem.builder().taxpayer(coreTaxpayer)
-					.itemName(NikaErpConstants.NIKA_DEFAULT_ITEM_NAME).build());
+					.itemName(NikaErpConstants.NIKA_DEFAULT_ITEM_NAME).nature(natureList.get(0)).build());
 		}
 
 	}

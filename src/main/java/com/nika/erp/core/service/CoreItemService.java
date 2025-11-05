@@ -1,5 +1,6 @@
 package com.nika.erp.core.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.nika.erp.common.service.SequenceNumberService;
 import com.nika.erp.core.domain.CoreItem;
+import com.nika.erp.core.domain.CoreItemNature;
+import com.nika.erp.core.domain.EItemNature;
 import com.nika.erp.core.repository.CoreItemRepository;
 import com.nika.erp.invoicing.web.form.ItemForm;
 
@@ -20,6 +23,7 @@ public class CoreItemService {
 
 	private final CoreItemRepository coreItemRepository;
 	private final SequenceNumberService sequenceNumberService;
+	private final CoreItemNatureService coreItemNatureService;
 
 	List<ItemForm> findAllAsForm() {
 		return coreItemRepository.findAllAsForm();
@@ -30,10 +34,14 @@ public class CoreItemService {
 	}
 
 	public CoreItem saveNew(CoreItem coreItem) {
-		coreItem.setInternalCode(sequenceNumberService.getNextItemCode());
-		coreItem.setBarcode(sequenceNumberService.getNextItemCode());
-		coreItem.setExternalItemCode(sequenceNumberService.getNextItemCode());
-		coreItem.setItemCode(sequenceNumberService.getNextItemCode());
+		String code = sequenceNumberService.getNextItemCode();
+		coreItem.setInternalCode(code);
+		if (coreItem.getBarcode() == null || coreItem.getBarcode().isEmpty())
+			coreItem.setBarcode(code);
+		if (coreItem.getExternalItemCode() == null || coreItem.getExternalItemCode().isEmpty())
+			coreItem.setExternalItemCode(code);
+		if (coreItem.getItemCode() == null || coreItem.getItemCode().isEmpty())
+			coreItem.setItemCode(code);
 		return coreItemRepository.save(coreItem);
 
 	}
@@ -62,10 +70,25 @@ public class CoreItemService {
 
 	}
 
- 
-
 	public CoreItem findById(String id) {
 		return coreItemRepository.getReferenceById(UUID.fromString(id));
+	}
+
+	public CoreItem findByInternalCode(String internalCode) {
+		return coreItemRepository.findByInternalCode(internalCode);
+	}
+
+	public void initItems() {
+
+		if (coreItemNatureService.findAll().isEmpty()) {
+			List<CoreItemNature> natures = new ArrayList<>();
+			for (EItemNature nature : EItemNature.values()) {
+				natures.add(CoreItemNature.builder().code(nature.name()).name(nature.name()).build());
+
+			}
+			coreItemNatureService.saveAll(natures);
+		}
+
 	}
 
 }

@@ -8,6 +8,8 @@ public enum ESequenceType {
 	/** The BRANCH_TAXPAYER. */
 	BRANCH_TAXPAYER,
 	/** The ITEM. */
-	ITEM
+	ITEM,
+	/** The INVOICE. */
+	INVOICE
 
 }

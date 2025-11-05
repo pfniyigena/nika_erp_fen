@@ -18,6 +18,18 @@ public class NikaErpInvoicingUrlConstants {
 	 */
 	public static final String INVOICE_ADD_FORM = "invoices/add-form";
 	/**
+	 * The INVOICE_VIEW_FORM
+	 */
+	public static final String INVOICE_VIEW_FORM = "invoices/view-form";
+	/**
+	 * The INVOICE_EDIT_FORM
+	 */
+	public static final String INVOICE_EDIT_FORM = "invoices/edit-form";
+	/**
+	 * The INVOICES_LIST_REDITECT_URL
+	 */
+	public static final String INVOICES_LIST_REDITECT_URL = "redirect:/invoices/list";
+	/**
 	 * The TAXARATES_URL
 	 */
 	public static final String TAXARATES_URL = "taxRates";

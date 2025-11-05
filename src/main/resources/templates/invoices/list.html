@@ -48,11 +48,11 @@
 														</tr>
 													</thead>
 													<tbody>
-														<tr th:each="list : ${lists}">
-															<td th:text="${list.internalCode}"></td>
+														<tr th:each="invoice : ${lists}">
+															<td th:text="${invoice.internalCode}"></td>
 
 															<td><a href="#"
-																th:href="@{'/companies/update/' + ${list.id}}"
+																th:href="@{'/invoices/view/' + ${invoice.id}}"
 																class="waves-effect waves-dark"><span
 																	class="pcoded-micon"><em class="fa fa-pencil"></em></span></a>
 															</td>

@@ -11,27 +11,33 @@ import com.nika.erp.core.domain.CoreItem;
 import com.nika.erp.invoicing.web.form.ItemForm;
 
 public interface CoreItemRepository extends JpaRepository<CoreItem, UUID> {
+	CoreItem findByInternalCode(String internalCode);
 
 	List<CoreItem> findByItemNameContainingIgnoreCase(String itemName);
 
 	@Query("""
 			    SELECT new com.nika.erp.invoicing.web.form.ItemForm(
 			        b.itemName,
-			        b.itemCode,
+			        b.internalCode,
+			        t.code,
+			        t.taxValue,
 			        b.unitPrice
 			    )
-			    FROM CoreItem b
+			    FROM CoreItem b INNER JOIN TaxRate t ON b.tax.id = t.id
 			""")
 	List<ItemForm> findAllAsForm();
-	
+
 	@Query("""
-		    SELECT new com.nika.erp.invoicing.web.form.ItemForm(
-		        b.itemName,
-		        b.itemCode,
-		        b.unitPrice
-		    )
-		    FROM CoreItem b
-		    WHERE LOWER(b.itemName) LIKE LOWER(CONCAT('%', :itemName, '%'))
-		""")
-List<ItemForm> findAllAsFormByItemNameContainingIgnoreCase(@Param("itemName") String itemName);
+			    SELECT new com.nika.erp.invoicing.web.form.ItemForm(
+			        b.itemName,
+			        b.internalCode,
+			        t.code,
+			        t.taxValue,
+			        b.unitPrice
+			    )
+			    FROM CoreItem b INNER JOIN TaxRate t ON b.tax.id = t.id
+			    WHERE LOWER(b.itemName) LIKE LOWER(CONCAT('%', :itemName, '%'))
+			""")
+	List<ItemForm> findAllAsFormByItemNameContainingIgnoreCase(@Param("itemName") String itemName);
+
 }

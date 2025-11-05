@@ -27,7 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>25</java.version>
+		<java.version>21</java.version>
 		<flyway.version>10.17.0</flyway.version>
 	</properties>
 	<dependencies>
@@ -110,6 +110,7 @@
 
 	<build>
 		<plugins>
+		<!-- Spring Boot Plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -122,6 +123,7 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+			<!-- Spring Boot Plugin -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -134,9 +136,23 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<!-- GraalVM Native Image Plugin -->
+      <plugin>
+        <groupId>org.graalvm.buildtools</groupId>
+        <artifactId>native-maven-plugin</artifactId>
+        <version>0.10.2</version>
+        <extensions>true</extensions>
+        <configuration>
+          <buildArgs>
+            <arg>--no-fallback</arg>
+            <arg>--install-exit-handlers</arg>
+          </buildArgs>
+        </configuration>
+      </plugin>
 		</plugins>
 	</build>
 <profiles>
+ <!-- ✅ Development profile -->
     <profile>
       <id>dev</id>
       <activation>
@@ -146,19 +162,36 @@
         <spring.profiles.active>dev</spring.profiles.active>
       </properties>
     </profile>
-
+ <!-- ✅ Test profile -->
     <profile>
       <id>test</id>
       <properties>
         <spring.profiles.active>test</spring.profiles.active>
       </properties>
     </profile>
-
+ <!-- ✅ Production profile -->
     <profile>
       <id>prod</id>
       <properties>
         <spring.profiles.active>prod</spring.profiles.active>
       </properties>
+    </profile>
+     <!-- ✅ GraalVM Native build profile -->
+    <profile>
+      <id>native</id>
+      <activation>
+        <property>
+          <name>native</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.graalvm.buildtools</groupId>
+            <artifactId>native-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>

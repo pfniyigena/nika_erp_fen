@@ -50,12 +50,12 @@ public class InvoiceBackController {
 	    if ((query != null && !query.isEmpty()) && (status != null && !status.isEmpty())) {
 	        invoicePage = invoiceRepository
 	                .findByInvoiceNumberContainingIgnoreCaseOrCustomerNameContainingIgnoreCaseAndStatus(
-	                        query, query, InvoiceStatus.valueOf(status), pageable);
+	                        query, query, InvoiceStatusBack.valueOf(status), pageable);
 	    } else if (query != null && !query.isEmpty()) {
 	        invoicePage = invoiceRepository
 	                .findByInvoiceNumberContainingIgnoreCaseOrCustomerNameContainingIgnoreCase(query, query, pageable);
 	    } else if (status != null && !status.isEmpty()) {
-	        invoicePage = invoiceRepository.findByStatus(InvoiceStatus.valueOf(status), pageable);
+	        invoicePage = invoiceRepository.findByStatus(InvoiceStatusBack.valueOf(status), pageable);
 	    } else {
 	        invoicePage = invoiceRepository.findAll(pageable);
 	    }
@@ -157,7 +157,7 @@ public class InvoiceBackController {
 	@PostMapping("/{id}/mark-paid")
 	public String markPaid(@PathVariable Long id) {
 		InvoiceBack invoice = invoiceRepository.findById(id).orElseThrow();
-	    invoice.setStatus(InvoiceStatus.PAID);
+	    invoice.setStatus(InvoiceStatusBack.PAID);
 	    invoiceRepository.save(invoice);
 	    return "redirect:/invoice/" + id;
 	}

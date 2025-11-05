@@ -42,7 +42,10 @@ public class TaxRateService {
 		 
 		return taxRateRepository.getReferenceById(UUID.fromString(id));
 	}
-	
+	public TaxRate findByCode(String code) {
+		 
+		return taxRateRepository.findByCode(code);
+	}
 	
 
 }
