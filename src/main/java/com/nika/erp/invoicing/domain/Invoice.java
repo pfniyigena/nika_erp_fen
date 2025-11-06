@@ -246,7 +246,9 @@ public class Invoice extends AbstractEntity {
 	@Column(name = "TOTAL_EXTRA_AMOUNT", nullable = true)
 	@Builder.Default
 	private BigDecimal totalExtraAmount = BigDecimal.ZERO;
-
+	/**
+	 * The lines
+	 */
 	@OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@ToString.Exclude
     private List<InvoiceLine> lines;

@@ -4,6 +4,13 @@
 
 <head>
 <th:block th:insert="~{fragments/header :: head}"></th:block>
+<style type="text/css">
+.flex-row {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+</style>
 </head>
 <body>
 	<th:block th:insert="~{fragments/header :: pre-loader}"></th:block>
@@ -99,11 +106,30 @@
 															</table>
 														</div>
 													</div>
-													<h6 class="sub-title">
-														Tax: <span th:text="${invoice.totalTaxAmount}"></span><br>
-														Sub total: <span th:text="${invoice.totalTaxAmount}"></span><br>
-														Total: <span th:text="${invoice.totalAPayer}"></span>
-													</h6>
+													<div class="flex-row">
+														<div>
+															<h6 class="sub-title">
+															<p>Total Amount</p>
+																<span>Amount Without Tax</span>  : <span
+																	th:text="${invoice.amountWithoutTax}"></span><br>
+																<span>Tax Amount</span> : <span th:text="${invoice.totalTaxAmount}"></span><br>
+																<span>Amount With Tax</span>: <span
+																	th:text="${invoice.totalAmountIncludingTax}"></span><br>
+																<span>Total To Pay</span>: <span th:text="${invoice.totalAPayer}"></span>
+															</h6>
+														</div>
+														<div>
+															<h6 class="sub-title">
+															<p>Taxes</p>
+																<span th:each="summary : ${taxes}"> <span
+																	th:text="${summary.taxCode}"></span>(<span
+																	th:text="${summary.taxValue}"></span>%): <span
+																	th:text="${summary.totalAmount}"></span><br>
+																</span>
+															</h6>
+														</div>
+													</div>
+
 												</div>
 											</div>
 										</div>
@@ -121,7 +147,6 @@
 		</div>
 	</div>
 	<th:block th:insert="~{fragments/header :: footer}"></th:block>
-
 </body>
 
 </html>

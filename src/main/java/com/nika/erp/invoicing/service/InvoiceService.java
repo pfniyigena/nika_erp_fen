@@ -35,6 +35,7 @@ public class InvoiceService {
 	private final CoreItemService coreItemService;
 	private final SequenceNumberService sequenceNumberService;
 	private final TaxTypeService taxTypeService;
+	private final InvoiceTaxSummaryService invoiceTaxSummaryService;
 
 	/**
 	 * @param invoice
@@ -104,19 +105,23 @@ public class InvoiceService {
 	}
 
 	private Invoice mapToInvoice(InvoiceForm invoiceForm) {
-		return Invoice.builder()
-				.build();
+		return Invoice.builder().build();
 	}
 
 	private InvoiceLine mapToInvoiceLine(InvoiceLineForm invoiceLineForm) {
 		CoreItem coreItem = coreItemService.findByInternalCode(invoiceLineForm.getItemCode());
 		TaxType taxType = taxTypeService.findByCode(invoiceLineForm.getTaxCode());
+		InvoiceCalculationService invoiceCalculationService = new InvoiceCalculationService(
+				invoiceLineForm.getQuantity(), invoiceLineForm.getUnitPrice(), invoiceLineForm.getTaxType(),
+				new BigDecimal("0.00"), new BigDecimal("0.00"));
+
 		return InvoiceLine.builder().item(coreItem).itemName(invoiceLineForm.getItemName())
 				.itemNature(EItemNature.valueOf(coreItem.getNature().getCode())).quantity(invoiceLineForm.getQuantity())
 				.unitPrice(invoiceLineForm.getUnitPrice()).taxCode(invoiceLineForm.getTaxCode())
 				.taxName(taxType.getTaxName()).taxType(invoiceLineForm.getTaxType())
-				.transactionType(ETransactionType.TRANSACTION_TYPE_SALE).grossAmount(invoiceLineForm.getLineTotal())
-				.build();
+				.transactionType(ETransactionType.TRANSACTION_TYPE_SALE)
+				.grossAmount(invoiceCalculationService.getGrossAmount())
+				.taxAmount(invoiceCalculationService.getTaxAmount()).build();
 	}
 
 	public List<InvoiceForm> getAllInvoicesForm() {
@@ -132,6 +137,12 @@ public class InvoiceService {
 	public Invoice confirm(String id) {
 		Invoice invoice = findById(id);
 		invoice.setStatus(InvoiceStatus.DONE);
-		return invoiceRepository.save(invoice);
+		invoice = invoiceRepository.save(invoice);
+		handleInvoiceSummary(invoice);
+		return invoice;
+	}
+
+	private void handleInvoiceSummary(Invoice invoice) {
+		invoiceTaxSummaryService.save(invoice);
 	}
 }

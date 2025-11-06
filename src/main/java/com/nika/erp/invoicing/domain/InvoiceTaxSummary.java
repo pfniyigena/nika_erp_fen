@@ -34,13 +34,13 @@ public class InvoiceTaxSummary extends AbstractEntity {
 	/**
 	 * The taxCode
 	 */
-	@Column(name = "TAX_CODE", nullable = false,unique = true)
+	@Column(name = "TAX_CODE", nullable = false)
 	private String taxCode;
 
 	/**
 	 * The taxName
 	 */
-	@Column(name = "TAX_NAME", nullable = false,unique = true)
+	@Column(name = "TAX_NAME", nullable = false)
 	private String taxName;
 	/**
 	 * The taxValue

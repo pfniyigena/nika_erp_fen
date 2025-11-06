@@ -57,13 +57,13 @@ public class TaxTypeService {
 			case RWANDA: {
 
 				taxTypeRepository.saveAll(List.of(
-						TaxType.builder().taxName("A").displayName("A-EX").taxCode("A").taxValue(new BigDecimal("0.00"))
+						TaxType.builder().taxName("A").displayName("A-EX").taxCode("A").taxValue(new BigDecimal("0.00")).displayLevel(0)
 								.build(),
-						TaxType.builder().taxName("B").displayName("B").taxCode("B").taxValue(new BigDecimal("18.00"))
+						TaxType.builder().taxName("B").displayName("B").taxCode("B").taxValue(new BigDecimal("18.00")).displayLevel(1)
 								.build(),
-						TaxType.builder().taxName("C").displayName("C").taxCode("C").taxValue(new BigDecimal("0.00"))
+						TaxType.builder().taxName("C").displayName("C").taxCode("C").taxValue(new BigDecimal("0.00")).displayLevel(2)
 								.build(),
-						TaxType.builder().taxName("D").displayName("D").taxCode("D").taxValue(new BigDecimal("0.00"))
+						TaxType.builder().taxName("D").displayName("D").taxCode("D").taxValue(new BigDecimal("0.00")).displayLevel(3)
 								.build()));
 
 				break;
@@ -71,24 +71,24 @@ public class TaxTypeService {
 			case CHAD: {
 				taxTypeRepository.saveAll(List.of(
 						TaxType.builder().taxName("EX").displayName("Exonere").taxCode("EX")
-								.taxValue(new BigDecimal("0.00")).build(),
+								.taxValue(new BigDecimal("0.00")).displayLevel(0)  .build(),
 						TaxType.builder().taxName("TN").displayName("Taux Normal").taxCode("TN")
-								.taxValue(new BigDecimal("19.25")).build(),
+								.taxValue(new BigDecimal("19.25")).displayLevel(1) .build(),
 						TaxType.builder().taxName("TR").displayName("Taux Reduit").taxCode("TR")
-								.taxValue(new BigDecimal("9.9")).build(),
+								.taxValue(new BigDecimal("9.9")).displayLevel(2)  .build(),
 						TaxType.builder().taxName("XP").displayName("Exportation").taxCode("XP")
-								.taxValue(new BigDecimal("0.00")).build(),
+								.taxValue(new BigDecimal("0.00")).displayLevel(3) .build(),
 						TaxType.builder().taxName("NA").displayName("Non assugetti").taxCode("NA")
-								.taxValue(new BigDecimal("0.00")).build()));
+								.taxValue(new BigDecimal("0.00")).displayLevel(4) .build()));
 
 				break;
 			}
 			case GENERAL: {
 				taxTypeRepository.saveAll(List.of(
-						TaxType.builder().taxName("A").displayName("A-EX").taxCode("A").taxValue(new BigDecimal("0.00"))
+						TaxType.builder().taxName("A").displayName("A-EX").taxCode("A").taxValue(new BigDecimal("0.00")).displayLevel(0)
 								.build(),
 						TaxType.builder().taxName("VAT").displayName("VAT").taxCode("VAT")
-								.taxValue(new BigDecimal("18.00")).build()));
+								.taxValue(new BigDecimal("18.00")).displayLevel(1)  .build()));
 
 				break;
 			}

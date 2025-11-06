@@ -57,6 +57,10 @@ public class TaxType extends AbstractEntity {
 	 */
 	@Column(name = "DESCRIPTION", nullable = true)
 	private String description;
+	
+	@Column(name = "DISPLAY_LEVEL",unique =true, nullable = true)
+	@Builder.Default
+	private Integer displayLevel=0;
 
 
 

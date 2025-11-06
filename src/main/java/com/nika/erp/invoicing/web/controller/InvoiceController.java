@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.lowagie.text.DocumentException;
 import com.nika.erp.invoicing.domain.Invoice;
 import com.nika.erp.invoicing.domain.InvoiceLine;
+import com.nika.erp.invoicing.domain.InvoiceTaxSummary;
 import com.nika.erp.invoicing.service.InvoiceService;
+import com.nika.erp.invoicing.service.InvoiceTaxSummaryService;
 import com.nika.erp.invoicing.web.form.InvoiceForm;
 import com.nika.erp.invoicing.web.form.InvoiceLineForm;
 import com.nika.erp.invoicing.web.util.NikaErpInvoicingUrlConstants;
@@ -29,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = NikaErpInvoicingUrlConstants.INVOICES_URL)
 @AllArgsConstructor
 public class InvoiceController {
-	
+	private final InvoiceTaxSummaryService invoiceTaxSummaryService;
 	private final InvoiceService invoiceService;
 
 	@GetMapping(path = "/list")
@@ -72,8 +74,10 @@ public class InvoiceController {
     @GetMapping("/view/{id}")
     public String viewInvoice(@PathVariable String id, Model model) {
         Invoice invoice = invoiceService.findById(id);
-        log.info("viewInvoice:{}",invoice);
+        List<InvoiceTaxSummary> taxes=invoiceTaxSummaryService.findByInvoice(invoice);
+        log.info("viewInvoice:{},Taxes:{}",invoice,taxes);
         model.addAttribute("invoice", invoice);
+        model.addAttribute("taxes", taxes);
         return NikaErpInvoicingUrlConstants.INVOICE_VIEW_FORM;  // ✅ Print view
     }
 
