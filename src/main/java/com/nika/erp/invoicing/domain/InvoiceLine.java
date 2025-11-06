@@ -55,11 +55,11 @@ public class InvoiceLine extends AbstractEntity {
 	@Builder.Default
 	private BigDecimal quantity = BigDecimal.ZERO;
 	/**
-	 * The taxRate
+	 * The taxType
 	 */
-	@Column(name = "TAX_RATE", nullable = true)
+	@Column(name = "TAX_TYPE", nullable = true)
 	@Builder.Default
-	private BigDecimal taxRate = BigDecimal.ZERO;
+	private BigDecimal taxType = BigDecimal.ZERO;
 	/**
 	 * The taxAmount
 	 */

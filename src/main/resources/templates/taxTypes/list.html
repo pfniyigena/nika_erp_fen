@@ -3,7 +3,7 @@
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-<title th:text="#{label.taxpayers.list}"></title>
+<title th:text="#{label.taxes.list}"></title>
 <th:block th:include="fragments/header :: head"></th:block>
 </head>
 <body>
@@ -29,8 +29,8 @@
 										<!-- Hover table card start -->
 										<div class="card">
 											<div class="card-header">
-												<h5 th:text="#{label.taxRates.list}"></h5>
-												<a href="#" th:href="@{/taxRates/new}"
+												<h5 th:text="#{label.taxTypes.list}"></h5>
+												<a href="#" th:href="@{/taxTypes/new}"
 													class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger"><em
 													class="icofont icofont-plus m-r-5"></em><span
 													th:text="#{label.button.new}"></span></a>
@@ -54,10 +54,10 @@
 														<tr th:each="list : ${lists}">
 															<td th:text="${list.displayName}"></td>
 															<td th:text="${list.taxName}"></td>
-															<td th:text="${list.code}"></td>
+															<td th:text="${list.taxCode}"></td>
 															<td th:text="${list.taxValue}"></td>
 															<td><a href="#"
-																th:href="@{'/taxRates/update/' + ${list.id}}"
+																th:href="@{'/taxTypes/update/' + ${list.id}}"
 																class="waves-effect waves-dark"><span
 																	class="pcoded-micon"><em class="fa fa-pencil"></em></span></a>
 															</td>

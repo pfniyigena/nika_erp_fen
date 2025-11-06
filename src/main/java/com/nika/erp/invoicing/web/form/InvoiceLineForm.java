@@ -20,7 +20,7 @@ public class InvoiceLineForm {
     private String itemCode;
     private String taxCode;
     @Default
-    private BigDecimal taxRate=BigDecimal.ZERO;
+    private BigDecimal taxType=BigDecimal.ZERO;
     @Default
     private BigDecimal quantity=BigDecimal.ZERO;
     @Default

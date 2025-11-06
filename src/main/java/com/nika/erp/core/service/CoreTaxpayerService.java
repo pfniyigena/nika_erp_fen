@@ -14,7 +14,7 @@ import com.nika.erp.core.domain.CoreTaxpayer;
 import com.nika.erp.core.domain.CoreTaxpayerBranch;
 import com.nika.erp.core.domain.EItemNature;
 import com.nika.erp.core.repository.CoreTaxpayerRepository;
-import com.nika.erp.invoicing.service.TaxRateService;
+import com.nika.erp.invoicing.service.TaxTypeService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ public class CoreTaxpayerService {
 	private final CoreTaxpayerBranchService coreTaxpayerBranchService;
 	private final CoreItemService coreItemService;
 	private final CoreItemNatureService coreItemNatureService;
-	private final TaxRateService taxRateService;
+	private final TaxTypeService taxTypeService;
 
 	public void initTaxpayer() {
 
@@ -66,14 +66,14 @@ public class CoreTaxpayerService {
 	}
 
 	public CoreTaxpayer saveNew(CoreTaxpayer coreTaxpayer) {
-		taxRateService.initializeTaxes(coreTaxpayer.getFiscalYear());
+		taxTypeService.initializeTaxes(coreTaxpayer.getFiscalYear());
 		coreTaxpayer.setInternalCode(sequenceNumberService.getNextTaxpayerCode());
 		return coreTaxpayerRepository.save(coreTaxpayer);
 
 	}
 
 	public CoreTaxpayer update(CoreTaxpayer coreTaxpayer) {
-		taxRateService.initializeTaxes(coreTaxpayer.getFiscalYear());
+		taxTypeService.initializeTaxes(coreTaxpayer.getFiscalYear());
 		return coreTaxpayerRepository.save(coreTaxpayer);
 
 	}
@@ -100,7 +100,7 @@ public class CoreTaxpayerService {
 			exist.setTaxpayerAddress(taxpayer.getTaxpayerAddress());
 			exist.setFiscalYear(taxpayer.getFiscalYear());
 			coreTaxpayerRepository.save(exist);
-			taxRateService.initializeTaxes(exist.getFiscalYear());
+			taxTypeService.initializeTaxes(exist.getFiscalYear());
 		}
 
 	}

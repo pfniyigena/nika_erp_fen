@@ -30,22 +30,41 @@ public class NikaErpInvoicingUrlConstants {
 	 */
 	public static final String INVOICES_LIST_REDITECT_URL = "redirect:/invoices/list";
 	/**
-	 * The TAXARATES_URL
+	 * The TAXTYPES_URL
 	 */
-	public static final String TAXARATES_URL = "taxRates";
+	public static final String TAXTYPES_URL = "taxTypes";
 	
 	/**
-	 * The TAXARATES_LIST_PAGE
+	 * The TAXATYPES_LIST_PAGE
 	 */
-	public static final String TAXARATES_LIST_PAGE = "taxRates/list";
+	public static final String TAXTYPES_LIST_PAGE = "taxTypes/list";
 	/**
-	 * The TAXRATE_ADD_FORM
+	 * The TAXTYPE_ADD_FORM
 	 */
-	public static final String TAXRATE_ADD_FORM = "taxRates/add-form";
+	public static final String TAXTYPE_ADD_FORM = "taxTypes/add-form";
 	/**
-	 * The TAXRATES_LIST_REDITECT_URL
+	 * The TAXTYPES_LIST_REDITECT_URL
 	 */
 	
-	public static final String TAXRATES_LIST_REDITECT_URL = "redirect:/taxRates/list";
+	public static final String TAXTYPES_LIST_REDITECT_URL = "redirect:/taxTypes/list";
+	
+	/**
+	 * The CHARGETYPES_URL
+	 */
+	public static final String CHARGETYPES_URL = "chargeTypes";
+	
+	/**
+	 * The CHARGETYPES_LIST_PAGE
+	 */
+	public static final String CHARGETYPES_LIST_PAGE = "chargeTypes/list";
+	/**
+	 * The CHARGETYPE_ADD_FORM
+	 */
+	public static final String CHARGETYPE_ADD_FORM = "chargeTypes/add-form";
+	/**
+	 * The CHARGETYPES_LIST_REDITECT_URL
+	 */
+	
+	public static final String CHARGETYPES_LIST_REDITECT_URL = "redirect:/chargeTypes/list";
 	
 }

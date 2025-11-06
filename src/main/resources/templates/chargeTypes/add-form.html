@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<th:block th:insert="~{fragments/header :: head}"></th:block>
+</head>
+<body>
+	<th:block th:insert="~{fragments/header :: pre-loader}"></th:block>
+	<div id="pcoded" class="pcoded">
+		<div class="pcoded-overlay-box"></div>
+		<div class="pcoded-container navbar-wrapper">
+
+			<th:block th:insert="~{fragments/header :: navbar-top}"></th:block>
+
+			<div class="pcoded-main-container">
+				<div class="pcoded-wrapper">
+					<th:block th:insert="~{fragments/header :: navbar-left}"></th:block>
+					<div class="pcoded-content">
+						<div class="pcoded-inner-content">
+							<!-- Main-body start -->
+							<div class="main-body">
+								<div class="page-wrapper">
+									<!-- Page-body start -->
+									<div class="page-body">
+										<!-- Input Alignment card start -->
+										<div class="card">
+											<div class="card-header">
+												<h5 th:text="#{label.charge.details}"></h5>
+											</div>
+											<div class="card-block">
+												<form th:object="${chargeType}"
+													th:action="@{/chargeTypes/new}" method="post">
+													<input type="hidden" th:field="*{id}" />
+													<div class="form-group row row">
+														<label class="col-sm-2 col-form-label" for="chargeName"
+															th:text="#{label.general.name}"></label>
+														<div class="col-sm-4 has-danger ">
+															<input type="text" th:field="*{chargeName}" id="chargeName"
+																class="form-control form-control-bold"
+																th:placeholder="#{label.general.name}"> <span class="col-form-label"
+																th:if="${#fields.hasErrors('chargeName')}" th:errors="*{chargeName}"></span>
+														</div>
+													</div>
+													<div class="form-group row row">
+														<label class="col-sm-2 col-form-label" for="chargeCode"
+															th:text="#{label.general.code}"></label>
+														<div class="col-sm-4 has-danger ">
+															<input type="text" th:field="*{chargeCode}" id="chargeCode"
+																class="form-control form-control-bold"
+																th:placeholder="#{label.general.code}" readonly="readonly"> <span
+																class="col-form-label"
+																th:if="${#fields.hasErrors('chargeCode')}"
+																th:errors="*{chargeCode}"></span>
+														</div>
+													</div>
+													<div class="form-group row row">
+														<label class="col-sm-2 col-form-label" for="chargeValue"
+															th:text="#{label.tax.rate}"></label>
+														<div class="col-sm-4 has-danger ">
+															<input type="number" step="0.01" th:field="*{chargeValue}" id="chargeValue"
+																class="form-control form-control-bold"
+																th:placeholder="#{label.charge.rate}"> <span
+																class="col-form-label"
+																th:if="${#fields.hasErrors('chargeValue')}"
+																th:errors="*{chargeValue}"></span>
+														</div>
+													</div>
+													<div class="form-group row row">
+														<label class="col-sm-2 col-form-label" for="displayName"
+															th:text="#{label.general.displayName}"></label>
+														<div class="col-sm-4 has-danger ">
+															<input type="text" th:field="*{displayName}" id="displayName"
+																class="form-control form-control-bold"
+																th:placeholder="#{label.general.displayName}"> <span class="col-form-label"
+																th:if="${#fields.hasErrors('displayName')}" th:errors="*{displayName}"></span>
+														</div>
+													</div>
+													<div class="form-group row row">
+														<label class="col-sm-2 col-form-label" for="description"
+															th:text="#{label.general.description}"></label>
+														<div class="col-sm-4 has-danger ">
+															<input type="text" th:field="*{description}" id="description"
+																class="form-control form-control-bold"
+																th:placeholder="#{label.general.description}"> <span
+																class="col-form-label"
+																th:if="${#fields.hasErrors('description')}"
+																th:errors="*{description}"></span>
+														</div>
+													</div>
+													<div class="card-block">
+														<button type="submit"
+															class="btn btn-success btn-round waves-effect waves-light"
+															th:text="#{label.button.save}"></button>
+
+														<a href="#" th:href="@{/taxTypes/list}"
+															class="btn btn-danger btn-round waves-effect waves-light"
+															th:text="#{label.button.back}"></a>
+													</div>
+												</form>
+											</div>
+										</div>
+										<!-- Input Alignment card end -->
+
+									</div>
+									<!-- Page-body end -->
+								</div>
+								<div id="styleSelector"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:insert="~{fragments/header :: footer}"></th:block>
+</body>
+
+</html>

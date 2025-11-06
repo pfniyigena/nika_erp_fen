@@ -19,11 +19,11 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
-@Table(name = "INVOICING_TAX_RATE")
+@Table(name = "INVOICING_CHARGE_TYPE")
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class TaxRate extends AbstractEntity {
+public class ChargeType extends AbstractEntity {
 	/**
 	 * The serialVersionUID
 	 */
@@ -32,8 +32,8 @@ public class TaxRate extends AbstractEntity {
 	/**
 	 * The taxName
 	 */
-	@Column(name = "TAX_NAME", nullable = false,unique = true)
-	private String taxName;
+	@Column(name = "CHARGE_NAME", nullable = false,unique = true)
+	private String chargeName;
 	
 	/**
 	 * The displayName
@@ -42,16 +42,16 @@ public class TaxRate extends AbstractEntity {
 	private String displayName;
 	
 	/**
-	 * The code
+	 * The chargeCode
 	 */
-	@Column(name = "CODE", nullable = false,unique = true)
-	private String code;
+	@Column(name = "CHARGE_CODE", nullable = false,unique = true)
+	private String chargeCode;
 	/**
 	 * The taxValue
 	 */
-	@Column(name = "TAX_VALUE", nullable = true)
+	@Column(name = "CHARGE_VALUE", nullable = true)
 	@Builder.Default
-	private BigDecimal taxValue = BigDecimal.ZERO;
+	private BigDecimal chargeValue = BigDecimal.ZERO;
 	/**
 	 * The description
 	 */

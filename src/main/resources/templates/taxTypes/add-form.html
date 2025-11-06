@@ -29,8 +29,8 @@
 												<h5 th:text="#{label.tax.details}"></h5>
 											</div>
 											<div class="card-block">
-												<form th:object="${taxRate}"
-													th:action="@{/taxRates/new}" method="post">
+												<form th:object="${taxType}"
+													th:action="@{/taxTypes/new}" method="post">
 													<input type="hidden" th:field="*{id}" />
 													<div class="form-group row row">
 														<label class="col-sm-2 col-form-label" for="taxName"
@@ -43,15 +43,15 @@
 														</div>
 													</div>
 													<div class="form-group row row">
-														<label class="col-sm-2 col-form-label" for="code"
+														<label class="col-sm-2 col-form-label" for="taxCode"
 															th:text="#{label.general.code}"></label>
 														<div class="col-sm-4 has-danger ">
-															<input type="text" th:field="*{code}" id="code"
+															<input type="text" th:field="*{taxCode}" id="taxCode"
 																class="form-control form-control-bold"
 																th:placeholder="#{label.general.code}"> <span
 																class="col-form-label"
-																th:if="${#fields.hasErrors('code')}"
-																th:errors="*{code}"></span>
+																th:if="${#fields.hasErrors('taxCode')}"
+																th:errors="*{taxCode}"></span>
 														</div>
 													</div>
 													<div class="form-group row row">
@@ -93,7 +93,7 @@
 															class="btn btn-success btn-round waves-effect waves-light"
 															th:text="#{label.button.save}"></button>
 
-														<a href="#" th:href="@{/taxRates/list}"
+														<a href="#" th:href="@{/taxTypes/list}"
 															class="btn btn-danger btn-round waves-effect waves-light"
 															th:text="#{label.button.back}"></a>
 													</div>

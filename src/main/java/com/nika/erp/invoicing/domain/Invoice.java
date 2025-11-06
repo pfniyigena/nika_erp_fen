@@ -140,96 +140,6 @@ public class Invoice extends AbstractEntity {
 	@Column(name = "ITEM_NUMBER", nullable = false)
 	private Integer itemNumber;
 	/**
-	 * The taxRateA
-	 */
-	@Column(name = "TAX_RATE_A", nullable = true)
-	@Builder.Default
-	private BigDecimal taxRateA = BigDecimal.ZERO;
-	/**
-	 * The taxRateB1
-	 */
-	@Column(name = "TAX_RATE_B1", nullable = true)
-	@Builder.Default
-	private BigDecimal taxRateB1 = BigDecimal.ZERO;
-	/**
-	 * The taxRateB2
-	 */
-	@Column(name = "TAX_RATE_B2", nullable = true)
-	@Builder.Default
-	private BigDecimal taxRateB2 = BigDecimal.ZERO;
-	/**
-	 * The taxRateC
-	 */
-	@Column(name = "TAX_RATE_C", nullable = true)
-	@Builder.Default
-	private BigDecimal taxRateC = BigDecimal.ZERO;
-	/**
-	 * The taxRateD
-	 */
-	@Column(name = "TAX_RATE_D", nullable = true)
-	@Builder.Default
-	private BigDecimal taxRateD = BigDecimal.ZERO;
-	/**
-	 * The totalTaxA
-	 */
-	@Column(name = "TOTAL_TAX_A", nullable = true)
-	@Builder.Default
-	private BigDecimal totalTaxA = BigDecimal.ZERO;
-	/**
-	 * The totalTaxB1
-	 */
-	@Column(name = "TOTAL_TAX_B1", nullable = true)
-	@Builder.Default
-	private BigDecimal totalTaxB1 = BigDecimal.ZERO;
-	/**
-	 * The totalTaxB2
-	 */
-	@Column(name = "TOTAL_TAX_B2", nullable = true)
-	@Builder.Default
-	private BigDecimal totalTaxB2 = BigDecimal.ZERO;
-	/**
-	 * The totalTaxC
-	 */
-	@Column(name = "TOTAL_TAX_C", nullable = true)
-	@Builder.Default
-	private BigDecimal totalTaxC = BigDecimal.ZERO;
-	/**
-	 *The totalTaxD 
-	 */
-	@Column(name = "TOTAL_TAX_D", nullable = true)
-	@Builder.Default
-	private BigDecimal totalTaxD = BigDecimal.ZERO;
-	/**
-	 * The totalAmountIncludingTaxA
-	 */
-	@Column(name = "TOTAL_AMOUNT_INCLUDING_TAX_A", nullable = true)
-	@Builder.Default
-	private BigDecimal totalAmountIncludingTaxA = BigDecimal.ZERO;
-	/**
-	 * The totalAmountIncludingTaxB1
-	 */
-	@Column(name = "TOTAL_AMOUNT_INCLUDING_TAX_B1", nullable = true)
-	@Builder.Default
-	private BigDecimal totalAmountIncludingTaxB1 = BigDecimal.ZERO;
-	/**
-	 * The totalAmountIncludingTaxB2
-	 */
-	@Column(name = "TOTAL_AMOUNT_INCLUDING_TAX_B2", nullable = true)
-	@Builder.Default
-	private BigDecimal totalAmountIncludingTaxB2 = BigDecimal.ZERO;
-	/**
-	 * The totalAmountIncludingTaxC
-	 */
-	@Column(name = "TOTAL_AMOUNT_INCLUDING_TAX_C", nullable = true)
-	@Builder.Default
-	private BigDecimal totalAmountIncludingTaxC = BigDecimal.ZERO;
-	/**
-	 * The totalAmountIncludingTaxD
-	 */
-	@Column(name = "TOTAL_AMOUNT_INCLUDING_TAX_D", nullable = true)
-	@Builder.Default
-	private BigDecimal totalAmountIncludingTaxD = BigDecimal.ZERO;
-	/**
 	 * The totalTaxAmount
 	 */
 	@Column(name = "TOTAL_TAX_AMOUNT", nullable = true)
@@ -241,6 +151,15 @@ public class Invoice extends AbstractEntity {
 	@Column(name = "TOTAL_AMOUNT_INCLUDING_TAX", nullable = true)
 	@Builder.Default
 	private BigDecimal totalAmountIncludingTax = BigDecimal.ZERO;
+	/**
+	 * The amountWithoutTax
+	 */
+	
+	@Column(name = "TOTAL_AMOUNT_WITHOU_TAX", nullable = true)
+	@Builder.Default
+	private BigDecimal amountWithoutTax = BigDecimal.ZERO;
+	
+	
 	/**
 	 * The totalAPayer
 	 */
@@ -321,18 +240,6 @@ public class Invoice extends AbstractEntity {
 	 */
 	@Column(name = "DESCRIPTION", nullable = true)
 	private String description;
-	/**
-	 * The irppRate
-	 */
-	@Column(name = "IRPP_RATE", nullable = true)
-	@Builder.Default
-	private BigDecimal irppRate = BigDecimal.ZERO;
-	/**
-	 * The irppAmount
-	 */
-	@Column(name = "IRPP_AMOUNT", nullable = true)
-	@Builder.Default
-	private BigDecimal irppAmount = BigDecimal.ZERO;
 	/**
 	 * The totalExtraAmount
 	 */

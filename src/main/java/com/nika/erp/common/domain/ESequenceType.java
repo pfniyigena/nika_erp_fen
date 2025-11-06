@@ -10,6 +10,8 @@ public enum ESequenceType {
 	/** The ITEM. */
 	ITEM,
 	/** The INVOICE. */
-	INVOICE
+	INVOICE,
+	/** The CHARGE. */
+	CHARGE
 
 }

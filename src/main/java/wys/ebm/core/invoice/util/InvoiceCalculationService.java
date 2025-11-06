@@ -1,17 +1,24 @@
-package com.nika.erp.ebm.service;
+package wys.ebm.core.invoice.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
 
-public class EbmInvoiceLineCalculationService {
+public class InvoiceCalculationService {
 	private final BigDecimal quantity;
 	private final BigDecimal unitPrice;
 	private final BigDecimal taxRate;
 	private final BigDecimal irrpRate;
 	private final BigDecimal discountRate;
 
-	public EbmInvoiceLineCalculationService(BigDecimal quantity, BigDecimal unitPrice, BigDecimal taxRate, BigDecimal irrpRate,
+	/**
+	 * @param quantity
+	 * @param unitPrice
+	 * @param taxRate
+	 * @param irrpRate
+	 * @param discountRate
+	 */
+	public InvoiceCalculationService(BigDecimal quantity, BigDecimal unitPrice, BigDecimal taxRate, BigDecimal irrpRate,
 			BigDecimal discountRate) {
 		this.quantity = Objects.requireNonNull(quantity, "Quantity cannot be null");
 		this.unitPrice = Objects.requireNonNull(unitPrice, "Unit price cannot be null");

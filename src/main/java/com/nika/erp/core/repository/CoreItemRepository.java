@@ -19,11 +19,11 @@ public interface CoreItemRepository extends JpaRepository<CoreItem, UUID> {
 			    SELECT new com.nika.erp.invoicing.web.form.ItemForm(
 			        b.itemName,
 			        b.internalCode,
-			        t.code,
+			        t.taxCode,
 			        t.taxValue,
 			        b.unitPrice
 			    )
-			    FROM CoreItem b INNER JOIN TaxRate t ON b.tax.id = t.id
+			    FROM CoreItem b INNER JOIN TaxType t ON b.tax.id = t.id
 			""")
 	List<ItemForm> findAllAsForm();
 
@@ -31,11 +31,11 @@ public interface CoreItemRepository extends JpaRepository<CoreItem, UUID> {
 			    SELECT new com.nika.erp.invoicing.web.form.ItemForm(
 			        b.itemName,
 			        b.internalCode,
-			        t.code,
+			        t.taxCode,
 			        t.taxValue,
 			        b.unitPrice
 			    )
-			    FROM CoreItem b INNER JOIN TaxRate t ON b.tax.id = t.id
+			    FROM CoreItem b INNER JOIN TaxType t ON b.tax.id = t.id
 			    WHERE LOWER(b.itemName) LIKE LOWER(CONCAT('%', :itemName, '%'))
 			""")
 	List<ItemForm> findAllAsFormByItemNameContainingIgnoreCase(@Param("itemName") String itemName);

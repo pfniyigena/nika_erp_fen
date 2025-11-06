@@ -3,7 +3,7 @@ package com.nika.erp.core.domain;
 import java.math.BigDecimal;
 
 import com.nika.erp.common.domain.AbstractEntity;
-import com.nika.erp.invoicing.domain.TaxRate;
+import com.nika.erp.invoicing.domain.TaxType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -70,11 +70,11 @@ public class CoreItem  extends AbstractEntity {
 	@Builder.Default
 	private BigDecimal unitCost = BigDecimal.ZERO;
 	/**
-	 * The taxRate
+	 * The tax
 	 */
 	@ManyToOne
-	@JoinColumn(name = "TAX_RATE_ID")
-	private TaxRate tax;
+	@JoinColumn(name = "TAX_TYPE_ID")
+	private TaxType tax;
 	/**
 	 * The 	itemNature
 	 */

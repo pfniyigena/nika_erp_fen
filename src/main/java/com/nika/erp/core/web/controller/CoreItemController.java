@@ -21,7 +21,7 @@ import com.nika.erp.core.service.CoreItemService;
 import com.nika.erp.core.service.CoreQuantityUnitService;
 import com.nika.erp.core.service.CoreTaxpayerService;
 import com.nika.erp.core.web.util.NikaErpCoreUrlConstants;
-import com.nika.erp.invoicing.service.TaxRateService;
+import com.nika.erp.invoicing.service.TaxTypeService;
 import com.nika.erp.invoicing.web.form.ItemForm;
 
 import lombok.AllArgsConstructor;
@@ -37,7 +37,7 @@ public class CoreItemController {
 	private final CoreItemClassificationService coreItemClassificationService;
 	private final CoreItemNatureService coreItemNatureService;
 	private final CoreQuantityUnitService coreQuantityUnitService;
-	private final TaxRateService taxRateService;
+	private final TaxTypeService taxTypeService;
 	private final CoreTaxpayerService coreTaxpayerService;
 	@GetMapping(path = "/list")
 	public String listItems(Model model) {
@@ -92,7 +92,7 @@ public class CoreItemController {
 		model.addAttribute("classifications", coreItemClassificationService.findAll());
 		model.addAttribute("natures", coreItemNatureService.findAll());
 		model.addAttribute("units", coreQuantityUnitService.findAll());
-		model.addAttribute("taxes", taxRateService.findAll());
+		model.addAttribute("taxes", taxTypeService.findAll());
 		model.addAttribute("taxpayers", coreTaxpayerService.findAll());
 		
 	}

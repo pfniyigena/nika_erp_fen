@@ -1,6 +1,6 @@
 package com.nika.erp.invoicing.service;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,13 +12,11 @@ import com.nika.erp.common.service.SequenceNumberService;
 import com.nika.erp.core.domain.CoreItem;
 import com.nika.erp.core.domain.EItemNature;
 import com.nika.erp.core.service.CoreItemService;
-import com.nika.erp.ebm.domain.SdcDailyReport;
-import com.nika.erp.ebm.service.SdcDailyReportService;
 import com.nika.erp.invoicing.domain.ETransactionType;
 import com.nika.erp.invoicing.domain.Invoice;
 import com.nika.erp.invoicing.domain.InvoiceLine;
 import com.nika.erp.invoicing.domain.InvoiceStatus;
-import com.nika.erp.invoicing.domain.TaxRate;
+import com.nika.erp.invoicing.domain.TaxType;
 import com.nika.erp.invoicing.mapper.InvoiceManualMapper;
 import com.nika.erp.invoicing.repository.InvoiceRepository;
 import com.nika.erp.invoicing.web.form.InvoiceForm;
@@ -26,6 +24,7 @@ import com.nika.erp.invoicing.web.form.InvoiceLineForm;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import wys.ebm.core.invoice.util.InvoiceCalculationService;
 
 @Service
 @Transactional
@@ -33,32 +32,26 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class InvoiceService {
 	private final InvoiceRepository invoiceRepository;
-	private final SdcDailyReportService sdcDailyReportService;
 	private final CoreItemService coreItemService;
 	private final SequenceNumberService sequenceNumberService;
-	private final TaxRateService taxRateService;
+	private final TaxTypeService taxTypeService;
 
 	/**
 	 * @param invoice
 	 * @return Invoice
 	 */
-	public Invoice saveInvoiceAndGenerateDailyReport(final Invoice invoice) {
-		try {
-			SdcDailyReport updatedateReport = sdcDailyReportService.updateDailyReport(invoice.getSdcInformation(),
-					LocalDate.now(), invoice);
-			if (updatedateReport != null && updatedateReport.getId() == null) {
-
-				updatedateReport.setSdcInformation(invoice.getSdcInformation());
-			}
-			sdcDailyReportService.createSdcDailyReport(updatedateReport);
-			if (updatedateReport != null) {
-				invoice.setSdcDailyReport(updatedateReport);
-			}
-			return saveInvoice(invoice);
-		} catch (Exception e) {
-			return null;
-		}
-	}
+	/*
+	 * public Invoice saveInvoiceAndGenerateDailyReport(final Invoice invoice) { try
+	 * { SdcDailyReport updatedateReport =
+	 * sdcDailyReportService.updateDailyReport(invoice.getSdcInformation(),
+	 * LocalDate.now(), invoice); if (updatedateReport != null &&
+	 * updatedateReport.getId() == null) {
+	 * 
+	 * updatedateReport.setSdcInformation(invoice.getSdcInformation()); }
+	 * sdcDailyReportService.createSdcDailyReport(updatedateReport); if
+	 * (updatedateReport != null) { invoice.setSdcDailyReport(updatedateReport); }
+	 * return saveInvoice(invoice); } catch (Exception e) { return null; } }
+	 */
 
 	public Invoice saveInvoice(Invoice invoice) {
 
@@ -88,6 +81,18 @@ public class InvoiceService {
 		// invoiceForm.getInvoiceLines().stream().map(this::mapToInvoiceLine).toList();
 		AtomicInteger counter = new AtomicInteger(1);
 		List<InvoiceLine> lines = invoiceForm.getInvoiceLines().stream().map(formLine -> {
+
+			InvoiceCalculationService invoiceCalculationService = new InvoiceCalculationService(formLine.getQuantity(),
+					formLine.getUnitPrice(), formLine.getTaxType(), new BigDecimal("0.00"), new BigDecimal("0.00"));
+
+			invoice.setTotalTaxAmount(invoice.getTotalTaxAmount().add(invoiceCalculationService.getTaxAmount()));
+			invoice.setTotalAPayer(invoice.getTotalAPayer().add(invoiceCalculationService.getAmountToPay()));
+			invoice.setTotalDiscountAmount(
+					invoice.getTotalDiscountAmount().add(invoiceCalculationService.getDiscountAmount()));
+			invoice.setGrossAmount(invoice.getGrossAmount().add(invoiceCalculationService.getGrossAmount()));
+			invoice.setAmountWithoutTax(
+					invoice.getAmountWithoutTax().add(invoiceCalculationService.getAmountHorsTax()));
+			invoice.setTotalAmountIncludingTax(invoice.getAmountWithoutTax().add(invoice.getTotalTaxAmount()));
 			InvoiceLine line = mapToInvoiceLine(formLine);
 			line.setItemSeq(counter.getAndIncrement());
 			return line;
@@ -99,17 +104,17 @@ public class InvoiceService {
 	}
 
 	private Invoice mapToInvoice(InvoiceForm invoiceForm) {
-		return Invoice.builder().grossAmount(invoiceForm.getTotalAmount()).totalTaxAmount(invoiceForm.getTaxAmount())
+		return Invoice.builder()
 				.build();
 	}
 
 	private InvoiceLine mapToInvoiceLine(InvoiceLineForm invoiceLineForm) {
 		CoreItem coreItem = coreItemService.findByInternalCode(invoiceLineForm.getItemCode());
-		TaxRate taxRate = taxRateService.findByCode(invoiceLineForm.getTaxCode());
+		TaxType taxType = taxTypeService.findByCode(invoiceLineForm.getTaxCode());
 		return InvoiceLine.builder().item(coreItem).itemName(invoiceLineForm.getItemName())
 				.itemNature(EItemNature.valueOf(coreItem.getNature().getCode())).quantity(invoiceLineForm.getQuantity())
 				.unitPrice(invoiceLineForm.getUnitPrice()).taxCode(invoiceLineForm.getTaxCode())
-				.taxName(taxRate.getTaxName()).taxRate(invoiceLineForm.getTaxRate())
+				.taxName(taxType.getTaxName()).taxType(invoiceLineForm.getTaxType())
 				.transactionType(ETransactionType.TRANSACTION_TYPE_SALE).grossAmount(invoiceLineForm.getLineTotal())
 				.build();
 	}
