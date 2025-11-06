@@ -28,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 @Table(name = "INVOICING_INVOICE")
 @AllArgsConstructor
@@ -341,18 +341,21 @@ public class Invoice extends AbstractEntity {
 	private BigDecimal totalExtraAmount = BigDecimal.ZERO;
 
 	@OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ToString.Exclude
     private List<InvoiceLine> lines;
 	/**
 	 * The sdcDailyReport
 	 */
 	@ManyToOne
 	@JoinColumn(name = "SDC_DAILY_REPORT_ID", nullable = true)
+	@ToString.Exclude
 	private SdcDailyReport sdcDailyReport;
 	/**
 	 * The sdcInformation
 	 */
 	@ManyToOne
 	@JoinColumn(name = "SDC_INFORMATION_ID", nullable = true)
+	@ToString.Exclude
 	private SdcInformation sdcInformation;
 
 	/**

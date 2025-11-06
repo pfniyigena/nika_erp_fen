@@ -4,19 +4,19 @@
 
 <head>
 <title th:text="#{label.invoice.list}"></title>
-<th:block th:include="fragments/header :: head"></th:block>
+<th:block th:insert="~{fragments/header :: head}"></th:block>
 </head>
 <body>
-	<th:block th:include="fragments/header :: pre-loader"></th:block>
+	<th:block th:insert="~{fragments/header :: pre-loader}"></th:block>
 	<div id="pcoded" class="pcoded">
 		<div class="pcoded-overlay-box"></div>
 		<div class="pcoded-container navbar-wrapper">
 
-			<th:block th:include="fragments/header :: navbar-top"></th:block>
+			<th:block th:insert="~{fragments/header :: navbar-top}"></th:block>
 
 			<div class="pcoded-main-container">
 				<div class="pcoded-wrapper">
-					<th:block th:include="fragments/header :: navbar-left"></th:block>
+					<th:block th:insert="~{fragments/header :: navbar-left}"></th:block>
 
 					<div class="pcoded-content">
 						<div class="pcoded-inner-content">
@@ -44,17 +44,26 @@
 													<thead>
 														<tr>
 															<th scope="col" th:text="#{label.general.name}"></th>
+															<th scope="col" th:text="#{label.invoice.date}"></th>
+															<th scope="col" th:text="#{label.general.status}"></th>
 															<th scope="col" th:text="#{label.button.actions}"></th>
 														</tr>
 													</thead>
 													<tbody>
 														<tr th:each="invoice : ${lists}">
 															<td th:text="${invoice.internalCode}"></td>
-
+															<td
+																th:text="${#dates.format(invoice.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+															<td><span th:text="${invoice.status}"
+																th:class="${invoice.status != null} ? 
+                     (${invoice.status.name()} == 'PAID' ? 'badge bg-success' : 
+                     (${invoice.status.name()} == 'DONE' ? 'badge bg-warning text-dark' : 'badge bg-danger')) 
+                     : 'badge bg-secondary'">
+															</span></td>
 															<td><a href="#"
 																th:href="@{'/invoices/view/' + ${invoice.id}}"
 																class="waves-effect waves-dark"><span
-																	class="pcoded-micon"><em class="fa fa-pencil"></em></span></a>
+																	class="pcoded-micon"><em class="fa fa-eye"></em></span></a>
 															</td>
 														</tr>
 
@@ -78,7 +87,7 @@
 		</div>
 
 	</div>
-	<th:block th:include="fragments/header :: footer"></th:block>
+	<th:block th:insert="~{fragments/header :: footer}"></th:block>
 </body>
 
 </html>

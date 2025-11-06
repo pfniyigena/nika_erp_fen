@@ -2,7 +2,9 @@ package com.nika.erp.core.domain;
 
 import com.nika.erp.common.domain.AbstractEntity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 @Table(name = "CORE_TAXPAYER")
 @AllArgsConstructor
@@ -87,4 +89,11 @@ public class CoreTaxpayer extends AbstractEntity {
 	@Column(name = "COMMUNAL_TAX_REGISTERED", nullable = false)
 	@Builder.Default
 	private Boolean communalTaxRegistered = Boolean.FALSE;
+	
+	/**
+	 * The fiscalYear
+	 */
+	@Column(name = "FISCAL_YEAR", nullable = true)
+	@lombok.ToString.Include
+	private EFiscalYear fiscalYear;
 }

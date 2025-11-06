@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 @Table(name = "EBM_SDC_DAILY_REPORT")
 @AllArgsConstructor

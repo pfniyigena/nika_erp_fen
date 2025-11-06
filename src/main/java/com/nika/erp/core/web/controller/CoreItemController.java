@@ -72,6 +72,13 @@ public class CoreItemController {
 		setData(model);
 		return NikaErpCoreUrlConstants.ITEMS_ADD_FORM_PAGE;
 	}
+	@GetMapping(path = "/duplicate/{id}")
+	public String duplicate(@PathVariable String id, Model model) {
+		CoreItem item = coreItemService.duplicate(id);
+		model.addAttribute("item", item);
+		setData(model);
+		return NikaErpCoreUrlConstants.ITEMS_ADD_FORM_PAGE;
+	}
 
 	@ResponseBody
     @GetMapping("/search")

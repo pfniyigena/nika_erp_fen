@@ -91,4 +91,14 @@ public class CoreItemService {
 
 	}
 
+	public CoreItem duplicate(String id) {
+
+		CoreItem original = findById(id);
+
+		CoreItem copy = new CoreItem(original);
+		log.info("original:{} and Copy:{}",original,copy);
+
+		return saveNew(copy);
+	}
+
 }

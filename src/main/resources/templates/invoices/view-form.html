@@ -29,31 +29,43 @@
 										<div class="card">
 											<div class="card-header">
 												<h5 th:text="#{label.invoice.details}"></h5>
-												<div class="card-header">
-													<h5 th:text="#{label.invoice.details}"></h5>
-													<div class="dropdown-primary dropdown open">
-														<button
-															class="btn btn-primary dropdown-toggle waves-effect waves-light "
-															type="button" id="dropdown-2" data-toggle="dropdown"
-															aria-haspopup="true" aria-expanded="true">Actions</button>
-														<div class="dropdown-menu" aria-labelledby="dropdown-2"
-															data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-															<a class="dropdown-item waves-light waves-effect"
-																href="#">View</a> <a
-																class="dropdown-item waves-light waves-effect" href="#">Edit</a>
-															<a class="dropdown-item waves-light waves-effect"
-																href="#">Print</a>
+												<a
+													th:if="${invoice.status != null and invoice.status.name() == 'DRAFT'}"
+													th:href="@{'/invoices/confirm/' + ${invoice.id}}"
+													class="btn btn-success btn-round waves-effect waves-light"
+													th:text="#{label.button.confirm}"></a> <a
+													th:if="${invoice.status != null and invoice.status.name() == 'DRAFT'}"
+													th:href="@{'/invoices/edit/' + ${invoice.id}}"
+													class="btn btn-info btn-round waves-effect waves-light"
+													th:text="#{label.button.edit}"></a> <a
+													th:if="${invoice.status != null and invoice.status.name() != 'DRAFT'}"
+													th:href="@{'/invoices/print/' + ${invoice.id}}"
+													class="btn btn-inverse btn-round waves-effect waves-light"
+													th:text="#{label.button.print}" target="_blank"></a> <a
+													th:href="@{/invoices/list}"
+													class="btn btn-danger btn-round waves-effect waves-light"
+													th:text="#{label.button.back}"></a>
+												<div class="dropdown-primary dropdown open">
+													<button
+														class="btn btn-primary dropdown-toggle waves-effect waves-light "
+														type="button" id="dropdown-2" data-toggle="dropdown"
+														aria-haspopup="true" aria-expanded="true">Actions</button>
+													<div class="dropdown-menu" aria-labelledby="dropdown-2"
+														data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+														<a class="dropdown-item waves-light waves-effect" href="#">View</a>
+														<a class="dropdown-item waves-light waves-effect" href="#">Edit</a>
+														<a class="dropdown-item waves-light waves-effect" href="#">Print</a>
 
-														</div>
 													</div>
 												</div>
 											</div>
 											<div class="card-block">
 												<div>
+													<h4>
+														Invoice #<span th:text="${invoice.status}"></span>
+													</h4>
 													<!-- 
-													<h2>
-														Invoice #<span th:text="${invoice.id}"></span>
-													</h2>
+										
 													<p>
 														<strong>Customer:</strong> <span
 															th:text="${invoice.customerName}"></span>
@@ -63,36 +75,35 @@
 															th:text="${#dates.format(invoice.date, 'yyyy-MM-dd')}"></span>
 													</p>
 -->
-													<table>
-														<thead>
-															<tr>
-																<th>#</th>
-																<th>Item</th>
-																<th>Qty</th>
-																<th>Unit Price</th>
-																<th>Total</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr th:each="line, stat : ${invoice.invoiceLines}">
-																<td th:text="${stat.index + 1}"></td>
-																<td th:text="${line.itemName}"></td>
-																<td th:text="${line.quantity}"></td>
-																<td th:text="${line.unitPrice}"></td>
-																<td th:text="${line.quantity * line.unitPrice}"></td>
-															</tr>
-														</tbody>
-													</table>
-
-													<h3>
-														<!--  							Total: <span th:text="${invoice.totalAmount}"></span>-->
-													</h3>
-
-													<div class="no-print">
-														<button onclick="window.print()">🖨️ Print</button>
-														<a th:href="@{/invoice/edit/{id}(id=${invoice.id})}">✏️
-															Edit</a>
+													<div class="card-block table-border-style">
+														<div class="table-responsive">
+															<table class="table table-hover">
+																<thead>
+																	<tr>
+																		<th>#</th>
+																		<th>Item</th>
+																		<th>Quantity</th>
+																		<th>Unit Price</th>
+																		<th>Total</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr th:each="line, stat : ${invoice.lines}">
+																		<th scope="row" th:text="${stat.index + 1}"></th>
+																		<td th:text="${line.itemName}"></td>
+																		<td th:text="${line.quantity}"></td>
+																		<td th:text="${line.unitPrice}"></td>
+																		<td th:text="${line.quantity * line.unitPrice}"></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
 													</div>
+													<h6 class="sub-title">
+														Tax: <span th:text="${invoice.totalTaxAmount}"></span><br>
+														Sub total: <span th:text="${invoice.totalTaxAmount}"></span><br>
+														Total: <span th:text="${invoice.totalAPayer}"></span>
+													</h6>
 												</div>
 											</div>
 										</div>
@@ -110,81 +121,7 @@
 		</div>
 	</div>
 	<th:block th:insert="~{fragments/header :: footer}"></th:block>
-	<script>
-	// 🔍 Auto-search
-    $(document).on('keyup', '.item-search', function () {
-    	 const $input = $(this);
-         const query = $input.val();
-         const $suggestions = $input.next('.suggestions');
 
-         if (query.length >= 2) {
-             $.get('[[@{/items/search}]]', {query}, function (data) {
-                 let list = data.map(item =>
-                     `<div class="suggestion" data-id="${item.id}" data-price="${item.price}" data-name="${item.name}" data-code="${item.code}">
-                         ${item.name} (${item.price}-${item.code})
-                     </div>`).join('');
-                 $suggestions.html(list).show();
-             });
-         } else {
-             $suggestions.hide();
-         }
-    });	
- // 🧭 Select item
-    $(document).on('click', '.suggestion', function () {
-        const $div = $(this);
-        const $row = $div.closest('td');
-        $row.find('.item-search').val($div.data('name'));
-        $row.parent().find('.price').val($div.data('price'));
-        $row.parent().find('.code').val($div.data('code'));
-        $row.parent().find('.qty').val(1);
-        $row.find('.suggestions').hide();
-        updateTotals();
-    });	
-let lineIndex = /*[[${invoice.invoiceLines.size()}]]*/ 1;
-
-// Add new line
-function addLine() {
-    const table = document.getElementById('lines-table');
-    const row = table.insertRow();
-    row.innerHTML = `
-        <td><input type="text" name="invoiceLines[${lineIndex}].itemName" class="item-search" autocomplete="off"/><div class="suggestions"></div></td>
-        <td><input type="number" name="invoiceLines[${lineIndex}].quantity" min="0" oninput="updateTotals()" class="qty"/></td>
-        <td><input type="number" step="0.01" name="invoiceLines[${lineIndex}].unitPrice" min="0" oninput="updateTotals()"  class="price"/></td>
-        <td><input type="number" step="0.01" name="lineTotal" readonly /></td>
-        <td><button type="button" class="btn" onclick="removeLine(this)">Remove</button></td>
-    `;
-    lineIndex++;
-    updateTotals();
-}
-
-// Remove line
-function removeLine(btn) {
-    const row = btn.parentNode.parentNode;
-    row.parentNode.removeChild(row);
-    updateTotals();
-}
-
-// Calculate totals
-function updateTotals() {
-    const table = document.getElementById('lines-table');
-    let subtotal = 0;
-    for (let i = 1; i < table.rows.length; i++) {
-        const qty = parseFloat(table.rows[i].cells[1].querySelector('input').value) || 0;
-        const price = parseFloat(table.rows[i].cells[2].querySelector('input').value) || 0;
-        const lineTotal = qty * price;
-        table.rows[i].cells[3].querySelector('input').value = lineTotal.toFixed(2);
-        subtotal += lineTotal;
-    }
-    const tax = subtotal * 0.1;
-    const total = subtotal + tax;
-    document.getElementById('subtotal').innerText = subtotal.toFixed(2);
-    document.getElementById('tax').innerText = tax.toFixed(2);
-    document.getElementById('total').innerText = total.toFixed(2);
-}
-
-// Initialize totals on page load
-updateTotals();
-</script>
 </body>
 
 </html>

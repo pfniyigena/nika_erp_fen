@@ -31,8 +31,9 @@
 											<div class="card-block">
 												<form th:object="${item}" th:action="@{/items/new}"
 													method="post">
-													<input type="hidden" th:field="*{id}" />
-
+													<input type="hidden" th:field="*{id}" /> <input
+														type="hidden" th:field="*{internalCode}" /> <input
+														type="hidden" th:field="*{taxpayer}" />
 													<div class="row">
 														<!-- Column 1 -->
 														<div class="col-md-6">
@@ -52,8 +53,8 @@
 																<label class="col-sm-4 col-form-label" for="unitPrice"
 																	th:text="#{label.general.unitPrice}"></label>
 																<div class="col-sm-8 has-danger">
-																	<input type="text" th:field="*{unitPrice}" id="unitPrice"
-																		class="form-control form-control-bold"
+																	<input type="text" th:field="*{unitPrice}"
+																		id="unitPrice" class="form-control form-control-bold"
 																		th:placeholder="#{label.general.name}"> <span
 																		class="col-form-label"
 																		th:if="${#fields.hasErrors('unitPrice')}"
@@ -64,7 +65,8 @@
 																<label class="col-sm-4 col-form-label" for="nature"
 																	th:text="#{label.general.nature}"></label>
 																<div class="col-sm-8 has-danger">
-																	<select th:field="*{nature}">
+																	<select th:field="*{nature}"
+																		class="form-control form-control-bold">
 																		<option value="">-- Select --</option>
 																		<option th:each="it : ${natures}" th:value="${it.id}"
 																			th:text="${it.name}">Option</option>
@@ -77,7 +79,8 @@
 																<label class="col-sm-4 col-form-label"
 																	for="classification" th:text="#{label.general.tax}"></label>
 																<div class="col-sm-8 has-danger">
-																	<select th:field="*{tax}">
+																	<select th:field="*{tax}"
+																		class="form-control form-control-bold">
 																		<option value="">-- Select --</option>
 																		<option th:each="it : ${taxes}" th:value="${it.id}"
 																			th:text="${it.displayName}">Option</option>
@@ -87,14 +90,17 @@
 															</div>
 															<div class="form-group row">
 																<label class="col-sm-4 col-form-label"
-																	for="classification" th:text="#{label.general.taxpayer}"></label>
+																	for="classification"
+																	th:text="#{label.general.taxpayer}"></label>
 																<div class="col-sm-8 has-danger">
-																	<select th:field="*{taxpayer}">
+																	<select th:field="*{taxpayer}"
+																		class="form-control form-control-bold">
 																		<option value="">-- Select --</option>
-																		<option th:each="it : ${taxpayers}" th:value="${it.id}"
-																			th:text="${it.taxpayerName}">Option</option>
+																		<option th:each="it : ${taxpayers}"
+																			th:value="${it.id}" th:text="${it.taxpayerName}">Option</option>
 																	</select> <span class="col-form-label"
-																		th:if="${#fields.hasErrors('taxpayer')}" th:errors="*{taxpayer}"></span>
+																		th:if="${#fields.hasErrors('taxpayer')}"
+																		th:errors="*{taxpayer}"></span>
 																</div>
 															</div>
 														</div>
@@ -129,7 +135,8 @@
 																<label class="col-sm-4 col-form-label" for="country"
 																	th:text="#{label.general.country}"></label>
 																<div class="col-sm-8 has-danger">
-																	<select th:field="*{country}">
+																	<select th:field="*{country}"
+																		class="form-control form-control-bold">
 																		<option value="">-- Select --</option>
 																		<option th:each="it : ${countries}"
 																			th:value="${it.id}" th:text="${it.displayName}">Option</option>
@@ -143,7 +150,8 @@
 																	for="classification"
 																	th:text="#{label.general.classification}"></label>
 																<div class="col-sm-8 has-danger">
-																	<select th:field="*{classification}">
+																	<select th:field="*{classification}"
+																		class="form-control form-control-bold">
 																		<option value="">-- Select --</option>
 																		<option th:each="it : ${classifications}"
 																			th:value="${it.id}" th:text="${it.displayName}">Option</option>
@@ -154,13 +162,13 @@
 															</div>
 															<div class="form-group row">
 																<label class="col-sm-4 col-form-label"
-																	for="classification"
-																	th:text="#{label.general.unit}"></label>
+																	for="classification" th:text="#{label.general.unit}"></label>
 																<div class="col-sm-8 has-danger">
-																	<select th:field="*{unit}">
+																	<select th:field="*{unit}"
+																		class="form-control form-control-bold">
 																		<option value="">-- Select --</option>
-																		<option th:each="it : ${units}"
-																			th:value="${it.id}" th:text="${it.name}">Option</option>
+																		<option th:each="it : ${units}" th:value="${it.id}"
+																			th:text="${it.name}">Option</option>
 																	</select> <span class="col-form-label"
 																		th:if="${#fields.hasErrors('unit')}"
 																		th:errors="*{unit}"></span>
@@ -173,10 +181,13 @@
 														<button type="submit"
 															class="btn btn-success btn-round waves-effect waves-light"
 															th:text="#{label.button.save}"></button>
-
-														<a th:href="@{/items/list}"
+														<a th:if="${item.id != null}" th:href="@{'/items/duplicate/' + ${item.id}}"
+															class="btn btn-info btn-round waves-effect waves-light"
+															th:text="#{label.button.duplicate}"></a> 
+															<a
+															th:href="@{/items/list}"
 															class="btn btn-danger btn-round waves-effect waves-light"
-															th:text="#{label.button.cancel}"></a>
+															th:text="#{label.button.back}"></a>
 													</div>
 												</form>
 											</div>

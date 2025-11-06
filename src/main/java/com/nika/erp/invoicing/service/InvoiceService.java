@@ -17,6 +17,7 @@ import com.nika.erp.ebm.service.SdcDailyReportService;
 import com.nika.erp.invoicing.domain.ETransactionType;
 import com.nika.erp.invoicing.domain.Invoice;
 import com.nika.erp.invoicing.domain.InvoiceLine;
+import com.nika.erp.invoicing.domain.InvoiceStatus;
 import com.nika.erp.invoicing.domain.TaxRate;
 import com.nika.erp.invoicing.mapper.InvoiceManualMapper;
 import com.nika.erp.invoicing.repository.InvoiceRepository;
@@ -82,7 +83,7 @@ public class InvoiceService {
 		invoice.setMachineRegistrationCode("1");
 		invoice.setCisVersion("1");
 		invoice.setInvoiceNumber(1L);
-		invoice.setInternalCode(sequenceNumberService.getNextItemCode());
+		invoice.setInternalCode(sequenceNumberService.getNextInvoiceCode());
 		// List<InvoiceLine> lines =
 		// invoiceForm.getInvoiceLines().stream().map(this::mapToInvoiceLine).toList();
 		AtomicInteger counter = new AtomicInteger(1);
@@ -98,7 +99,6 @@ public class InvoiceService {
 	}
 
 	private Invoice mapToInvoice(InvoiceForm invoiceForm) {
-
 		return Invoice.builder().grossAmount(invoiceForm.getTotalAmount()).totalTaxAmount(invoiceForm.getTaxAmount())
 				.build();
 	}
@@ -122,5 +122,11 @@ public class InvoiceService {
 	public InvoiceForm findInvoiceFormById(String id) {
 		Invoice invoice = findById(id);
 		return InvoiceManualMapper.toDto(invoice);
+	}
+
+	public Invoice confirm(String id) {
+		Invoice invoice = findById(id);
+		invoice.setStatus(InvoiceStatus.DONE);
+		return invoiceRepository.save(invoice);
 	}
 }

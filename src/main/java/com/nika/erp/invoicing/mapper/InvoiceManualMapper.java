@@ -13,6 +13,7 @@ public class InvoiceManualMapper {
 
 	public static InvoiceLineForm toLineDto(InvoiceLine line) {
 		return InvoiceLineForm.builder()
+				.itemName(line.getItemName())
 				.quantity(line.getQuantity())
 				.unitPrice(line.getUnitPrice())
 				.lineTotal(line.getGrossAmount())

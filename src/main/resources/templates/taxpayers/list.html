@@ -28,14 +28,7 @@
 
 										<!-- Hover table card start -->
 										<div class="card">
-											<div class="card-header">
-												<h5 th:text="#{label.taxpayers.list}"></h5>
-												<a href="#" th:href="@{/companies/new}"
-													class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger"><em
-													class="icofont icofont-plus m-r-5"></em> <span
-													th:text="#{label.button.new}"></span></a>
 
-											</div>
 											<div class="dt-responsive table-responsive">
 												<table id="code-type-table"
 													class="table table-striped table-bordered compact nowrap"
@@ -44,15 +37,16 @@
 													<thead>
 														<tr>
 															<th scope="col" th:text="#{label.general.name}"></th>
+															<th scope="col" th:text="#{label.general.tinNumber}"></th>
 															<th scope="col" th:text="#{label.button.actions}"></th>
 														</tr>
 													</thead>
 													<tbody>
 														<tr th:each="list : ${lists}">
 															<td th:text="${list.taxpayerName}"></td>
-
+															<td th:text="${list.tinNumber}"></td>
 															<td><a href="#"
-																th:href="@{'/companies/update/' + ${list.id}}"
+																th:href="@{'/taxpayers/update/' + ${list.id}}"
 																class="waves-effect waves-dark"><span
 																	class="pcoded-micon"><em class="fa fa-pencil"></em></span></a>
 															</td>

@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 @Table(name = "INVOICING_TAX_RATE")
 @AllArgsConstructor
@@ -55,7 +55,7 @@ public class TaxRate extends AbstractEntity {
 	/**
 	 * The description
 	 */
-	@Column(name = "DESCRIPTION", nullable = false)
+	@Column(name = "DESCRIPTION", nullable = true)
 	private String description;
 
 

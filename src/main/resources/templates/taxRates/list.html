@@ -43,6 +43,7 @@
 													<caption></caption>
 													<thead>
 														<tr>
+															<th scope="col" th:text="#{label.general.displayName}"></th>
 															<th scope="col" th:text="#{label.general.name}"></th>
 															<th scope="col" th:text="#{label.general.code}"></th>
 															<th scope="col" th:text="#{label.tax.rate}"></th>
@@ -51,6 +52,7 @@
 													</thead>
 													<tbody>
 														<tr th:each="list : ${lists}">
+															<td th:text="${list.displayName}"></td>
 															<td th:text="${list.taxName}"></td>
 															<td th:text="${list.code}"></td>
 															<td th:text="${list.taxValue}"></td>

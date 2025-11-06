@@ -4,11 +4,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.nika.erp.core.service.CoreItemService;
 import com.nika.erp.core.service.CoreTaxpayerService;
 
 @SpringBootApplication
+@EnableJpaAuditing
 public class NikaErpApplication {
 	
 
@@ -21,7 +23,7 @@ public class NikaErpApplication {
 		return vars -> {
 
 			coreTaxpayerService.initTaxpayer();
-			coreItemService.initItems();
+			//coreItemService.initItems();
 		};
 	}
 

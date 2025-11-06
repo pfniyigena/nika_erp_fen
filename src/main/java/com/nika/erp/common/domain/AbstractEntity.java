@@ -1,7 +1,7 @@
 package com.nika.erp.common.domain;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 import org.hibernate.annotations.UuidGenerator;
@@ -50,11 +50,11 @@ public abstract class AbstractEntity implements Serializable {
 	@JsonIgnore
 	@Column(name = "created_at")
 	@CreatedDate
-	protected LocalDateTime createdAt;
+	protected Instant createdAt;
 	@JsonIgnore
 	@Column(name = "modified_at")
 	@LastModifiedDate
-	protected LocalDateTime modifiedAt;
+	protected Instant modifiedAt;
 
 	@CreatedBy
 	@Basic(optional = true)
@@ -73,8 +73,8 @@ public abstract class AbstractEntity implements Serializable {
 	 * inherit this constructor.
 	 */
 	protected AbstractEntity() {
-		createdAt = LocalDateTime.now();
-		modifiedAt = LocalDateTime.now();
+		createdAt = Instant.now();
+		modifiedAt =Instant.now();
 	}
 
 }

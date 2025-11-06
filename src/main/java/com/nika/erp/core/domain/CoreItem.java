@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 @Table(name = "CORE_ITEM")
 @AllArgsConstructor
@@ -40,7 +40,7 @@ public class CoreItem  extends AbstractEntity {
 	@Column(name = "ITEM_CODE", nullable = true)
 	private String itemCode;
 
-	@Column(name = "EXTERNAL_ITEM_CODE", nullable = false, length = 50)
+	@Column(name = "EXTERNAL_ITEM_CODE", nullable = true, length = 50)
 	private String externalItemCode;
 	/**
 	 * The internalCode
@@ -91,24 +91,40 @@ public class CoreItem  extends AbstractEntity {
 	/**
 	 * The taxpayer
 	 */
-	@JoinColumn(name = "QUANTITY_UNIT_ID", nullable = false)
+	@JoinColumn(name = "QUANTITY_UNIT_ID", nullable = true)
 	private CoreQuantityUnit unit;
 	/**
 	 * The irpp
 	 */
-	@Column(name = "IRPP", nullable = false)
+	@Column(name = "IRPP", nullable = true)
 	@Builder.Default
 	private Boolean irpp = Boolean.FALSE;
 	/**
 	 * The taxpayer
 	 */
-	@JoinColumn(name = "COUNTY_ID", nullable = false)
+	@JoinColumn(name = "COUNTY_ID", nullable = true)
 	private CoreCountry country;
 	
 	/**
 	 * The taxpayer
 	 */
-	@JoinColumn(name = "TAXPAYER_ID", nullable = false)
+	@JoinColumn(name = "TAXPAYER_ID", nullable = true)
 	private CoreTaxpayer taxpayer;
+	
+	// Copy constructor
+    public CoreItem(CoreItem copy) {
+        this.itemName = copy.getItemName();
+        this.externalItemCode=copy.getExternalItemCode();
+        this.classification=copy.getClassification();
+        this.unitPrice=copy.getUnitPrice();
+        this.unitCost=copy.getUnitCost();
+        this.nature=copy.getNature();
+        this.irpp=copy.getIrpp();
+        this.unit=copy.getUnit();
+        this.country=copy.getCountry();
+        this.taxpayer=copy.getTaxpayer();
+        this.tax=copy.getTax();
+        
+    }
 
 }
