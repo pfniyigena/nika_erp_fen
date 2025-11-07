@@ -49,6 +49,19 @@
 																		th:errors="*{taxpayerName}"></span>
 																</div>
 															</div>
+															<div class="form-group row row">
+																<label class="col-sm-4 col-form-label"
+																	for="internalCode" th:text="#{label.general.code}"></label>
+																<div class="col-sm-8 has-danger ">
+																	<input type="text" th:field="*{internalCode}"
+																		readonly="readonly" id="internalCode"
+																		class="form-control form-control-bold"
+																		th:placeholder="#{label.general.code}"> <span
+																		class="col-form-label"
+																		th:if="${#fields.hasErrors('internalCode')}"
+																		th:errors="*{internalCode}"></span>
+																</div>
+															</div>
 															<div class="form-group row">
 																<label class="col-sm-4 col-form-label"
 																	for="taxpayerEmail" th:text="#{label.general.email}"></label>
@@ -77,6 +90,19 @@
 																		th:errors="*{fiscalYear}"></span>
 																</div>
 															</div>
+															<div class="form-group row">
+																<label class="col-sm-4 col-form-label"
+																	for="useInventory" th:text="#{menu.inventory}"></label>
+																<div class="col-sm-8 has-danger">
+																	<input type="checkbox" th:field="*{useInventory}"
+																		th:disabled="${taxpayer.useInventory}"
+																		id="useInventory"
+																		class="form-control form-control-bold"> <span
+																		class="col-form-label"
+																		th:if="${#fields.hasErrors('useInventory')}"
+																		th:errors="*{useInventory}"></span>
+																</div>
+															</div>
 														</div>
 
 														<!-- Column 2 -->
@@ -94,11 +120,13 @@
 																</div>
 															</div>
 															<div class="form-group row">
-																<label class="col-sm-4 col-form-label" for="taxpayerPhoneNumber"
+																<label class="col-sm-4 col-form-label"
+																	for="taxpayerPhoneNumber"
 																	th:text="#{label.general.phone}"></label>
 																<div class="col-sm-8 has-danger">
 																	<input type="text" th:field="*{taxpayerPhoneNumber}"
-																		id="taxpayerPhoneNumber" class="form-control form-control-bold"
+																		id="taxpayerPhoneNumber"
+																		class="form-control form-control-bold"
 																		th:placeholder="#{label.general.phone}"> <span
 																		class="col-form-label"
 																		th:if="${#fields.hasErrors('taxpayerPhoneNumber')}"
@@ -106,11 +134,12 @@
 																</div>
 															</div>
 															<div class="form-group row">
-																<label class="col-sm-4 col-form-label" for="taxpayerAddress"
-																	th:text="#{label.general.phone}"></label>
+																<label class="col-sm-4 col-form-label"
+																	for="taxpayerAddress" th:text="#{label.general.address}"></label>
 																<div class="col-sm-8 has-danger">
 																	<input type="text" th:field="*{taxpayerAddress}"
-																		id="taxpayerAddress" class="form-control form-control-bold"
+																		id="taxpayerAddress"
+																		class="form-control form-control-bold"
 																		th:placeholder="#{label.general.address}"> <span
 																		class="col-form-label"
 																		th:if="${#fields.hasErrors('taxpayerAddress')}"

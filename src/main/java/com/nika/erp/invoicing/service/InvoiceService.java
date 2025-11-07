@@ -121,6 +121,7 @@ public class InvoiceService {
 				.taxName(taxType.getTaxName()).taxType(invoiceLineForm.getTaxType())
 				.transactionType(ETransactionType.TRANSACTION_TYPE_SALE)
 				.grossAmount(invoiceCalculationService.getGrossAmount())
+				.totalAPayer(invoiceCalculationService.getAmountToPay())
 				.taxAmount(invoiceCalculationService.getTaxAmount()).build();
 	}
 

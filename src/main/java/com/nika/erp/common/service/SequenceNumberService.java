@@ -51,7 +51,7 @@ public class SequenceNumberService {
 	public String getNextTaxpayerCode() {
 
 		String sequence = this.getNextSequenceNumber(ESequenceType.TAXPAYER);
-		return "COMP000" + StringUtils.leftPad(sequence, 7, "0");
+		return "COMP" + StringUtils.leftPad(sequence, 3, "0");
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class SequenceNumberService {
 	public String getNextTaxpayerBranchCode() {
 
 		String sequence = this.getNextSequenceNumber(ESequenceType.BRANCH_TAXPAYER);
-		return "BRA000" + StringUtils.leftPad(sequence, 8, "0");
+		return "BRA" + StringUtils.leftPad(sequence, 3, "0");
 	}
 	public String getNextItemCode() {
 
@@ -76,5 +76,15 @@ public class SequenceNumberService {
 
 		String sequence = this.getNextSequenceNumber(ESequenceType.CHARGE);
 		return "CHG" + StringUtils.leftPad(sequence, 3, "0");
+	}
+	public String getNextWarehouseCode() {
+
+		String sequence = this.getNextSequenceNumber(ESequenceType.WAREHOUSE);
+		return "WH" + StringUtils.leftPad(sequence, 3, "0");
+	}
+	public String getNextShelfCode() {
+
+		String sequence = this.getNextSequenceNumber(ESequenceType.SHELF);
+		return "WH" + StringUtils.leftPad(sequence, 3, "0");
 	}
 }

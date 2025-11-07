@@ -49,6 +49,6 @@ public class InvoiceTaxSummaryService {
 
 	public List<InvoiceTaxSummary> findByInvoice(Invoice invoice) {
 
-		return invoiceTaxSummaryRepository.findByInvoiceId(invoice.getId());
+		return invoiceTaxSummaryRepository.findByInvoiceIdOrderByTaxDisplayLevelAsc(invoice.getId());
 	}
 }

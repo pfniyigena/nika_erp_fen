@@ -1,6 +1,7 @@
-package com.nika.erp.core.domain;
+package com.nika.erp.inventory.domain;
 
 import com.nika.erp.common.domain.AbstractEntity;
+import com.nika.erp.core.domain.CoreTaxpayerBranch;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,42 +14,36 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+
 @Data
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
-@Table(name = "CORE_TAXPAYER_BRANCH")
+@Table(name = "INVENTORY_SHELF")
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class CoreTaxpayerBranch extends AbstractEntity{
+public class Shelf extends AbstractEntity {
+
 	/**
-	 * 
+	 * The serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
 	 * The internalCode
 	 */
-	@Column(name = "INTERNAL_CODE", nullable = false, unique = true)
+	@Column(name = "INTERNAL_CODE", nullable = false)
 	private String internalCode;
-	
 	/**
-	 * The branchName
-	 */
-	@Column(name = "BRANCH_NAME", nullable = false)
-	private String branchName;
-	
-	/**
-	 * The branchAddress
-	 */
-	@Column(name = "BRANCH_ADDRESS", nullable = true)
-	private String branchAddress;
-	
-	/**
-	 * The Taxpayer
+	 * The branch
 	 */
 	@ManyToOne
-	@JoinColumn(name = "TAXPAYER_ID", nullable = false)
-	private CoreTaxpayer taxpayer;
-
+	@JoinColumn(name = "BRANCH_ID")
+	private CoreTaxpayerBranch branch;
+	/**
+	 * The warehouse
+	 */
+	@ManyToOne
+	@JoinColumn(name = "WAREHOUSE_ID")
+	private Warehouse warehouse;
 }

@@ -11,5 +11,5 @@ import com.nika.erp.invoicing.domain.InvoiceTaxSummary;
 
 public interface InvoiceTaxSummaryRepository extends JpaRepository<InvoiceTaxSummary, UUID>{
 
-	List<InvoiceTaxSummary>  findByInvoiceId(UUID id);
+	List<InvoiceTaxSummary>  findByInvoiceIdOrderByTaxDisplayLevelAsc(UUID id);
 }

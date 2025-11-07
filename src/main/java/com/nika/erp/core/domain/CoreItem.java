@@ -52,6 +52,12 @@ public class CoreItem  extends AbstractEntity {
 	 */
 	@Column(name = "BARCODE")
 	private String barcode;
+	
+	/**
+	 * The sku
+	 */
+	@Column(name = "SKU")
+	private String sku;
 	/**
 	 * The description
 	 */

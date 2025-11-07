@@ -37,6 +37,7 @@
 													<thead>
 														<tr>
 															<th scope="col" th:text="#{label.general.name}"></th>
+															<th scope="col" th:text="#{label.general.code}"></th>
 															<th scope="col" th:text="#{label.general.tinNumber}"></th>
 															<th scope="col" th:text="#{label.button.actions}"></th>
 														</tr>
@@ -44,6 +45,7 @@
 													<tbody>
 														<tr th:each="list : ${lists}">
 															<td th:text="${list.taxpayerName}"></td>
+																<td th:text="${list.internalCode}"></td>
 															<td th:text="${list.tinNumber}"></td>
 															<td><a href="#"
 																th:href="@{'/taxpayers/update/' + ${list.id}}"

@@ -96,4 +96,10 @@ public class CoreTaxpayer extends AbstractEntity {
 	@Column(name = "FISCAL_YEAR", nullable = true)
 	@lombok.ToString.Include
 	private EFiscalYear fiscalYear;
+	/**
+	 * The useInvoice
+	 */
+	@Column(name = "USE_INVOICE", nullable = false)
+	@Builder.Default
+	private Boolean useInventory = Boolean.FALSE;
 }

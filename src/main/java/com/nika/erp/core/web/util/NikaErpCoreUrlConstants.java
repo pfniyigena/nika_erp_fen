@@ -30,6 +30,14 @@ public class NikaErpCoreUrlConstants {
 	 */
 	public static final String TAXPAYER_BRANCHES_LIST_URL = "taxpayer-branches/list";
 	/**
+	 * The TAXPAYER_BRANCHES_ADD_FORM_PAGE
+	 */
+	public static final String TAXPAYER_BRANCHES_ADD_FORM_PAGE = "taxpayer-branches/add-form";
+	/**
+	 * The TAXPAYER_BRANCHES_LIST_REDITECT_URL
+	 */
+	public static final String TAXPAYER_BRANCHES_LIST_REDITECT_URL = "redirect:/taxpayer-branches/list";
+	/**
 	 * The ITEMS_URL
 	 */
 	public static final String ITEMS_URL = "items";

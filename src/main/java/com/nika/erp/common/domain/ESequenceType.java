@@ -1,6 +1,5 @@
 package com.nika.erp.common.domain;
 
- 
 public enum ESequenceType {
 
 	/** The TAXPAYER. */
@@ -12,6 +11,10 @@ public enum ESequenceType {
 	/** The INVOICE. */
 	INVOICE,
 	/** The CHARGE. */
-	CHARGE
+	CHARGE,
+	/** The WAREHOUSE. */
+	WAREHOUSE, 
+	/** The SHELF. */
+	SHELF
 
 }

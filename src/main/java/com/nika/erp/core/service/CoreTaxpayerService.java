@@ -13,7 +13,9 @@ import com.nika.erp.core.domain.CoreItemNature;
 import com.nika.erp.core.domain.CoreTaxpayer;
 import com.nika.erp.core.domain.CoreTaxpayerBranch;
 import com.nika.erp.core.domain.EItemNature;
+import com.nika.erp.core.repository.CoreTaxpayerBranchRepository;
 import com.nika.erp.core.repository.CoreTaxpayerRepository;
+import com.nika.erp.inventory.service.StockService;
 import com.nika.erp.invoicing.service.TaxTypeService;
 
 import lombok.AllArgsConstructor;
@@ -26,16 +28,17 @@ public class CoreTaxpayerService {
 
 	private final CoreTaxpayerRepository coreTaxpayerRepository;
 	private final SequenceNumberService sequenceNumberService;
-	private final CoreTaxpayerBranchService coreTaxpayerBranchService;
+	private final CoreTaxpayerBranchRepository coreTaxpayerBranchRepository;
 	private final CoreItemService coreItemService;
 	private final CoreItemNatureService coreItemNatureService;
 	private final TaxTypeService taxTypeService;
+	private final StockService stockService;
 
 	public void initTaxpayer() {
 
 		if (coreTaxpayerRepository.findAll().size() < 1) {
 
-			CoreTaxpayer coreTaxpayer = saveNew(CoreTaxpayer.builder()
+			CoreTaxpayer coreTaxpayer = save(CoreTaxpayer.builder()
 
 					.tinNumber(NikaErpConstants.NIKA_DEFAULT_TIN_NUMBER)
 					.taxpayerName(NikaErpConstants.NIKA_DEFAULT_TAXPAYER_NAME)
@@ -47,8 +50,8 @@ public class CoreTaxpayerService {
 					.deboursRegistered(NikaErpConstants.NIKA_DEFAULT_DEBOURS_REGISTERED)
 					.vatRegistered(NikaErpConstants.NIKA_DEFAULT_VAT_REGISTERED).build());
 
-			coreTaxpayerBranchService.saveNew(CoreTaxpayerBranch.builder().taxpayer(coreTaxpayer)
-					.branchCode(NikaErpConstants.NIKA_DEFAULT_TAXPAYER_BRANCH_NAME)
+			coreTaxpayerBranchRepository.save(CoreTaxpayerBranch.builder().taxpayer(coreTaxpayer)
+					.internalCode(sequenceNumberService.getNextTaxpayerBranchCode())
 					.branchName(NikaErpConstants.NIKA_DEFAULT_TAXPAYER_BRANCH_NAME).build());
 
 			List<CoreItemNature> natures = new ArrayList<>();
@@ -65,16 +68,34 @@ public class CoreTaxpayerService {
 
 	}
 
-	public CoreTaxpayer saveNew(CoreTaxpayer coreTaxpayer) {
-		taxTypeService.initializeTaxes(coreTaxpayer.getFiscalYear());
-		coreTaxpayer.setInternalCode(sequenceNumberService.getNextTaxpayerCode());
-		return coreTaxpayerRepository.save(coreTaxpayer);
+	public CoreTaxpayer save(CoreTaxpayer taxpayer) {
+		CoreTaxpayer savedTaxpayer = null;
+		String code = taxpayer.getInternalCode();
+		if (code == null || code.isEmpty()) {
+			code=sequenceNumberService.getNextTaxpayerCode();
+		}
 
-	}
+		if (taxpayer.getId() != null) {
+			CoreTaxpayer exist = coreTaxpayerRepository.getReferenceById(taxpayer.getId());
+			exist.setTaxpayerName(taxpayer.getTaxpayerName());
+			exist.setTinNumber(taxpayer.getTinNumber());
+			exist.setTaxpayerEmail(taxpayer.getTaxpayerEmail());
+			exist.setTaxpayerPhoneNumber(taxpayer.getTaxpayerPhoneNumber());
+			exist.setTaxpayerAddress(taxpayer.getTaxpayerAddress());
+			exist.setFiscalYear(taxpayer.getFiscalYear());
+			exist.setInternalCode(code);
+			exist.setUseInventory(taxpayer.getUseInventory());
+			savedTaxpayer = coreTaxpayerRepository.save(exist);
 
-	public CoreTaxpayer update(CoreTaxpayer coreTaxpayer) {
-		taxTypeService.initializeTaxes(coreTaxpayer.getFiscalYear());
-		return coreTaxpayerRepository.save(coreTaxpayer);
+		} else {
+			taxpayer.setInternalCode(code);
+			savedTaxpayer = coreTaxpayerRepository.save(taxpayer);
+		}
+		taxTypeService.initializeTaxes(savedTaxpayer.getFiscalYear());
+		if (savedTaxpayer.getUseInventory()) {
+			stockService.initiateInventory(savedTaxpayer);
+		}
+		return taxpayer;
 
 	}
 
@@ -86,23 +107,6 @@ public class CoreTaxpayerService {
 
 	public CoreTaxpayer findById(String id) {
 		return coreTaxpayerRepository.getReferenceById(UUID.fromString(id));
-	}
-
-	public void save(CoreTaxpayer taxpayer) {
-
-		if (taxpayer.getId() != null) {
-
-			CoreTaxpayer exist = coreTaxpayerRepository.getReferenceById(taxpayer.getId());
-			exist.setTaxpayerName(taxpayer.getTaxpayerName());
-			exist.setTinNumber(taxpayer.getTinNumber());
-			exist.setTaxpayerEmail(taxpayer.getTaxpayerEmail());
-			exist.setTaxpayerPhoneNumber(taxpayer.getTaxpayerPhoneNumber());
-			exist.setTaxpayerAddress(taxpayer.getTaxpayerAddress());
-			exist.setFiscalYear(taxpayer.getFiscalYear());
-			coreTaxpayerRepository.save(exist);
-			taxTypeService.initializeTaxes(exist.getFiscalYear());
-		}
-
 	}
 
 }
