@@ -3,7 +3,7 @@ package com.nika.erp.invoicing.web.form;
 import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder.Default;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -19,19 +19,19 @@ public class InvoiceLineForm {
 	private String itemName;
 	private String itemCode;
 	private String taxCode;
-	@Default
+	@Builder.Default
 	private BigDecimal taxType = BigDecimal.ZERO;
-	@Default
+	@Builder.Default
 	private BigDecimal quantity = BigDecimal.ZERO;
-	@Default
+	@Builder.Default
 	private BigDecimal unitPrice = BigDecimal.ZERO;
-	@Default
+	@Builder.Default
 	private BigDecimal lineTotal = BigDecimal.ZERO;
-	@Default
+	@Builder.Default
 	private BigDecimal taxAmount = BigDecimal.ZERO;
-	@Default
+	@Builder.Default
 	private BigDecimal grossAmount = BigDecimal.ZERO;
-	@Default
+	@Builder.Default
 	private BigDecimal amountToPay = BigDecimal.ZERO;
 
 	

@@ -79,7 +79,11 @@ public class PurchaseController {
         Purchase purchase = purchaseService.findById(id);
         log.info("viewInvoice:{}",purchase);
         model.addAttribute("purchase", purchase);
-        model.addAttribute("warehouses", warehouseRepository.findAll());
+        setData(model);
         return NiweErpPurchaseUrlConstants.PURCHASE_VIEW_FORM;  
     }
+    
+   private  void setData( Model model) {
+	   model.addAttribute("warehouses", warehouseRepository.findAll());
+   }
 }

@@ -13,7 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder.Default;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -73,17 +73,17 @@ public class Purchase extends AbstractEntity {
 	 * The items
 	 */
 	@OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
-	@Default
+	@Builder.Default
 	@ToString.Exclude
 	private List<PurchaseItem> items = new ArrayList<>();
 	/**
 	 * The received
 	 */
 	@Column(name = "RECEIVED")
-	@Default
+	@Builder.Default
 	private Boolean received = Boolean.FALSE; // to track if converted to received goods
 	private CoreTaxpayer taxpayer;
 	@Column(name = "PURCHASE_STATUS", nullable = true)
-	@Default
+	@Builder.Default
 	private PurchaseStatus status = PurchaseStatus.DRAFT;
 }

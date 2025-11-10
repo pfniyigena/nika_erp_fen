@@ -17,7 +17,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Builder.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -38,6 +37,11 @@ public class ReceivedGood extends AbstractEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
+	 * The itemNumber
+	 */
+	@Column(name = "ITEM_NUMBER", nullable = false)
+	private Integer itemNumber;
+	/**
 	 * The internalCode
 	 */
 	@Column(name = "INTERNAL_CODE", nullable = false, unique = true)
@@ -46,7 +50,7 @@ public class ReceivedGood extends AbstractEntity {
 	 * The receivedDate
 	 */
 	@Column(name = "RECEIVED_DATE")
-	@Default
+	@Builder.Default
 	private Instant receivedDate = Instant.now();
 	/**
 	 * The receivedBy
@@ -64,12 +68,13 @@ public class ReceivedGood extends AbstractEntity {
 	 */
 	@OneToMany(mappedBy = "receivedGood", cascade = CascadeType.ALL)
 	@Builder.Default
+	@ToString.Exclude
 	private List<ReceivedItem> items = new ArrayList<>();
 	/**
 	 * The warehouse
 	 */
 	@ManyToOne
-	@JoinColumn(name = "WAREHOUSE_ID", nullable = false)
+	@JoinColumn(name = "WAREHOUSE_ID", nullable = true)
 	private Warehouse warehouse;
 	/**
 	 * The purchase

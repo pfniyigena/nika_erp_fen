@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,9 @@ public class ReceivedItem extends AbstractEntity {
 	 * The serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
+	@Column(name = "ITEM_SEQ", nullable = false)
+	@Builder.Default
+	private Integer itemSeq = 0;
 	/**
 	 * The itemName
 	 */

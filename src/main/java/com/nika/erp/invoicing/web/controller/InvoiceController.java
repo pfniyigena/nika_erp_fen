@@ -55,22 +55,9 @@ public class InvoiceController {
 		log.info("saveDraftInvoice:{}",invoiceForm.getInvoiceLines().size());
 		
 		invoiceService.saveDraftInvoiceForm(invoiceForm);
-		
-	    //for (InvoiceLineBack line : invoice.getInvoiceLines()) {
-	    //    line.setInvoice(invoice);
-	   // }
-
-	    //invoiceService.calculateTotals(invoice, new BigDecimal("0.1"));
-	    
-	   // if (invoice.getInvoiceNumber() == null || invoice.getInvoiceNumber().isEmpty()) {
-	   //     invoiceService.generateInvoiceNumber(invoice);
-	   // }
-
-	    //invoiceRepository.save(invoice);
-	    //return "redirect:/invoice/" + invoice.getId();
 	    return NikaErpInvoicingUrlConstants.INVOICES_LIST_REDITECT_URL;
 	}
-	 // View (print) mode
+	 
     @GetMapping("/view/{id}")
     public String viewInvoice(@PathVariable String id, Model model) {
         Invoice invoice = invoiceService.findById(id);

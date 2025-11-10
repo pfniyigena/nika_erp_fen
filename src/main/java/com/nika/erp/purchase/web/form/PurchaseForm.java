@@ -10,7 +10,7 @@ import com.nika.erp.Customer;
 import com.nika.erp.purchase.domain.PurchaseStatus;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder.Default;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -27,11 +27,11 @@ public class PurchaseForm {
 	private LocalDate invoiceDate;
 	private LocalDate dueDate;
 	private Customer customer;
-	@Default
+	@Builder.Default
 	private List<PurchaseLineForm> purchaseLines = new ArrayList<>();
 	private BigDecimal totalAmount;
 	private BigDecimal taxAmount;
-	@Default
+	@Builder.Default
 	private PurchaseStatus status = PurchaseStatus.DRAFT;
 
 }

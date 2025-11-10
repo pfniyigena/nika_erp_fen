@@ -1,4 +1,4 @@
-package com.nika.erp.purchase.web.form;
+package com.nika.erp.inventory.web.form;
 
 import java.math.BigDecimal;
 
@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class PurchaseLineForm {
+public class GoodLineForm {
 	private String id;
 	private String itemName;
     private String itemCode;

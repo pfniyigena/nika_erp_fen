@@ -60,5 +60,19 @@ public class NikaErpInventoryUrlConstants {
 	 * The STOCKS_RECEIVED_LIST_PAGE
 	 */
 	public static final String STOCKS_RECEIVED_LIST_PAGE = "stock-received/list";
+	
+	/**
+	 * The STOCK_RECEIVED_VIEW_FORM
+	 */
+	public static final String STOCK_RECEIVED_VIEW_FORM = "stock-received/view-form";
+	/**
+	 * The STOCK_RECEIVED_ADD_FORM
+	 */
+	public static final String STOCK_RECEIVED_ADD_FORM = "stock-received/add-form";
+	
+	/**
+	 * The STOCK_RECEIVED_VIEW_FORM_REDIRECT_URL
+	 */
+	public static final String STOCK_RECEIVED_VIEW_FORM_REDIRECT_URL = "redirect:/stocks-received/view/";
 
 }

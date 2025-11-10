@@ -23,7 +23,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.Builder.Default;
 import lombok.experimental.SuperBuilder;
 
 @Data
@@ -274,7 +273,7 @@ public class Invoice extends AbstractEntity {
 	@JoinColumn(name = "TAXPAYER_ID", nullable = true)
 	private CoreTaxpayer taxpayer;
 	@Column(name = "INVOICE_STATUS", nullable = true)
-	@Default
+	@Builder.Default
 	private InvoiceStatus status = InvoiceStatus.DRAFT;
 	public String getTransactionTypeCode() {
 
