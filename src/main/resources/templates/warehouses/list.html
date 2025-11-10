@@ -44,8 +44,8 @@
 														<tr>
 															<th scope="col" th:text="#{label.general.name}"></th>
 															<th scope="col" th:text="#{label.general.code}"></th>
-															<th scope="col" th:text="#{label.general.branch}"></th>
 															<th scope="col" th:text="#{label.warehouse.main}"></th>
+															<th scope="col" th:text="#{label.general.branch}"></th>
 															<th scope="col" th:text="#{label.button.actions}"></th>
 														</tr>
 													</thead>
@@ -56,7 +56,7 @@
 															<td th:text="${list.isMain}"></td>
 															<td th:text="${list.branch.branchName}"></td>
 															<td><a href="#"
-																th:href="@{'/taxpayers/update/' + ${list.id}}"
+																th:href="@{'/taxpayer-branches/update/' + ${list.id}}"
 																class="waves-effect waves-dark"><span
 																	class="pcoded-micon"><em class="fa fa-pencil"></em></span></a>
 															</td>

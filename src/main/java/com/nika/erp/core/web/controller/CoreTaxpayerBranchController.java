@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.nika.erp.common.service.SequenceNumberService;
 import com.nika.erp.core.domain.CoreTaxpayer;
 import com.nika.erp.core.domain.CoreTaxpayerBranch;
 import com.nika.erp.core.service.CoreTaxpayerBranchService;
@@ -20,7 +21,6 @@ import com.nika.erp.core.web.util.NikaErpCoreUrlConstants;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-
 @Slf4j
 @Controller
 @RequestMapping(value = NikaErpCoreUrlConstants.TAXPAYER_BRANCHES_URL)
@@ -29,6 +29,7 @@ public class CoreTaxpayerBranchController {
 
 	private final CoreTaxpayerService coreTaxpayerService;
 	private final CoreTaxpayerBranchService coreTaxpayerBranchService;
+	private final SequenceNumberService sequenceNumberService;
 
 	@GetMapping(path = "/list")
 	public String listCompanies(Model model) {
@@ -38,20 +39,13 @@ public class CoreTaxpayerBranchController {
 		model.addAttribute("lists", list);
 		return NikaErpCoreUrlConstants.TAXPAYER_BRANCHES_LIST_URL;
 	}
-	@GetMapping(path = "/update/{id}")
-	public String findById(@PathVariable String id, Model model) {
-		CoreTaxpayerBranch branch = coreTaxpayerBranchService.findById(id);
-
-		model.addAttribute("branch", branch);
-		setData(model); 
-		return NikaErpCoreUrlConstants.TAXPAYER_BRANCHES_ADD_FORM_PAGE;
-	}
 	@GetMapping(path = "/new")
-	public String newTaxpayerBranch( Model model) {
-		model.addAttribute("branch", CoreTaxpayerBranch.builder().build());
-		setData(model); 
-		 
-		return NikaErpCoreUrlConstants.TAXPAYER_BRANCHES_LIST_REDITECT_URL;
+	public String newTaxpayerBranch(Model model) {
+		model.addAttribute("branch",
+				CoreTaxpayerBranch.builder().internalCode(sequenceNumberService.getNextTaxpayerBranchCode()).build());
+		setData(model);
+
+		return NikaErpCoreUrlConstants.TAXPAYER_BRANCHES_ADD_FORM_PAGE;
 	}
 	@PostMapping(path = "/new")
 	public String saveTaxpayerBranch(CoreTaxpayerBranch branch, RedirectAttributes redirectAttrs,
@@ -61,9 +55,18 @@ public class CoreTaxpayerBranchController {
 		coreTaxpayerBranchService.save(branch);
 		return NikaErpCoreUrlConstants.TAXPAYER_BRANCHES_LIST_REDITECT_URL;
 	}
+	@GetMapping(path = "/update/{id}")
+	public String findById(@PathVariable String id, Model model) {
+		CoreTaxpayerBranch branch = coreTaxpayerBranchService.findById(id);
+
+		model.addAttribute("branch", branch);
+		setData(model);
+		return NikaErpCoreUrlConstants.TAXPAYER_BRANCHES_ADD_FORM_PAGE;
+	}
+
 	private void setData(Model model) {
-		List<CoreTaxpayer>taxpayers=coreTaxpayerService.findAll();
-		model.addAttribute("taxpayers",taxpayers);
-		
+		List<CoreTaxpayer> taxpayers = coreTaxpayerService.findAll();
+		model.addAttribute("taxpayers", taxpayers);
+
 	}
 }

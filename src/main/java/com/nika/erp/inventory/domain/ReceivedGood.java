@@ -1,6 +1,6 @@
 package com.nika.erp.inventory.domain;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,11 +38,16 @@ public class ReceivedGood extends AbstractEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
+	 * The internalCode
+	 */
+	@Column(name = "INTERNAL_CODE", nullable = false, unique = true)
+	private String internalCode;
+	/**
 	 * The receivedDate
 	 */
 	@Column(name = "RECEIVED_DATE")
 	@Default
-	private LocalDateTime receivedDate = LocalDateTime.now();
+	private Instant receivedDate = Instant.now();
 	/**
 	 * The receivedBy
 	 */
@@ -57,7 +63,7 @@ public class ReceivedGood extends AbstractEntity {
 	 * The items
 	 */
 	@OneToMany(mappedBy = "receivedGood", cascade = CascadeType.ALL)
-	@Default
+	@Builder.Default
 	private List<ReceivedItem> items = new ArrayList<>();
 	/**
 	 * The warehouse
@@ -71,4 +77,12 @@ public class ReceivedGood extends AbstractEntity {
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PURCHASE_ID", referencedColumnName = "ID")
 	private Purchase purchase;
+	
+	/**
+	 * The stockOperation
+	 */
+	@Column(name = "STOCK_STATUS")
+	@lombok.ToString.Include
+	@Builder.Default
+	private EStockReceivedStatus status=EStockReceivedStatus.WAITING;
 }

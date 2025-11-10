@@ -50,5 +50,15 @@ public class NikaErpInventoryUrlConstants {
 	 * The WAREHOUSE_STOCKS_VIEW_FORM
 	 */
 	public static final String WAREHOUSE_STOCKS_VIEW_FORM = "warehouse-stocks/details";
+	
+	/**
+	 * The STOCKS_RECEIVED_URL
+	 */
+	public static final String STOCKS_RECEIVED_URL = "stocks-received";
+	
+	/**
+	 * The STOCKS_RECEIVED_LIST_PAGE
+	 */
+	public static final String STOCKS_RECEIVED_LIST_PAGE = "stock-received/list";
 
 }

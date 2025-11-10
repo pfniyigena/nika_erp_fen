@@ -6,7 +6,9 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.nika.erp.core.domain.CoreCountry;
 import com.nika.erp.core.domain.EFiscalYear;
+import com.nika.erp.core.repository.CoreCountryRepository;
 import com.nika.erp.invoicing.domain.TaxType;
 import com.nika.erp.invoicing.repository.TaxTypeRepository;
 
@@ -19,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TaxTypeService {
 
 	private TaxTypeRepository taxTypeRepository;
+	private CoreCountryRepository  coreCountryRepository;
 
 	public List<TaxType> findAll() {
 		return taxTypeRepository.findAll();
@@ -65,6 +68,11 @@ public class TaxTypeService {
 								.build(),
 						TaxType.builder().taxName("D").displayName("D").taxCode("D").taxValue(new BigDecimal("0.00")).displayLevel(3)
 								.build()));
+				coreCountryRepository.save(CoreCountry.builder().code(fiscalYear.name())
+						.displayName(fiscalYear.name())
+						.englishName(fiscalYear.name())
+						.frenchName(fiscalYear.name())
+						.build())	;	
 
 				break;
 			}
@@ -81,6 +89,11 @@ public class TaxTypeService {
 						TaxType.builder().taxName("NA").displayName("Non assugetti").taxCode("NA")
 								.taxValue(new BigDecimal("0.00")).displayLevel(4) .build()));
 
+				coreCountryRepository.save(CoreCountry.builder().code(fiscalYear.name())
+						.displayName(fiscalYear.name())
+						.englishName(fiscalYear.name())
+						.frenchName(fiscalYear.name())
+						.build())	;	
 				break;
 			}
 			case GENERAL: {
@@ -90,6 +103,11 @@ public class TaxTypeService {
 						TaxType.builder().taxName("VAT").displayName("VAT").taxCode("VAT")
 								.taxValue(new BigDecimal("18.00")).displayLevel(1)  .build()));
 
+				coreCountryRepository.save(CoreCountry.builder().code(fiscalYear.name())
+						.displayName(fiscalYear.name())
+						.englishName(fiscalYear.name())
+						.frenchName(fiscalYear.name())
+						.build())	;	
 				break;
 			}
 			default:

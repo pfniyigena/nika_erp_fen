@@ -38,7 +38,7 @@ public class Warehouse extends AbstractEntity {
 	 * The name
 	 */
 	@Column(name = "WAREHOUSE_NAME", unique = true,nullable = false)
-	private String warehouseName; // Main or Branch warehouse
+	private String warehouseName; 
 	/**
 	 * The isMain
 	 */
@@ -48,6 +48,6 @@ public class Warehouse extends AbstractEntity {
 	 * The branch
 	 */
 	@ManyToOne
-	@JoinColumn(name = "BRANCH_ID")
-	private CoreTaxpayerBranch branch;// null if main warehouse
+	@JoinColumn(name = "BRANCH_ID",nullable = false)
+	private CoreTaxpayerBranch branch;
 }

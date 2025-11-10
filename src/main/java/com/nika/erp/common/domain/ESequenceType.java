@@ -17,6 +17,8 @@ public enum ESequenceType {
 	/** The SHELF. */
 	SHELF,
 	/** The PURCHASE. */
-	PURCHASE
+	PURCHASE,
+	/** The RECEIVED_GOOD. */
+	RECEIVED_GOOD
 
 }

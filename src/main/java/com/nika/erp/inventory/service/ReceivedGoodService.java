@@ -1,10 +1,13 @@
 package com.nika.erp.inventory.service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.nika.erp.common.service.SequenceNumberService;
 import com.nika.erp.inventory.domain.EStockOperation;
+import com.nika.erp.inventory.domain.EStockReceivedStatus;
 import com.nika.erp.inventory.domain.MovementType;
 import com.nika.erp.inventory.domain.ReceivedGood;
 import com.nika.erp.inventory.domain.ReceivedItem;
@@ -23,15 +26,17 @@ public class ReceivedGoodService {
 	private final ReceivedGoodRepository receivedGoodRepository;
 	private final WarehouseService warehouseService;
 	private final WarehouseStockService warehouseStockService;
-
-	public Boolean receiveGoodFromPurchase(Purchase purchase,String receivedBy,String warehouseId) {
-        Warehouse  warehouse=warehouseService.findById(warehouseId);
+    private final SequenceNumberService sequenceNumberService;
+	public Boolean receiveGoodFromPurchase(Purchase purchase, String receivedBy, String warehouseId) {
+		Warehouse warehouse = warehouseService.findById(warehouseId);
 		ReceivedGood received = new ReceivedGood();
+		received.setInternalCode(sequenceNumberService.getNextGoodReceivedCode());
 		received.setSupplierName(purchase.getSupplierName());
-		received.setReceivedDate(LocalDateTime.now());
+		received.setReceivedDate(Instant.now());
 		received.setPurchase(purchase);
 		received.setReceivedBy(receivedBy);
 		received.setWarehouse(warehouse);
+		received.setStatus(EStockReceivedStatus.RECEIVED);
 		for (PurchaseItem purchaseItem : purchase.getItems()) {
 			ReceivedItem ri = new ReceivedItem();
 			ri.setItemName(purchaseItem.getItemName());
@@ -46,14 +51,18 @@ public class ReceivedGoodService {
 		return true;
 	}
 
-	private void updateProductQuantities(ReceivedGood received ) {
-		
+	private void updateProductQuantities(ReceivedGood received) {
+
 		received.getItems().forEach((n) -> {
-			warehouseStockService.updateProductQuantity(received.getWarehouse(), n.getItem(), n.getQuantity(), MovementType.PURCHASE, "p", EStockOperation.IN);
-	
+			warehouseStockService.updateProductQuantity(received.getWarehouse(), n.getItem(), n.getQuantity(),
+					MovementType.PURCHASE, "p", EStockOperation.IN);
+
 		});
-		
-		
-		
+
+	}
+
+	public List<ReceivedGood> findAll() {
+
+		return receivedGoodRepository.findAll();
 	}
 }

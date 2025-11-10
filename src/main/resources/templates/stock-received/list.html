@@ -3,7 +3,7 @@
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-<title th:text="#{label.warehouse.list}"></title>
+<title th:text="#{label.stock.received.list}"></title>
 <th:block th:insert="~{fragments/header :: head}"></th:block>
 </head>
 <body>
@@ -29,8 +29,8 @@
 										<!-- Hover table card start -->
 										<div class="card">
 											<div class="card-header">
-												<h5 th:text="#{label.warehouse.list}"></h5>
-												<a href="#" th:href="@{/warehouses/new}"
+												<h5 th:text="#{label.stock.received.list}"></h5>
+												<a href="#" th:href="@{/stocks-received/new}"
 													class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger"><em
 													class="icofont icofont-plus m-r-5"></em> </a>
 
@@ -42,23 +42,29 @@
 													<caption></caption>
 													<thead>
 														<tr>
-															<th scope="col" th:text="#{label.general.name}"></th>
+															<th scope="col">#</th>
 															<th scope="col" th:text="#{label.general.code}"></th>
-															<th scope="col" th:text="#{label.general.branch}"></th>
-															<th scope="col" th:text="#{label.warehouse.main}"></th>
+															<th scope="col" th:text="#{label.stock.received.date}"></th>
+															<th scope="col" th:text="#{label.general.status}"></th>
 															<th scope="col" th:text="#{label.button.actions}"></th>
 														</tr>
 													</thead>
 													<tbody>
-														<tr th:each="list : ${lists}">
-															<td th:text="${list.warehouseName}"></td>
+														<tr th:each="list,stat : ${lists}">
+															<th scope="row" th:text="${stat.index + 1}"></th>
 															<td th:text="${list.internalCode}"></td>
-															<td th:text="${list.isMain}"></td>
-															<td th:text="${list.branch.branchName}"></td>
+															<td
+																th:text="${#dates.format(list.receivedDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+															<td><span th:text="${list.status}"
+																th:class="${list.status != null} ? 
+                     (${list.status.name()} == 'RECEIVED' ? 'badge bg-success' : 
+                     (${list.status.name()} == 'WAITING' ? 'badge bg-warning text-dark' : 'badge bg-danger')) 
+                     : 'badge bg-secondary'">
+															</span></td>
 															<td><a href="#"
-																th:href="@{'/taxpayers/update/' + ${list.id}}"
+																th:href="@{'/stocks-received/view/' + ${list.id}}"
 																class="waves-effect waves-dark"><span
-																	class="pcoded-micon"><em class="fa fa-pencil"></em></span></a>
+																	class="pcoded-micon"><em class="fa fa-eye"></em></span></a>
 															</td>
 														</tr>
 

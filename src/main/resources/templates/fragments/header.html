@@ -422,23 +422,33 @@
 													th:text="#{menu.warehouses}"></span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
-											<li class=" "><a href="#" th:href="@{/warehouse-stocks/summary}"
+											<li class=" "><a href="#"
+												th:href="@{/warehouse-stocks/summary}"
 												class="waves-effect waves-dark"> <span
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
 													<span class="pcoded-mtext"
 													data-i18n="nav.basic-components.alert"
-													th:text="#{menu.stock}" > </span> <span
+													th:text="#{menu.stock.summary}"> </span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
-											<li class=" "><a href="#" th:href="@{/stock-movements/list}"
+											<li class=" "><a href="#"
+												th:href="@{/stock-movements/list}"
 												class="waves-effect waves-dark"> <span
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
 													<span class="pcoded-mtext"
 													data-i18n="nav.basic-components.alert"
-													th:text="#{menu.stock.movements}" > </span> <span
+													th:text="#{menu.stock.movements}"> </span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
-
+											<li class=" "><a href="#"
+												th:href="@{/stocks-received/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.stock.received}"> </span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
 
 										</ul></li>
 									<li class="pcoded-hasmenu"><a href="javascript:void(0)"

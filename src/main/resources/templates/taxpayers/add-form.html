@@ -80,6 +80,7 @@
 																	th:text="#{label.taxpayer.fiscalYear}"></label>
 																<div class="col-sm-8 has-danger">
 																	<select id="status" th:field="*{fiscalYear}"
+																		th:attr="disabled=${fiscalYear != null}"
 																		class="form-control form-control-bold">
 																		<option th:each="year : ${fiscalYears}"
 																			th:value="${year}"
@@ -135,7 +136,8 @@
 															</div>
 															<div class="form-group row">
 																<label class="col-sm-4 col-form-label"
-																	for="taxpayerAddress" th:text="#{label.general.address}"></label>
+																	for="taxpayerAddress"
+																	th:text="#{label.general.address}"></label>
 																<div class="col-sm-8 has-danger">
 																	<input type="text" th:field="*{taxpayerAddress}"
 																		id="taxpayerAddress"

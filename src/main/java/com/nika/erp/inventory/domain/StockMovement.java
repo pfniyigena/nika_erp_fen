@@ -61,7 +61,7 @@ public class StockMovement extends AbstractEntity {
 	@lombok.ToString.Include
 	private MovementType movementType;
 	/**
-	 * The movementType
+	 * The stockOperation
 	 */
 	@Column(name = "STOCK_OPERATION")
 	@lombok.ToString.Include
