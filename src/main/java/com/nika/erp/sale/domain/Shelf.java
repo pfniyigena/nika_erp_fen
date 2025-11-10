@@ -1,7 +1,7 @@
-package com.nika.erp.inventory.domain;
+package com.nika.erp.sale.domain;
 
 import com.nika.erp.common.domain.AbstractEntity;
-import com.nika.erp.core.domain.CoreTaxpayerBranch;
+import com.nika.erp.inventory.domain.Warehouse;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,11 +35,16 @@ public class Shelf extends AbstractEntity {
 	@Column(name = "INTERNAL_CODE", nullable = false)
 	private String internalCode;
 	/**
-	 * The branch
+	 * The name
 	 */
-	@ManyToOne
-	@JoinColumn(name = "BRANCH_ID")
-	private CoreTaxpayerBranch branch;
+	@Column(name = "NAME")
+	private String name;
+	
+	/**
+	 * The description
+	 */
+	@Column(name = "description")
+	private String description;
 	/**
 	 * The warehouse
 	 */

@@ -22,6 +22,10 @@ public class NikaErpInvoicingUrlConstants {
 	 */
 	public static final String INVOICE_VIEW_FORM = "invoices/view-form";
 	/**
+	 * The INVOICE_VIEW_FORM
+	 */
+	public static final String INVOICE_VIEW_FORM_V2 = "invoices/view-form-v2";
+	/**
 	 * The INVOICE_EDIT_FORM
 	 */
 	public static final String INVOICE_EDIT_FORM = "invoices/edit-form";

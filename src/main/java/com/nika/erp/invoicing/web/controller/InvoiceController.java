@@ -67,7 +67,15 @@ public class InvoiceController {
         model.addAttribute("taxes", taxes);
         return NikaErpInvoicingUrlConstants.INVOICE_VIEW_FORM;  // ✅ Print view
     }
-
+    @GetMapping("/view-v2/{id}")
+    public String viewInvoiceV2(@PathVariable String id, Model model) {
+        Invoice invoice = invoiceService.findById(id);
+        List<InvoiceTaxSummary> taxes=invoiceTaxSummaryService.findByInvoice(invoice);
+        log.info("viewInvoice:{},Taxes:{}",invoice,taxes);
+        model.addAttribute("invoice", invoice);
+        model.addAttribute("taxes", taxes);
+        return NikaErpInvoicingUrlConstants.INVOICE_VIEW_FORM_V2;  // ✅ Print view
+    }
     // Edit mode
     @GetMapping("/edit/{id}")
     public String editInvoice(@PathVariable String id, Model model) {

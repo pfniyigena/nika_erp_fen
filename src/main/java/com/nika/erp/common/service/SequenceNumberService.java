@@ -85,7 +85,7 @@ public class SequenceNumberService {
 	public String getNextShelfCode() {
 
 		String sequence = this.getNextSequenceNumber(ESequenceType.SHELF);
-		return "WH" + StringUtils.leftPad(sequence, 3, "0");
+		return "POS" + StringUtils.leftPad(sequence, 3, "0");
 	}
 	public String getNextPurchaseCode() {
 

@@ -17,15 +17,15 @@ import com.nika.erp.core.domain.CoreTaxpayerBranch;
 import com.nika.erp.core.repository.CoreTaxpayerBranchRepository;
 import com.nika.erp.inventory.domain.EStockOperation;
 import com.nika.erp.inventory.domain.MovementType;
-import com.nika.erp.inventory.domain.Shelf;
 import com.nika.erp.inventory.domain.StockMovement;
 import com.nika.erp.inventory.domain.Warehouse;
 import com.nika.erp.inventory.domain.WarehouseStock;
-import com.nika.erp.inventory.repository.ShelfRepository;
 import com.nika.erp.inventory.repository.StockMovementRepository;
 import com.nika.erp.inventory.repository.WarehouseRepository;
 import com.nika.erp.inventory.repository.WarehouseStockRepository;
 import com.nika.erp.inventory.web.dto.ProductStockSummaryDto;
+import com.nika.erp.sale.domain.Shelf;
+import com.nika.erp.sale.repository.ShelfRepository;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +56,7 @@ public class WarehouseStockService {
 					Warehouse.builder().warehouseName("MAIN").internalCode(sequenceNumberService.getNextWarehouseCode())
 							.branch(branches.get(0)).isMain(true).build());
 			shelfRepository.save(Shelf.builder().internalCode(sequenceNumberService.getNextShelfCode())
-					.warehouse(warehouse).branch(branches.get(0)).build());
+					.warehouse(warehouse).name("MAIN POS").description("MAIN POS").build());
 
 		} catch (Exception e) {
 			log.error("InitiateInventory:{}", e);

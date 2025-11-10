@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.nika.erp.common.service.SequenceNumberService;
-import com.nika.erp.inventory.domain.ReceivedGood;
 import com.nika.erp.inventory.domain.Warehouse;
 import com.nika.erp.inventory.repository.WarehouseRepository;
 
@@ -53,9 +52,5 @@ public class WarehouseService {
 
 	}
 
-	public void receiveGood(ReceivedGood received) {
-
-
-
-	}
+ 
 }
