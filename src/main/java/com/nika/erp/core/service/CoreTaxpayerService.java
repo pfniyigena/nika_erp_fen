@@ -15,7 +15,7 @@ import com.nika.erp.core.domain.CoreTaxpayerBranch;
 import com.nika.erp.core.domain.EItemNature;
 import com.nika.erp.core.repository.CoreTaxpayerBranchRepository;
 import com.nika.erp.core.repository.CoreTaxpayerRepository;
-import com.nika.erp.inventory.service.StockService;
+import com.nika.erp.inventory.service.WarehouseStockService;
 import com.nika.erp.invoicing.service.TaxTypeService;
 
 import lombok.AllArgsConstructor;
@@ -32,13 +32,13 @@ public class CoreTaxpayerService {
 	private final CoreItemService coreItemService;
 	private final CoreItemNatureService coreItemNatureService;
 	private final TaxTypeService taxTypeService;
-	private final StockService stockService;
+	private final WarehouseStockService stockService;
 
-	public void initTaxpayer() {
-
+	public CoreTaxpayer initTaxpayer() {
+		CoreTaxpayer coreTaxpayer = null;
 		if (coreTaxpayerRepository.findAll().size() < 1) {
 
-			CoreTaxpayer coreTaxpayer = save(CoreTaxpayer.builder()
+			coreTaxpayer = save(CoreTaxpayer.builder()
 
 					.tinNumber(NikaErpConstants.NIKA_DEFAULT_TIN_NUMBER)
 					.taxpayerName(NikaErpConstants.NIKA_DEFAULT_TAXPAYER_NAME)
@@ -65,14 +65,14 @@ public class CoreTaxpayerService {
 					.itemName(NikaErpConstants.NIKA_DEFAULT_ITEM_NAME).nature(natureList.get(0)).build());
 
 		}
-
+		return coreTaxpayer;
 	}
 
 	public CoreTaxpayer save(CoreTaxpayer taxpayer) {
 		CoreTaxpayer savedTaxpayer = null;
 		String code = taxpayer.getInternalCode();
 		if (code == null || code.isEmpty()) {
-			code=sequenceNumberService.getNextTaxpayerCode();
+			code = sequenceNumberService.getNextTaxpayerCode();
 		}
 
 		if (taxpayer.getId() != null) {

@@ -17,21 +17,27 @@ import lombok.experimental.SuperBuilder;
 public class InvoiceLineForm {
 	private String id;
 	private String itemName;
-    private String itemCode;
-    private String taxCode;
-    @Default
-    private BigDecimal taxType=BigDecimal.ZERO;
-    @Default
-    private BigDecimal quantity=BigDecimal.ZERO;
-    @Default
-    private BigDecimal unitPrice=BigDecimal.ZERO;
-    @Default
-    private BigDecimal lineTotal=BigDecimal.ZERO;
+	private String itemCode;
+	private String taxCode;
+	@Default
+	private BigDecimal taxType = BigDecimal.ZERO;
+	@Default
+	private BigDecimal quantity = BigDecimal.ZERO;
+	@Default
+	private BigDecimal unitPrice = BigDecimal.ZERO;
+	@Default
+	private BigDecimal lineTotal = BigDecimal.ZERO;
+	@Default
+	private BigDecimal taxAmount = BigDecimal.ZERO;
+	@Default
+	private BigDecimal grossAmount = BigDecimal.ZERO;
+	@Default
+	private BigDecimal amountToPay = BigDecimal.ZERO;
 
-    public BigDecimal getLineTotal() {
-        return unitPrice != null && quantity != null
-                ? unitPrice.multiply(quantity)
-                : BigDecimal.ZERO;
-    }
+	
+
+	public BigDecimal getLineTotal() {
+		return unitPrice != null && quantity != null ? unitPrice.multiply(quantity) : BigDecimal.ZERO;
+	}
 
 }

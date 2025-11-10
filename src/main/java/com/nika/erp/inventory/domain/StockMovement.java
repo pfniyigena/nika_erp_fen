@@ -1,7 +1,7 @@
 package com.nika.erp.inventory.domain;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import com.nika.erp.common.domain.AbstractEntity;
 import com.nika.erp.core.domain.CoreItem;
@@ -12,11 +12,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+
 @Data
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
@@ -25,40 +27,66 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class StockMovement  extends AbstractEntity {
-    
+public class StockMovement extends AbstractEntity {
+
 	/**
 	 * The serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
+	 * The reference
+	 */
+	@Column(name = "REFERENCE")
+	private String reference;
+	/**
+	 * The previousQuantity
+	 */
+	@Column(name = "PREVIOUS_QUANTITY")
+	private BigDecimal previousQuantity;
+	/**
 	 * The quantity
 	 */
 	@Column(name = "QUANTITY")
-    private BigDecimal quantity;
+	private BigDecimal quantity;
+
+	/**
+	 * The currentQuantity
+	 */
+	@Column(name = "CURRENT_QUANTITY")
+	private BigDecimal currentQuantity;
+	/**
+	 * The movementType
+	 */
+	@Column(name = "MOVEMENT_TYPE")
+	@lombok.ToString.Include
+	private MovementType movementType;
+	/**
+	 * The movementType
+	 */
+	@Column(name = "STOCK_OPERATION")
+	@lombok.ToString.Include
+	private EStockOperation stockOperation;
+	
+	
 	/**
 	 * The movementDate
 	 */
 	@Column(name = "MOUVEMENT_DATE")
-    private LocalDateTime movementDate;
-	/**
-	 * The fromWarehouse
-	 */
-	@ManyToOne
-	@JoinColumn(name = "FROM_WAREHOUSE_ID")
-    private Warehouse fromWarehouse;
-	/**
-	 * The toWarehouse
-	 */
-	@ManyToOne
-	@JoinColumn(name = "TO_WAREHOUSE_ID")
-    private Warehouse toWarehouse;
+	@Builder.Default
+	private Instant movementDate=Instant.now();
+
 	/**
 	 * The item
 	 */
 	@ManyToOne
-	@JoinColumn(name = "ITEM_ID")
-    private CoreItem item;
+	@JoinColumn(name = "ITEM_ID",nullable = false)
+	private CoreItem item;
+
+	/**
+	 * The warehouse
+	 */
+	@ManyToOne
+	@JoinColumn(name = "WAREHOUSE_ID",nullable = false)
+	private Warehouse warehouse;
 
 }
-

@@ -43,7 +43,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency>
+      		<groupId>org.springframework.boot</groupId>
+      		<artifactId>spring-boot-starter-security</artifactId>
+    	</dependency>
+    	<!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity6 -->
+		<dependency>
+		    <groupId>org.thymeleaf.extras</groupId>
+		    <artifactId>thymeleaf-extras-springsecurity6</artifactId>		    
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -60,31 +68,31 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-	<!-- iText 7 core modules -->
-    <dependency>
-        <groupId>com.itextpdf</groupId>
-        <artifactId>kernel</artifactId>
-        <version>8.0.2</version>
-    </dependency>
+		<!-- iText 7 core modules -->
+	    <dependency>
+	        <groupId>com.itextpdf</groupId>
+	        <artifactId>kernel</artifactId>
+	        <version>8.0.2</version>
+	    </dependency>
 
-    <dependency>
-        <groupId>com.itextpdf</groupId>
-        <artifactId>layout</artifactId>
-        <version>8.0.2</version>
-    </dependency>
+	    <dependency>
+	        <groupId>com.itextpdf</groupId>
+	        <artifactId>layout</artifactId>
+	        <version>8.0.2</version>
+	    </dependency>
 
-    <dependency>
-        <groupId>com.itextpdf</groupId>
-        <artifactId>io</artifactId>
-        <version>8.0.2</version>
-    </dependency>
-
-    <!-- Optional: QR code and barcode support -->
-    <dependency>
-        <groupId>com.itextpdf</groupId>
-        <artifactId>barcodes</artifactId>
-        <version>8.0.2</version>
-    </dependency>
+	    <dependency>
+	        <groupId>com.itextpdf</groupId>
+	        <artifactId>io</artifactId>
+	        <version>8.0.2</version>
+	    </dependency>
+	
+	    <!-- Optional: QR code and barcode support -->
+	    <dependency>
+	        <groupId>com.itextpdf</groupId>
+	        <artifactId>barcodes</artifactId>
+	        <version>8.0.2</version>
+	    </dependency>
 
 
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
@@ -116,7 +124,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+		<dependency>
+      		<groupId>org.springframework.security</groupId>
+      		<artifactId>spring-security-test</artifactId>
+      		<scope>test</scope>
+    	</dependency>
+		</dependencies>
 
 	<build>
 		<plugins>

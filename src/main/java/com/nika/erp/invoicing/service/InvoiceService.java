@@ -94,6 +94,9 @@ public class InvoiceService {
 			invoice.setAmountWithoutTax(
 					invoice.getAmountWithoutTax().add(invoiceCalculationService.getAmountHorsTax()));
 			invoice.setTotalAmountIncludingTax(invoice.getAmountWithoutTax().add(invoice.getTotalTaxAmount()));
+			formLine.setAmountToPay(invoiceCalculationService.getAmountToPay());
+			formLine.setGrossAmount(invoiceCalculationService.getGrossAmount());
+			formLine.setTaxAmount(invoiceCalculationService.getTaxAmount());
 			InvoiceLine line = mapToInvoiceLine(formLine);
 			line.setItemSeq(counter.getAndIncrement());
 			return line;
@@ -111,18 +114,12 @@ public class InvoiceService {
 	private InvoiceLine mapToInvoiceLine(InvoiceLineForm invoiceLineForm) {
 		CoreItem coreItem = coreItemService.findByInternalCode(invoiceLineForm.getItemCode());
 		TaxType taxType = taxTypeService.findByCode(invoiceLineForm.getTaxCode());
-		InvoiceCalculationService invoiceCalculationService = new InvoiceCalculationService(
-				invoiceLineForm.getQuantity(), invoiceLineForm.getUnitPrice(), invoiceLineForm.getTaxType(),
-				new BigDecimal("0.00"), new BigDecimal("0.00"));
-
 		return InvoiceLine.builder().item(coreItem).itemName(invoiceLineForm.getItemName())
 				.itemNature(EItemNature.valueOf(coreItem.getNature().getCode())).quantity(invoiceLineForm.getQuantity())
 				.unitPrice(invoiceLineForm.getUnitPrice()).taxCode(invoiceLineForm.getTaxCode())
 				.taxName(taxType.getTaxName()).taxType(invoiceLineForm.getTaxType())
-				.transactionType(ETransactionType.TRANSACTION_TYPE_SALE)
-				.grossAmount(invoiceCalculationService.getGrossAmount())
-				.totalAPayer(invoiceCalculationService.getAmountToPay())
-				.taxAmount(invoiceCalculationService.getTaxAmount()).build();
+				.transactionType(ETransactionType.TRANSACTION_TYPE_SALE).grossAmount(invoiceLineForm.getGrossAmount())
+				.totalAPayer(invoiceLineForm.getAmountToPay()).taxAmount(invoiceLineForm.getTaxAmount()).build();
 	}
 
 	public List<InvoiceForm> getAllInvoicesForm() {

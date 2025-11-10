@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="fragments/layout :: layout">
+<body>
+<div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Menu Management</h4>
+        <a class="btn btn-primary" th:href="@{/admin/menus/create}">Add New Menu</a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>URL</th>
+                <th>Permission</th>
+                <th>Parent</th>
+                <th>Sort</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="m : ${menus}">
+                <td th:text="${m.title}"></td>
+                <td th:text="${m.url}"></td>
+                <td th:text="${m.requiredPermission}"></td>
+                <td th:text="${m.parent != null ? m.parent.title : '-'}"></td>
+                <td th:text="${m.sortOrder}"></td>
+                <td>
+                    <a class="btn btn-sm btn-warning" th:href="@{'/admin/menus/edit/' + ${m.id}}">Edit</a>
+                    <a class="btn btn-sm btn-danger" th:href="@{'/admin/menus/delete/' + ${m.id}}"
+                       onclick="return confirm('Delete this menu?')">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

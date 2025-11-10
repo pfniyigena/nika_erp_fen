@@ -32,13 +32,13 @@ public class Warehouse extends AbstractEntity {
 	/**
 	 * The internalCode
 	 */
-	@Column(name = "INTERNAL_CODE", nullable = false)
+	@Column(name = "INTERNAL_CODE",unique = true, nullable = false)
 	private String internalCode;
 	/**
 	 * The name
 	 */
-	@Column(name = "NAME", nullable = false)
-	private String name; // Main or Branch warehouse
+	@Column(name = "WAREHOUSE_NAME", unique = true,nullable = false)
+	private String warehouseName; // Main or Branch warehouse
 	/**
 	 * The isMain
 	 */

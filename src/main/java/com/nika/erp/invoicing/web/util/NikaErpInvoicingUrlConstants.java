@@ -67,4 +67,10 @@ public class NikaErpInvoicingUrlConstants {
 	
 	public static final String CHARGETYPES_LIST_REDITECT_URL = "redirect:/chargeTypes/list";
 	
+	
+	/**
+	 * The WAREHOUSES_URL
+	 */
+	public static final String WAREHOUSES_URL = "warehouses";
+	
 }

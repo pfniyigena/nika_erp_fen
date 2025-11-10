@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<title th:text="#{label.warehouse.list}"></title>
+<th:block th:insert="~{fragments/header :: head}"></th:block>
+</head>
+<body>
+	<th:block th:insert="~{fragments/header :: pre-loader}"></th:block>
+	<div id="pcoded" class="pcoded">
+		<div class="pcoded-overlay-box"></div>
+		<div class="pcoded-container navbar-wrapper">
+
+			<th:block th:insert="~{fragments/header :: navbar-top}"></th:block>
+
+			<div class="pcoded-main-container">
+				<div class="pcoded-wrapper">
+					<th:block th:insert="~{fragments/header :: navbar-left}"></th:block>
+
+					<div class="pcoded-content">
+						<div class="pcoded-inner-content">
+							<!-- Main-body start -->
+							<div class="main-body">
+								<div class="page-wrapper">
+									<!-- Page-body start -->
+									<div class="page-body">
+
+										<!-- Hover table card start -->
+										<div class="card">
+											<div class="card-header">
+												<h5 th:text="#{label.warehouse.list}"></h5>
+												<a href="#" th:href="@{/warehouses/new}"
+													class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger"><em
+													class="icofont icofont-plus m-r-5"></em> </a>
+
+											</div>
+											<div class="dt-responsive table-responsive">
+												<table id="code-type-table"
+													class="table table-striped table-bordered compact nowrap"
+													th:if="${lists != null}">
+													<caption></caption>
+													<thead>
+														<tr>
+															<th scope="col">#</th>
+															<th scope="col" th:text="#{label.general.item}"></th>
+															<th scope="col" th:text="#{label.general.warehouse}"></th>
+															<th scope="col" th:text="#{label.general.current}"></th>
+															<th scope="col" th:text="#{label.button.actions}"></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="list,stat : ${lists}">
+															<th scope="row" th:text="${stat.index + 1}"></th>
+															<td th:text="${list.item.itemName}"></td>
+															<td th:text="${list.warehouse.warehouseName}"></td>
+															<td th:text="${list.quantity}"></td>
+															<td><a href="#"
+																th:href="@{'/taxpayers/update/' + ${list.id}}"
+																class="waves-effect waves-dark"><span
+																	class="pcoded-micon"><em class="fa fa-pencil"></em></span></a>
+															</td>
+														</tr>
+
+													</tbody>
+												</table>
+											</div>
+										</div>
+
+									</div>
+									<!-- Hover table card end -->
+
+								</div>
+
+								<!-- Page-body end -->
+							</div>
+							<div id="styleSelector"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<th:block th:insert="~{fragments/header :: footer}"></th:block>
+</body>
+
+</html>

@@ -39,7 +39,7 @@ public abstract class AbstractEntity implements Serializable {
 	@JsonIgnore
 	@Id
 	@UuidGenerator
-	@Column(name = "id", nullable = false, unique = true, updatable = false)
+	@Column(name = "ID", nullable = false, unique = true, updatable = false)
 	@EqualsAndHashCode.Include 
 	private UUID id;
 
@@ -48,21 +48,21 @@ public abstract class AbstractEntity implements Serializable {
 	 * system when an entity instance is created.
 	 */
 	@JsonIgnore
-	@Column(name = "created_at")
+	@Column(name = "CREATED_AT")
 	@CreatedDate
 	protected Instant createdAt;
 	@JsonIgnore
-	@Column(name = "modified_at")
+	@Column(name = "MODIFIED_AT")
 	@LastModifiedDate
 	protected Instant modifiedAt;
 
 	@CreatedBy
 	@Basic(optional = true)
-	@Column(name = "created_by")
+	@Column(name = "CREATED_BY")
 	private String createdBy = "";
 	@LastModifiedBy
 	@Basic(optional = true)
-	@Column(name = "updated_by")
+	@Column(name = "UPDATED_BY")
 	private String updatedBy = "";
 	@JsonIgnore
 	@Version

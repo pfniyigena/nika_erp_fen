@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <ul class="nav flex-column" th:each="menu : ${menuItems}">
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" th:href="@{${menu.url}}">
+                <i th:if="${menu.icon}" th:class="${menu.icon} me-2"}"></i>
+                <span th:text="${menu.title}"></span>
+            </a>
+
+            <ul class="nav flex-column submenu" th:if="${#lists.size(menu.children) > 0}">
+                <li th:each="sub : ${menu.children}">
+                    <a class="nav-link" th:href="@{${sub.url}}" th:text="${sub.title}"></a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</body>
+</html>

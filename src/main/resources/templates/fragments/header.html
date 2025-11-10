@@ -410,16 +410,32 @@
 										class="waves-effect waves-dark"> <span
 											class="pcoded-micon"><em class="ti-agenda"></em></span> <span
 											class="pcoded-mtext" data-i18n="nav.basic-components.main"
-											th:text="#{menu.inventory}"
-											></span>
-											<span class="pcoded-mcaret"></span>
+											th:text="#{menu.inventory}"></span> <span
+											class="pcoded-mcaret"></span>
 									</a>
 										<ul class="pcoded-submenu">
-											<li class=" "><a href="#" th:href="@{/stockMoves/list}"
+											<li class=" "><a href="#" th:href="@{/warehouses/list}"
 												class="waves-effect waves-dark"> <span
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
 													<span class="pcoded-mtext"
-													data-i18n="nav.basic-components.alert">Stock Moves</span> <span
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.warehouses}"></span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
+											<li class=" "><a href="#" th:href="@{/warehouse-stocks/summary}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.stock}" > </span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
+											<li class=" "><a href="#" th:href="@{/stock-movements/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.stock.movements}" > </span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
 
@@ -429,15 +445,17 @@
 										class="waves-effect waves-dark"> <span
 											class="pcoded-micon"><em class="fa fa-suitcase"></em></span>
 											<span class="pcoded-mtext"
-											data-i18n="nav.basic-components.main">Purchases</span> <span
+											data-i18n="nav.basic-components.main"
+											th:text="#{menu.purchases}"></span> <span
 											class="pcoded-mcaret"></span>
 									</a>
 										<ul class="pcoded-submenu">
-											<li class=" "><a href="accordion.html"
+											<li class=" "><a href="#" th:href="@{/purchases/list}"
 												class="waves-effect waves-dark"> <span
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
 													<span class="pcoded-mtext"
-													data-i18n="nav.basic-components.alert">Bills</span> <span
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.purchases}"></span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
 										</ul></li>

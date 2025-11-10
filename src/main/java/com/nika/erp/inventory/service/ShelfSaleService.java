@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.nika.erp.core.domain.CoreItem;
 import com.nika.erp.core.domain.CoreTaxpayerBranch;
 import com.nika.erp.core.repository.CoreItemRepository;
+import com.nika.erp.inventory.domain.EStockOperation;
+import com.nika.erp.inventory.domain.MovementType;
 import com.nika.erp.inventory.domain.Shelf;
 import com.nika.erp.inventory.domain.ShelfSale;
 import com.nika.erp.inventory.domain.Warehouse;
@@ -25,7 +27,7 @@ public class ShelfSaleService {
 
 	private final CoreItemRepository coreItemRepository;
 	private final ShelfRepository shelfRepository;
-	private final StockService stockService;
+	private final WarehouseStockService warehouseStockService;
 	private final ShelfSaleRepository shelfSaleRepository;
 
 	public Boolean createShelfSale(String shelfId, String itemId, BigDecimal quantity, BigDecimal totalPrice) {
@@ -33,10 +35,11 @@ public class ShelfSaleService {
 		CoreTaxpayerBranch branch = shelf.getBranch();
 		CoreItem item = coreItemRepository.getReferenceById(UUID.fromString(itemId));
 		Warehouse branchWarehouse = shelf.getWarehouse();
-		boolean stockDeducted = stockService.deductStock(branchWarehouse, item, quantity);
-		if (!stockDeducted) {
-			return false;
-		}
+		warehouseStockService.updateProductQuantity(branchWarehouse, item, quantity, MovementType.SALE, "SEL",
+				EStockOperation.OUT);
+		/*
+		 * if (!stockDeducted) { return false; }
+		 */
 		ShelfSale sale = new ShelfSale();
 		sale.setBranch(branch);
 		sale.setItem(item);
@@ -46,5 +49,5 @@ public class ShelfSaleService {
 		shelfSaleRepository.save(sale);
 		return true;
 	}
-	
+
 }

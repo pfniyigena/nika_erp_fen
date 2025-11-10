@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<th:block th:insert="~{fragments/header :: head}"></th:block>
+<style type="text/css">
+.flex-row {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+</style>
+</head>
+<body>
+	<th:block th:insert="~{fragments/header :: pre-loader}"></th:block>
+	<div id="pcoded" class="pcoded">
+		<div class="pcoded-overlay-box"></div>
+		<div class="pcoded-container navbar-wrapper">
+
+			<th:block th:insert="~{fragments/header :: navbar-top}"></th:block>
+
+			<div class="pcoded-main-container">
+				<div class="pcoded-wrapper">
+					<th:block th:insert="~{fragments/header :: navbar-left}"></th:block>
+
+					<div class="pcoded-content">
+
+						<div class="pcoded-inner-content">
+							<!-- Main-body start -->
+							<div class="main-body">
+								<div class="page-wrapper">
+									<!-- Page-body start -->
+									<div class="page-body">
+										<!-- Input Alignment card start -->
+										<div class="card">
+											<div class="card-header">
+												<h5 th:text="#{label.purchase.details}"></h5>
+												<a
+													th:if="${purchase.status != null and purchase.status.name() == 'DRAFT'}"
+													th:href="@{'/purchases/confirm/' + ${purchase.id}}"
+													class="btn btn-success btn-round waves-effect waves-light"
+													th:text="#{label.button.confirm}"></a> <a
+													th:if="${purchase.status != null and purchase.status.name() == 'DRAFT'}"
+													th:href="@{'/purchases/edit/' + ${purchase.id}}"
+													class="btn btn-info btn-round waves-effect waves-light"
+													th:text="#{label.button.edit}"></a> <a
+													th:if="${purchase.status != null and purchase.status.name() != 'DRAFT'}"
+													th:href="@{'/purchases/print/' + ${purchase.id}}"
+													class="btn btn-inverse btn-round waves-effect waves-light"
+													th:text="#{label.button.print}" target="_blank"></a> <a
+													th:href="@{/purchases/list}"
+													class="btn btn-danger btn-round waves-effect waves-light"
+													th:text="#{label.button.back}"></a>
+												<button type="button"
+													th:if="${purchase.status != null and purchase.status.name() == 'DRAFT'}"
+													class="btn btn-warning btn-round waves-effect waves-light"
+													data-toggle="modal" data-target="#confirmReceiveModal"
+													th:data-purchase-id="${purchase.id}">
+													<span th:text="#{label.purchase.confirm-receive}">Confirm
+														Receive</span>
+												</button>
+											</div>
+											<div class="card-block">
+												<div>
+													<h4>
+														purchase #<span th:text="${purchase.status}"></span>
+													</h4>
+													<div class="card-block table-border-style">
+														<div class="table-responsive">
+															<table class="table table-hover">
+																<thead>
+																	<tr>
+																		<th>#</th>
+																		<th>Item</th>
+																		<th>Quantity</th>
+																		<th>Unit Price</th>
+																		<th>Total</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr th:each="line, stat : ${purchase.items}">
+																		<th scope="row" th:text="${stat.index + 1}"></th>
+																		<td th:text="${line.itemName}"></td>
+																		<td th:text="${line.quantity}"></td>
+																		<td th:text="${line.purchasePrice}"></td>
+																		<td th:text="${line.quantity * line.purchasePrice}"></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+
+
+												</div>
+											</div>
+										</div>
+										<!-- Input Alignment card end -->
+
+									</div>
+									<!-- Page-body end -->
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:insert="~{fragments/header :: footer}"></th:block>
+	<div class="modal fade" id="confirmReceiveModal" tabindex="-1"
+		role="dialog">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<form th:action="@{/purchases/confirm-receive}" method="post">
+					<div class="modal-header">
+						<h4 class="modal-title">Warehouse Info</h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" id="purchaseIdInput" name="purchaseId" />
+						<div class="mb-3">
+							<label for="warehouseSelect" class="form-label">Warehouse</label>
+							<select id="warehouseSelect" name="warehouseId"
+								class="form-select" required>
+								<option value="">-- Select Warehouse --</option>
+								<option th:each="wh : ${warehouses}" th:value="${wh.id}"
+									th:text="${wh.warehouseName}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn btn-primary">Confirm</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script>
+  $('#confirmReceiveModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var purchaseId = button.data('purchase-id');
+    $(this).find('#purchaseIdInput').val(purchaseId);
+  });
+</script>
+
+</body>
+
+</html>
