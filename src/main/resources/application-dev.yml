@@ -42,7 +42,7 @@ spring:
 
 server:
   servlet:
-    context-path: /nika_erp
+    context-path: /niwe_erp
   port: 9391
   tomcat:
     max-swallow-size: 100MB
@@ -54,7 +54,7 @@ logging:
     org.springframework.web.reactive.function.client.WebClient: DEBUG
     reactor.netty.http.client: DEBUG
     root: INFO
-    wys.fen: DEBUG
+    com.niwe: DEBUG
   file:
     name: logs/app.log
   pattern:

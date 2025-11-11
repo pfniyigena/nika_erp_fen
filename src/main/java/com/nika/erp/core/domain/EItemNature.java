@@ -1,7 +1,0 @@
-
-package com.nika.erp.core.domain;
-
-public enum EItemNature {
-	ITEM_NATURE_GOOD, ITEM_NATURE_SERVICE, ITEM_NATURE_DEBOURS, ITEM_NATURE_TAXE_AFFECTEES, ITEM_NATURE_TAXE_COMMUNALE;
-
-}
