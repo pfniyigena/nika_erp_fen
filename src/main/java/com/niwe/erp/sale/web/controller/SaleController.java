@@ -14,12 +14,13 @@ import com.niwe.erp.sale.web.util.NiweErpSaleUrlConstants;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 @RequestMapping(value = NiweErpSaleUrlConstants.SALES_URL)
 @AllArgsConstructor
+@Slf4j
 public class SaleController {
 	private final SaleService saleService;
+
 
 	@GetMapping(path = "/list")
 	public String listSales(Model model) {
@@ -29,5 +30,5 @@ public class SaleController {
 		model.addAttribute("lists", list);
 		return NiweErpSaleUrlConstants.SALES_LIST_PAGE;
 	}
-
+	
 }

@@ -28,12 +28,17 @@ public class NiweErpSaleUrlConstants {
 	/**
 	 * The SHELVE_POS_FORM_PAGE
 	 */
-	public static final String SHELVE_POS_FORM_PAGE = "shelves/pos-form";
+	public static final String SHELVE_SALE_FORM_PAGE = "shelves/sale-form";
 	
 	/**
 	 * The SHELVES_OPEN_REDITECT_URL
 	 */
 	public static final String SHELVES_OPEN_REDITECT_URL = "redirect:/shelves/open/";
+	
+	/**
+	 * The SHELVE_POS_FORM_PAGE
+	 */
+	public static final String SHELVE_POS_FORM_PAGE = "shelves/pos-form";
 	
 	/**
 	 * The SALES_URL
@@ -44,4 +49,6 @@ public class NiweErpSaleUrlConstants {
 	 * The SALES_LIST_PAGE
 	 */
 	public static final String SALES_LIST_PAGE = "sales/list";
+	
+	
 }

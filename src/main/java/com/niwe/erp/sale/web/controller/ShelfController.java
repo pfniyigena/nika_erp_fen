@@ -2,15 +2,20 @@ package com.niwe.erp.sale.web.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.niwe.draft.SaleFormDraft;
+import com.niwe.erp.core.service.CoreItemService;
 import com.niwe.erp.inventory.domain.Warehouse;
 import com.niwe.erp.inventory.service.WarehouseService;
 import com.niwe.erp.sale.domain.Shelf;
@@ -29,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ShelfController {
 	private final ShelfService shelfService;
 	private final WarehouseService warehouseService;
+	private final  CoreItemService coreItemService;
 	@GetMapping(path = "/list")
 	public String listShelves(Model model) {
 
@@ -71,7 +77,7 @@ public class ShelfController {
 		shelfForm.setWarehouseName(shelf.getWarehouse().getWarehouseName());
 		shelfForm.setShelfLines(List.of(new ShelfLineForm()));
 		model.addAttribute("shelfForm", shelfForm);
-		return NiweErpSaleUrlConstants.SHELVE_POS_FORM_PAGE;
+		return NiweErpSaleUrlConstants.SHELVE_SALE_FORM_PAGE;
 	}
 	@PostMapping(path = "/post")
 	public String savePost(ShelfForm shelfForm, RedirectAttributes redirectAttributes, BindingResult bindingResult, Model model) {
@@ -82,6 +88,19 @@ public class ShelfController {
 		return NiweErpSaleUrlConstants.SHELVES_OPEN_REDITECT_URL+shelfForm.getShelfId();
 		
 	}
+	@GetMapping("/pos_sale")
+	public String showSaleFormOdoo(Model model) {
+	    model.addAttribute("saleForm", new SaleFormDraft());
+	    //model.addAttribute("customers", customerService.findAll());
+	    model.addAttribute("products", coreItemService.findAll());
+	    return NiweErpSaleUrlConstants.SHELVE_POS_FORM_PAGE;
+	}
+	@PostMapping("/checkout")
+    @ResponseBody
+    public ResponseEntity<?> checkout(@RequestBody String saleDto) {
+       log.debug("checkout:{}",saleDto);
+        return ResponseEntity.ok("success");
+    }
 	private void setData(Model model) {
 		List<Warehouse> warehouses = warehouseService.findAll();
 		model.addAttribute("warehouses", warehouses);

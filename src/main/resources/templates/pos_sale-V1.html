@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>POS Sale</title>
+
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .pos-container {
+            margin-top: 15px;
+        }
+
+        .pos-products {
+            border-right: 1px solid #dee2e6;
+            height: 80vh;
+            overflow-y: auto;
+        }
+
+        .pos-cart {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            background-color: #fff;
+        }
+
+        .product-card:hover {
+            background-color: #e8f0fe;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        .product-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .cart-items {
+            overflow-y: auto;
+            max-height: 55vh;
+        }
+
+        .cart-item {
+            border-bottom: 1px solid #dee2e6;
+            padding: 8px 0;
+        }
+
+        .cart-item .name {
+            font-weight: 600;
+        }
+
+        .cart-item .price {
+            float: right;
+            font-weight: 500;
+        }
+
+        .total-box {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .btn-pay {
+            width: 100%;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .search-bar input {
+            border-radius: 20px;
+            padding: 8px 15px;
+        }
+
+        /* Receipt area */
+        #receipt {
+            display: none;
+            width: 300px;
+            background: white;
+            color: black;
+            padding: 15px;
+            border: 1px solid #dee2e6;
+            margin: 0 auto;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #receipt, #receipt * {
+                visibility: visible;
+            }
+
+            #receipt {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid pos-container">
+    <div class="row">
+        <!-- Product List -->
+        <div class="col-md-8 pos-products">
+            <div class="search-bar mb-3">
+                <input type="text" id="searchInput" class="form-control"
+                       placeholder="Search product..." oninput="filterProducts()">
+            </div>
+
+            <div class="row" id="productGrid">
+                <div class="col-md-3 mb-3" th:each="product : ${products}">
+                    <div class="product-card"
+                         th:attr="data-id=${product.id},
+                                  data-name=${product.itemName},
+                                  data-price=${product.unitPrice}"
+                         onclick="addToCartFromElement(this)">
+                        
+                        <div class="product-name" th:text="${product.itemName}">Product</div>
+                        <div class="text-center text-primary font-weight-bold"
+                             th:text="${#numbers.formatDecimal(product.unitPrice, 1, 'POINT', 2, 'NONE')} + ' $'">0.00 $
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Section -->
+        <div class="col-md-4 pos-cart">
+            <div>
+                <h4 class="text-center text-primary font-weight-bold mb-3">Cart</h4>
+                <div class="cart-items" id="cartItems"></div>
+            </div>
+
+            <div class="border-top pt-3">
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Subtotal:</span> <span id="subtotal">0.00</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Tax (18%):</span> <span id="tax">0.00</span>
+                </div>
+                <div class="d-flex justify-content-between total-box mb-3">
+                    <span>Total:</span> <span id="total">0.00</span>
+                </div>
+
+                <button class="btn btn-success btn-pay" data-toggle="modal" data-target="#paymentModal">Pay</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Payment</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Total to Pay:</label>
+                    <input type="text" id="modalTotal" class="form-control" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Payment Method:</label>
+                    <select id="paymentMethod" class="form-control">
+                        <option value="cash">Cash</option>
+                        <option value="card">Card</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Amount Received:</label>
+                    <input type="number" id="amountReceived" class="form-control" oninput="updateChange()">
+                </div>
+                <div class="form-group">
+                    <label>Change:</label>
+                    <input type="text" id="change" class="form-control" readonly>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmPayment()">Confirm Payment</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Printable Receipt -->
+<div id="receipt">
+    <h4 class="text-center">Afritech POS Receipt</h4>
+    <hr>
+    <div id="receipt-items"></div>
+    <hr>
+    <p>Subtotal: <span id="receipt-subtotal"></span></p>
+    <p>Tax: <span id="receipt-tax"></span></p>
+    <p><strong>Total: <span id="receipt-total"></span></strong></p>
+    <p>Payment Method: <span id="receipt-method"></span></p>
+    <p>Amount Received: <span id="receipt-received"></span></p>
+    <p>Change: <span id="receipt-change"></span></p>
+    <hr>
+    <p class="text-center">Thank you for your purchase!</p>
+</div>
+
+<!-- Bootstrap + JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    let cart = [];
+
+    function addToCartFromElement(el) {
+        const id = el.getAttribute("data-id");
+        const name = el.getAttribute("data-name");
+        const price = parseFloat(el.getAttribute("data-price"));
+        addToCart(id, name, price);
+    }
+
+    function addToCart(id, name, price) {
+        const existing = cart.find(item => item.id === id);
+        if (existing) {
+            existing.qty++;
+        } else {
+            cart.push({id, name, price, qty: 1});
+        }
+        renderCart();
+    }
+
+    function renderCart() {
+        const cartItemsDiv = document.getElementById("cartItems");
+        cartItemsDiv.innerHTML = "";
+        let subtotal = 0;
+
+        cart.forEach(item => {
+            const lineTotal = item.price * item.qty;
+            subtotal += lineTotal;
+
+            const div = document.createElement("div");
+            div.classList.add("cart-item");
+            div.innerHTML = `
+                <div>
+                    <span class="name">${item.name}</span>
+                    <span class="price">${lineTotal.toFixed(2)} $</span>
+                </div>
+                <div>
+                    <input type="number" value="${item.qty}" min="1"
+                           onchange="updateQty(${item.id}, this.value)"
+                           style="width: 60px; margin-right: 10px;">
+                    <button class="btn btn-sm btn-danger" onclick="removeItem(${item.id})">x</button>
+                </div>
+            `;
+            cartItemsDiv.appendChild(div);
+        });
+
+        const tax = subtotal * 0.18;
+        const total = subtotal + tax;
+        document.getElementById("subtotal").textContent = subtotal.toFixed(2);
+        document.getElementById("tax").textContent = tax.toFixed(2);
+        document.getElementById("total").textContent = total.toFixed(2);
+        document.getElementById("modalTotal").value = total.toFixed(2);
+    }
+
+    function updateQty(id, qty) {
+        const item = cart.find(i => i.id == id);
+        if (item) item.qty = parseInt(qty);
+        renderCart();
+    }
+
+    function removeItem(id) {
+        cart = cart.filter(item => item.id != id);
+        renderCart();
+    }
+
+    function updateChange() {
+        const total = parseFloat(document.getElementById("modalTotal").value);
+        const received = parseFloat(document.getElementById("amountReceived").value || 0);
+        const change = received - total;
+        document.getElementById("change").value = change.toFixed(2);
+    }
+
+    function confirmPayment() {
+        const method = document.getElementById("paymentMethod").value;
+        const total = document.getElementById("modalTotal").value;
+        const received = document.getElementById("amountReceived").value;
+        const change = document.getElementById("change").value;
+
+        // Fill receipt
+        const receiptItemsDiv = document.getElementById("receipt-items");
+        receiptItemsDiv.innerHTML = "";
+        cart.forEach(item => {
+            const p = document.createElement("p");
+            p.textContent = `${item.name} x ${item.qty} = ${(item.price * item.qty).toFixed(2)} $`;
+            receiptItemsDiv.appendChild(p);
+        });
+
+        document.getElementById("receipt-subtotal").textContent = document.getElementById("subtotal").textContent;
+        document.getElementById("receipt-tax").textContent = document.getElementById("tax").textContent;
+        document.getElementById("receipt-total").textContent = total + " $";
+        document.getElementById("receipt-method").textContent = method;
+        document.getElementById("receipt-received").textContent = received + " $";
+        document.getElementById("receipt-change").textContent = change + " $";
+
+        $("#paymentModal").modal("hide");
+        document.getElementById("receipt").style.display = "block";
+        window.print();
+
+        // Reset cart
+        cart = [];
+        renderCart();
+        document.getElementById("receipt").style.display = "none";
+    }
+
+    function filterProducts() {
+        const input = document.getElementById("searchInput").value.toLowerCase();
+        const cards = document.querySelectorAll("#productGrid .product-card");
+        cards.forEach(card => {
+            const name = card.querySelector(".product-name").innerText.toLowerCase();
+            card.parentElement.style.display = name.includes(input) ? "" : "none";
+        });
+    }
+</script>
+</body>
+</html>
