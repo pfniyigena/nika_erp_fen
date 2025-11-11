@@ -272,6 +272,9 @@ public class Invoice extends AbstractEntity {
 	@ManyToOne
 	@JoinColumn(name = "TAXPAYER_ID", nullable = true)
 	private CoreTaxpayer taxpayer;
+	/**
+	 * The status
+	 */
 	@Column(name = "INVOICE_STATUS", nullable = true)
 	@Builder.Default
 	private InvoiceStatus status = InvoiceStatus.DRAFT;

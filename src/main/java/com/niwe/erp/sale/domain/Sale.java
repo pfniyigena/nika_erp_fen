@@ -1,10 +1,11 @@
-package com.niwe.erp.purchase.domain;
+package com.niwe.erp.sale.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.niwe.erp.common.domain.AbstractEntity;
+import com.niwe.erp.common.domain.PaymentStatus;
 import com.niwe.erp.core.domain.CoreTaxpayer;
 
 import jakarta.persistence.CascadeType;
@@ -26,11 +27,11 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
-@Table(name = "PURCHASE_PURCHASE")
+@Table(name = "SALE_SALE")
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class Purchase extends AbstractEntity {
+public class Sale extends AbstractEntity {
 	/**
 	 * The serialVersionUID
 	 */
@@ -45,44 +46,46 @@ public class Purchase extends AbstractEntity {
 	 */
 	@Column(name = "INTERNAL_CODE", nullable = false, unique = true)
 	private String internalCode;
-
 	/**
-	 * The supplierName
+	 * The customerName
 	 */
-	@Column(name = "SUPPLIER_NAME")
-	private String supplierName;
-
+	@Column(name = "CUSTOMER_NAME")
+	private String customerName;
 	/**
 	 * The confirmedBy
 	 */
 	@Column(name = "CONFIRMED_BY")
 	private String confirmedBy;
-
 	/**
-	 * The confirmedAt
+	 * The saleDate
 	 */
-	@Column(name = "CONFIRMED_AT")
-	private LocalDateTime confirmedAt;
-
-	/**
-	 * The purchaseDate
-	 */
-	@Column(name = "PURCHASE_DATE")
-	private LocalDateTime purchaseDate;
-
+	@Column(name = "SALE_DATE")
+	private LocalDateTime saleDate;
 	/**
 	 * The items
 	 */
-	@OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
 	@Builder.Default
 	@ToString.Exclude
-	private List<PurchaseItem> items = new ArrayList<>();
+	private List<SaleItem> items = new ArrayList<>();
 	/**
-	 * The received
+	 * The status
 	 */
-	@Column(name = "RECEIVED")
+	@Column(name = "SALE_STATUS", nullable = true)
 	@Builder.Default
-	private Boolean received = Boolean.FALSE; // to track if converted to received goods
+	private SaleStatus status = SaleStatus.DRAFT;
+	/**
+	 * The paymentStatus
+	 */
+	@Column(name = "PAYMENT_STATUS", nullable = true)
+	@Builder.Default
+	private PaymentStatus paymentStatus = PaymentStatus.PENDING;
+	/**
+	 * The shelf
+	 */
+	@ManyToOne
+	@JoinColumn(name = "SHELF_ID", nullable = true)
+	private Shelf shelf;
 
 	/**
 	 * The Taxpayer
@@ -90,10 +93,4 @@ public class Purchase extends AbstractEntity {
 	@ManyToOne
 	@JoinColumn(name = "TAXPAYER_ID", nullable = true)
 	private CoreTaxpayer taxpayer;
-	/**
-	 * The status
-	 */
-	@Column(name = "PURCHASE_STATUS", nullable = true)
-	@Builder.Default
-	private PurchaseStatus status = PurchaseStatus.DRAFT;
 }

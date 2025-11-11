@@ -9,6 +9,7 @@ import com.niwe.erp.common.exception.ResourceNotFoundException;
 import com.niwe.erp.common.service.SequenceNumberService;
 import com.niwe.erp.sale.domain.Shelf;
 import com.niwe.erp.sale.repository.ShelfRepository;
+import com.niwe.erp.sale.web.form.ShelfForm;
 
 import lombok.RequiredArgsConstructor;
 
@@ -52,6 +53,12 @@ public class ShelfService {
 		return shelfRepository.findById(UUID.fromString(id))
 				.orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
 
+	}
+
+	public void savePost(ShelfForm shelfForm) {
+		
+		
+		
 	}
 
 }

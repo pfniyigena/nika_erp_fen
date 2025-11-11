@@ -77,7 +77,7 @@ public class ShelfController {
 	public String savePost(ShelfForm shelfForm, RedirectAttributes redirectAttrs, BindingResult bindingResult, Model model) {
 
 		log.debug("------calling savePost:{}", shelfForm);
-		//shelfService.save(shelf);
+		shelfService.savePost(shelfForm);
 		return NiweErpSaleUrlConstants.SHELVES_OPEN_REDITECT_URL+shelfForm.getShelfId();
 		
 	}

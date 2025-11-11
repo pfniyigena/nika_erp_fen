@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 import com.niwe.erp.Customer;
-import com.niwe.erp.sale.domain.SaleStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,7 +35,4 @@ public class ShelfForm {
 	private List<ShelfLineForm> shelfLines = new ArrayList<>();
 	private BigDecimal totalAmount;
 	private BigDecimal taxAmount;
-	@Builder.Default
-	private SaleStatus status = SaleStatus.DRAFT;
-
 }
