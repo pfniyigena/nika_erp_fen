@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.niwe.erp.common.exception.ResourceNotFoundException;
 import com.niwe.erp.common.service.SequenceNumberService;
 import com.niwe.erp.core.domain.CoreItem;
 import com.niwe.erp.core.domain.CoreItemNature;
@@ -75,7 +76,9 @@ public class CoreItemService {
 	}
 
 	public CoreItem findByInternalCode(String internalCode) {
-		return coreItemRepository.findByInternalCode(internalCode);
+		return coreItemRepository.findByInternalCode(internalCode).orElseThrow(
+				() -> new ResourceNotFoundException("Product not found with internalCode: " + internalCode));
+		 
 	}
 
 	public void initItems() {
@@ -96,7 +99,7 @@ public class CoreItemService {
 		CoreItem original = findById(id);
 
 		CoreItem copy = new CoreItem(original);
-		log.info("original:{} and Copy:{}",original,copy);
+		log.info("original:{} and Copy:{}", original, copy);
 
 		return saveNew(copy);
 	}

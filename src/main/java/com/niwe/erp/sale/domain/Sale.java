@@ -1,6 +1,6 @@
 package com.niwe.erp.sale.domain;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class Sale extends AbstractEntity {
 	 * The saleDate
 	 */
 	@Column(name = "SALE_DATE")
-	private LocalDateTime saleDate;
+	private Instant saleDate;
 	/**
 	 * The items
 	 */

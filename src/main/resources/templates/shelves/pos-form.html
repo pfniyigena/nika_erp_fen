@@ -7,44 +7,42 @@
 <style>
 /* Suggestions dropdown (for both desktop and mobile) */
 .suggestions {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    max-height: 150px;
-    overflow-y: auto;
-    width: calc(100% - 16px); /* full width of the input minus padding */
-    z-index: 1000;
-    display: none; /* JS shows/hides it */
-    border-radius: 4px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+	position: absolute;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	max-height: 150px;
+	overflow-y: auto;
+	width: calc(100% - 16px); /* full width of the input minus padding */
+	z-index: 1000;
+	display: none; /* JS shows/hides it */
+	border-radius: 4px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .suggestions div {
-    padding: 6px 8px;
-    cursor: pointer;
-    font-size: 14px;
+	padding: 6px 8px;
+	cursor: pointer;
+	font-size: 14px;
 }
 
 .suggestions div:hover {
-    background-color: #f1f1f1;
+	background-color: #f1f1f1;
 }
 
 /* Mobile adjustments for stacked cards */
-@media (max-width: 768px) {
-    /* Make sure the suggestion dropdown is not cut off */
-    .card-block {
-        position: relative; /* parent relative for absolute suggestions */
-    }
-
-    #lines-table td {
-        position: relative; /* make input's parent td relative */
-    }
-
-    .suggestions {
-        width: 100%; /* match the input width inside card */
-        top: 100%;   /* position below input */
-        left: 0;
-    }
+@media ( max-width : 768px) {
+	/* Make sure the suggestion dropdown is not cut off */
+	.card-block {
+		position: relative; /* parent relative for absolute suggestions */
+	}
+	#lines-table td {
+		position: relative; /* make input's parent td relative */
+	}
+	.suggestions {
+		width: 100%; /* match the input width inside card */
+		top: 100%; /* position below input */
+		left: 0;
+	}
 }
 </style>
 
@@ -60,15 +58,35 @@
 			<div class="pcoded-main-container">
 				<div class="pcoded-wrapper">
 					<th:block th:insert="~{fragments/header :: navbar-left}"></th:block>
-
 					<div class="pcoded-content">
-
 						<div class="pcoded-inner-content">
 							<!-- Main-body start -->
 							<div class="main-body">
 								<div class="page-wrapper">
 									<!-- Page-body start -->
 									<div class="page-body">
+										<!-- Success Alert -->
+										<div th:if="${success}"
+											class="alert alert-success alert-dismissible fade show"
+											role="alert">
+											<strong th:text="${success}"> </strong>
+											<button type="button" class="close" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+
+										<!-- Error Alert -->
+										<div th:if="${error}"
+											class="alert alert-danger alert-dismissible fade show"
+											role="alert">
+											<strong th:text="${error}">An error occurred!</strong>
+											<button type="button" class="close" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+
 										<!-- Input Alignment card start -->
 										<div class="card">
 											<div class="card-header">
@@ -85,12 +103,18 @@
 													<input type="hidden" th:field="*{shelfId}" required /><br />
 													<table id="lines-table">
 														<tr>
-															<th class="font-weight-bold" th:text="#{label.general.item}">Item</th>
-															<th class="font-weight-bold" th:text="#{label.general.quantity}">Quantity</th>
-															<th class="font-weight-bold" th:text="#{label.general.unitPrice}">Unit Price</th>
-															<th class="font-weight-bold" th:text="#{label.tax.rate}">Tax Rate</th>
-															<th class="font-weight-bold" th:text="#{label.general.line.total}">Line Total</th>
-															<th class="font-weight-bold" th:text="#{label.button.actions}" >Action</th>
+															<th class="font-weight-bold"
+																th:text="#{label.general.item}">Item</th>
+															<th class="font-weight-bold"
+																th:text="#{label.general.quantity}">Quantity</th>
+															<th class="font-weight-bold"
+																th:text="#{label.general.unitPrice}">Unit Price</th>
+															<th class="font-weight-bold" th:text="#{label.tax.rate}">Tax
+																Rate</th>
+															<th class="font-weight-bold"
+																th:text="#{label.general.line.total}">Line Total</th>
+															<th class="font-weight-bold"
+																th:text="#{label.button.actions}">Action</th>
 														</tr>
 														<tr th:each="line, iterStat : *{shelfLines}">
 															<td><input type="text"
@@ -156,6 +180,9 @@
 	</div>
 	<th:block th:insert="~{fragments/header :: footer}"></th:block>
 	<script>
+	setTimeout(function() {
+	      $(".alert").alert('close');
+	    }, 1000); // 1 seconds
 	// 🔍 Auto-search
     $(document).on('keyup', '.item-search', function () {
     	 const $input = $(this);

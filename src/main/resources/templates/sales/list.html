@@ -3,7 +3,7 @@
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-<title th:text="#{label.stock.movement.list}"></title>
+<title th:text="#{label.sale.list}"></title>
 <th:block th:insert="~{fragments/header :: head}"></th:block>
 </head>
 <body>
@@ -29,11 +29,7 @@
 										<!-- Hover table card start -->
 										<div class="card">
 											<div class="card-header">
-												<h5 th:text="#{label.stock.movement.list}"></h5>
-												<a href="#" th:href="@{/warehouses/new}"
-													class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger"><em
-													class="icofont icofont-plus m-r-5"></em> </a>
-
+												<h5 th:text="#{label.sale.list}"></h5>
 											</div>
 											<div class="dt-responsive table-responsive">
 												<table id="code-type-table"
@@ -42,33 +38,27 @@
 													<caption></caption>
 													<thead>
 														<tr>
-															<th scope="col">#</th>
-															<th scope="col" th:text="#{label.general.item}"></th>
-															<th scope="col" th:text="#{label.general.warehouse}"></th>
+															<th scope="col" th:text="#{label.general.name}"></th>
 															<th scope="col" th:text="#{label.general.date}"></th>
-															<th scope="col" th:text="#{label.general.previous}"></th>
-															<th scope="col" th:text="#{label.general.affected}"></th>
-															<th scope="col" th:text="#{label.general.current}"></th>
-															<th scope="col" th:text="#{label.general.mouvement}"></th>
-															<th scope="col" th:text="#{label.general.type}"></th>
+															<th scope="col" th:text="#{label.general.status}"></th>
 															<th scope="col" th:text="#{label.button.actions}"></th>
 														</tr>
 													</thead>
 													<tbody>
-														<tr th:each="list,stat : ${lists}">
-															<th scope="row" th:text="${stat.index + 1}"></th>
-															<td th:text="${list.item.itemName}"></td>
-															<td th:text="${list.warehouse.warehouseName}"></td>
-															<td th:text="${#dates.format(list.movementDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-															<td th:text="${list.previousQuantity}"></td>
-															<td th:text="${list.quantity}"></td>
-															<td th:text="${list.currentQuantity}"></td>
-															<td th:text="${list.movementType}"></td>
-															<td th:text="${list.stockOperation}"></td>
+														<tr th:each="sale : ${lists}">
+															<td th:text="${sale.internalCode}"></td>
+															<td
+																th:text="${#dates.format(sale.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+															<td><span th:text="${sale.status}"
+																th:class="${sale.status != null} ? 
+                     (${sale.status.name()} == 'PAID' ? 'badge bg-success' : 
+                     (${sale.status.name()} == 'DONE' ? 'badge bg-warning text-dark' : 'badge bg-danger')) 
+                     : 'badge bg-secondary'">
+															</span></td>
 															<td><a href="#"
-																th:href="@{'/taxpayers/update/' + ${list.id}}"
+																th:href="@{'/sales/view/' + ${sale.id}}"
 																class="waves-effect waves-dark"><span
-																	class="pcoded-micon"><em class="fa fa-pencil"></em></span></a>
+																	class="pcoded-micon"><em class="fa fa-eye"></em></span></a>
 															</td>
 														</tr>
 

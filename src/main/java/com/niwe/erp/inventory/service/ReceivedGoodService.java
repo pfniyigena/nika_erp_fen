@@ -48,6 +48,8 @@ public class ReceivedGoodService {
 		received.setReceivedBy(receivedBy);
 		received.setWarehouse(warehouse);
 		received.setStatus(EStockReceivedStatus.RECEIVED);
+		received.setItemNumber(purchase.getItems().size());
+		int seq=1;
 		for (PurchaseItem purchaseItem : purchase.getItems()) {
 			ReceivedItem ri = new ReceivedItem();
 			ri.setItemName(purchaseItem.getItemName());
@@ -55,7 +57,9 @@ public class ReceivedGoodService {
 			ri.setQuantity(purchaseItem.getQuantity());
 			ri.setPurchasePrice(purchaseItem.getPurchasePrice());
 			ri.setReceivedGood(received);
+			ri.setItemSeq(seq);
 			received.getItems().add(ri);
+			seq++;
 		}
 		receivedGoodRepository.save(received);
 		updateProductQuantities(received);

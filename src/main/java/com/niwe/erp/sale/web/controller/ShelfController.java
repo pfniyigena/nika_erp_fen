@@ -74,10 +74,11 @@ public class ShelfController {
 		return NiweErpSaleUrlConstants.SHELVE_POS_FORM_PAGE;
 	}
 	@PostMapping(path = "/post")
-	public String savePost(ShelfForm shelfForm, RedirectAttributes redirectAttrs, BindingResult bindingResult, Model model) {
+	public String savePost(ShelfForm shelfForm, RedirectAttributes redirectAttributes, BindingResult bindingResult, Model model) {
 
 		log.debug("------calling savePost:{}", shelfForm);
 		shelfService.savePost(shelfForm);
+		redirectAttributes.addFlashAttribute("success", "Post Sale Success.");
 		return NiweErpSaleUrlConstants.SHELVES_OPEN_REDITECT_URL+shelfForm.getShelfId();
 		
 	}

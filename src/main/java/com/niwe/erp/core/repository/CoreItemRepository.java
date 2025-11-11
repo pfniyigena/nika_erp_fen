@@ -1,6 +1,7 @@
 package com.niwe.erp.core.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +12,7 @@ import com.niwe.erp.core.domain.CoreItem;
 import com.niwe.erp.invoicing.web.form.ItemForm;
 
 public interface CoreItemRepository extends JpaRepository<CoreItem, UUID> {
-	CoreItem findByInternalCode(String internalCode);
+	Optional <CoreItem> findByInternalCode(String internalCode);
 
 	List<CoreItem> findByItemNameContainingIgnoreCase(String itemName);
 

@@ -6,12 +6,12 @@ public class NiweErpSaleUrlConstants {
 	} // prevent instantiation
 
 	/**
-	 * The PURCHASES_URL
+	 * The SHELVES_URL
 	 */
 	public static final String SHELVES_URL = "shelves";
 	
 	/**
-	 * The PURCHASES_LIST_PAGE
+	 * The SHELVE_LIST_PAGE
 	 */
 	public static final String SHELVE_LIST_PAGE = "shelves/list";
 	
@@ -34,5 +34,14 @@ public class NiweErpSaleUrlConstants {
 	 * The SHELVES_OPEN_REDITECT_URL
 	 */
 	public static final String SHELVES_OPEN_REDITECT_URL = "redirect:/shelves/open/";
-
+	
+	/**
+	 * The SALES_URL
+	 */
+	public static final String SALES_URL = "sales";
+	
+	/**
+	 * The SALES_LIST_PAGE
+	 */
+	public static final String SALES_LIST_PAGE = "sales/list";
 }
