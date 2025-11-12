@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -45,5 +46,12 @@ public class CoreCountry extends AbstractEntity {
 	 */
 	@Column(name = "ENGLISH_NAME", nullable = true)
 	private String englishName;
+	
+	/**
+	 * The isDefault
+	 */
+	@Column(name = "IS_DEFAULT", nullable = false)
+	@Builder.Default
+	private Boolean isDefault=Boolean.FALSE;
 
 }

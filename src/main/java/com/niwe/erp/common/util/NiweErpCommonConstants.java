@@ -1,8 +1,8 @@
 package com.niwe.erp.common.util;
 
-public class NiweErpConstants {
+public class NiweErpCommonConstants {
 
-	private NiweErpConstants() {
+	private NiweErpCommonConstants() {
 	} // prevent instantiation
 
 	/**
@@ -53,6 +53,10 @@ public class NiweErpConstants {
 	 * The NIKA_DEFAULT_ITEM_NAME
 	 */
 	public static final String NIKA_DEFAULT_ITEM_NAME = "NIKA_DEFAULT_ITEM_NAME";
+	
+	
+	public static final int NIKA_DEFAULT_PAGE_SIZE = 2000;
+	
 
 
 }

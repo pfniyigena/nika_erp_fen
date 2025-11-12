@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<title th:text="#{label.stock.movement.list}"></title>
+<th:block th:insert="~{fragments/header :: head}"></th:block>
+</head>
+<body>
+	<th:block th:insert="~{fragments/header :: pre-loader}"></th:block>
+	<div id="pcoded" class="pcoded">
+		<div class="pcoded-overlay-box"></div>
+		<div class="pcoded-container navbar-wrapper">
+
+			<th:block th:insert="~{fragments/header :: navbar-top}"></th:block>
+
+			<div class="pcoded-main-container">
+				<div class="pcoded-wrapper">
+					<th:block th:insert="~{fragments/header :: navbar-left}"></th:block>
+
+					<div class="pcoded-content">
+						<div class="pcoded-inner-content">
+							<!-- Main-body start -->
+							<div class="main-body">
+								<div class="page-wrapper">
+									<!-- Page-body start -->
+									<div class="page-body">
+
+										<!-- Hover table card start -->
+										<div class="card">
+											<div class="card-header">
+												<h5 th:text="#{label.stock.movement.list}"></h5>
+												<a href="#" th:href="@{/warehouses/new}"
+													class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger"><em
+													class="icofont icofont-plus m-r-5"></em> </a>
+
+											</div>
+											<h3>Stock Movements by Warehouse</h3>
+											<p>
+												From <span th:text="${start}"></span> to <span
+													th:text="${end}"></span>
+											</p>
+
+											<div th:each="entry : ${groupedMovements}">
+												<h4 th:text="${entry.key.name}">Warehouse Name</h4>
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>Date</th>
+															<th>Product</th>
+															<th>SKU</th>
+															<th>Movement Type</th>
+															<th>Quantity</th>
+															<th>Reference</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="movement, iterStat : ${entry.value}">
+															<td th:text="${iterStat.count}"></td>
+															<td th:text="${movement.date}"></td>
+															<td th:text="${movement.product.name}"></td>
+															<td th:text="${movement.product.sku}"></td>
+															<td th:text="${movement.movementType}"></td>
+															<td th:text="${movement.quantity}"></td>
+															<td th:text="${movement.reference}"></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<table class="table table-striped">
+												<thead>
+													<tr>
+														<th>Warehouse</th>
+														<th>Total In</th>
+														<th>Total Out</th>
+														<th>Balance</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="summary : ${warehouseSummaries.values()}">
+														<td th:text="${summary.warehouse.name}"></td>
+														<td
+															th:text="${#numbers.formatDecimal(summary.totalIn, 1, 'COMMA', 2, 'POINT')}"></td>
+														<td
+															th:text="${#numbers.formatDecimal(summary.totalOut, 1, 'COMMA', 2, 'POINT')}"></td>
+														<td
+															th:text="${#numbers.formatDecimal(summary.balance, 1, 'COMMA', 2, 'POINT')}"></td>
+													</tr>
+												</tbody>
+											</table>
+											<h4 class="mb-3">Warehouse Stock Summary</h4>
+											<table class="table table-bordered table-sm">
+												<thead class="thead-light">
+													<tr>
+														<th>Warehouse</th>
+														<th>Total In</th>
+														<th>Total Out</th>
+														<th>Balance</th>
+														<th>Total Value</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="summary : ${warehouseSummaries.values()}">
+														<td th:text="${summary.warehouse.name}"></td>
+														<td
+															th:text="${#numbers.formatDecimal(summary.totalIn, 1, 'COMMA', 2, 'POINT')}"></td>
+														<td
+															th:text="${#numbers.formatDecimal(summary.totalOut, 1, 'COMMA', 2, 'POINT')}"></td>
+														<td
+															th:text="${#numbers.formatDecimal(summary.balance, 1, 'COMMA', 2, 'POINT')}"></td>
+														<td
+															th:text="${#numbers.formatDecimal(summary.totalValue, 1, 'COMMA', 2, 'POINT')}"></td>
+													</tr>
+												</tbody>
+											</table>
+
+
+										</div>
+
+									</div>
+									<!-- Hover table card end -->
+
+								</div>
+
+								<!-- Page-body end -->
+							</div>
+							<div id="styleSelector"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<th:block th:insert="~{fragments/header :: footer}"></th:block>
+</body>
+
+</html>

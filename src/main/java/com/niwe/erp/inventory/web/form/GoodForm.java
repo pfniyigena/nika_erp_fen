@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import com.niwe.erp.Customer;
 import com.niwe.erp.purchase.domain.PurchaseStatus;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +24,6 @@ public class GoodForm {
 	private String invoiceNumber;
 	private LocalDate invoiceDate;
 	private LocalDate dueDate;
-	private Customer customer;
 	@Builder.Default
 	private List<GoodLineForm> goodLines = new ArrayList<>();
 	private BigDecimal totalAmount;

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.niwe.erp.Customer;
 import com.niwe.erp.invoicing.domain.InvoiceStatus;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +25,6 @@ public class InvoiceForm {
 	private String invoiceNumber;
 	private LocalDate invoiceDate;
 	private LocalDate dueDate;
-	private Customer customer;
 	@Builder.Default
 	private List<InvoiceLineForm> invoiceLines = new ArrayList<>();
 	private BigDecimal totalAmount;

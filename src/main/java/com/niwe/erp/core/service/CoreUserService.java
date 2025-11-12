@@ -1,18 +1,14 @@
 package com.niwe.erp.core.service;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.niwe.erp.core.domain.CorePermission;
 import com.niwe.erp.core.domain.CoreRole;
-import com.niwe.erp.core.domain.CoreTaxpayer;
 import com.niwe.erp.core.domain.CoreUser;
 import com.niwe.erp.core.repository.CorePermissionRepository;
 import com.niwe.erp.core.repository.CoreRoleRepository;
@@ -23,14 +19,12 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class CoreUserService {
-	private final CorePermissionRepository corePermissionRepository;
 	private final CoreUserRepository coreUserRepository;
 	private final CoreRoleRepository coreRoleRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationFacade auth;
 	public CoreUserService(CorePermissionRepository corePermissionRepository, CoreUserRepository coreUserRepository,
 			CoreRoleRepository coreRoleRepository, PasswordEncoder passwordEncoder,AuthenticationFacade auth) {
-		this.corePermissionRepository = corePermissionRepository;
 		this.coreUserRepository = coreUserRepository;
 		this.coreRoleRepository = coreRoleRepository;
 		this.passwordEncoder = passwordEncoder;
@@ -74,40 +68,10 @@ public class CoreUserService {
 
 		return coreUserRepository.getReferenceById(UUID.fromString(id));
 	}
-	 @Transactional
-	public void initUser(CoreTaxpayer coreTaxpayer) {
-
-		if (coreUserRepository.findByUsername("admin").isEmpty()) {
-			initRoles();
-			CoreUser u = new CoreUser();
-			u.setUsername("admin");
-			u.setPassword(new BCryptPasswordEncoder().encode("admin"));
-			u.setFullname("System Administrator");
-			u.setEnabled(true);
-			u.setTaxpayer(coreTaxpayer);
-			coreRoleRepository.findByName("ROLE_ADMIN").ifPresent(r -> u.getRoles().add(r));
-			coreUserRepository.save(u);
-		}
-
-	}
+	 
 	 public CoreUser getCurrentUserEntity() {
 	        String username = auth.getUsername();
 	        return username == null ? null : coreUserRepository.findByUsername(username).orElse(null);
 	    }
-	private void initRoles() {
-
-		if (!coreRoleRepository.findByName("ROLE_ADMIN").isPresent()) {
-			coreRoleRepository.save(CoreRole.builder().name("ROLE_ADMIN").description("Administrator").build());
-		}
-		if (!coreRoleRepository.findByName("ROLE_USER").isPresent()) {
-			coreRoleRepository.save(CoreRole.builder().name("ROLE_USER").description("Deafult User").build());
-		}
-
-		corePermissionRepository
-				.saveAll(List.of(CorePermission.builder().name("USER_MANAGE").description("Manage users").build()));
-		CoreRole admin=coreRoleRepository.findByName("ROLE_ADMIN").get();
-		corePermissionRepository.findByName("USER_MANAGE").ifPresent(r -> admin.getPermissions().add(r));
-		coreRoleRepository.save(admin);
 	
-	}
 }

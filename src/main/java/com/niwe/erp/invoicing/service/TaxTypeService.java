@@ -21,10 +21,14 @@ import lombok.extern.slf4j.Slf4j;
 public class TaxTypeService {
 
 	private TaxTypeRepository taxTypeRepository;
-	private CoreCountryRepository  coreCountryRepository;
+	private CoreCountryRepository coreCountryRepository;
 
 	public List<TaxType> findAll() {
 		return taxTypeRepository.findAll();
+	}
+
+	List<TaxType> findByIsDefault(Boolean isDefault) {
+		return taxTypeRepository.findByIsDefault(isDefault);
 	}
 
 	public TaxType save(TaxType taxType) {
@@ -60,54 +64,44 @@ public class TaxTypeService {
 			case RWANDA: {
 
 				taxTypeRepository.saveAll(List.of(
-						TaxType.builder().taxName("A").displayName("A-EX").taxCode("A").taxValue(new BigDecimal("0.00")).displayLevel(0)
-								.build(),
-						TaxType.builder().taxName("B").displayName("B").taxCode("B").taxValue(new BigDecimal("18.00")).displayLevel(1)
-								.build(),
-						TaxType.builder().taxName("C").displayName("C").taxCode("C").taxValue(new BigDecimal("0.00")).displayLevel(2)
-								.build(),
-						TaxType.builder().taxName("D").displayName("D").taxCode("D").taxValue(new BigDecimal("0.00")).displayLevel(3)
-								.build()));
-				coreCountryRepository.save(CoreCountry.builder().code(fiscalYear.name())
-						.displayName(fiscalYear.name())
-						.englishName(fiscalYear.name())
-						.frenchName(fiscalYear.name())
-						.build())	;	
+						TaxType.builder().taxName("A").displayName("A-EX").taxCode("A").taxValue(new BigDecimal("0.00")).isDefault(Boolean.FALSE)
+								.displayLevel(0).build(),
+						TaxType.builder().taxName("B").displayName("B").taxCode("B").taxValue(new BigDecimal("18.00")).isDefault(Boolean.TRUE)
+								.displayLevel(1).build(),
+						TaxType.builder().taxName("C").displayName("C").taxCode("C").taxValue(new BigDecimal("0.00")).isDefault(Boolean.FALSE)
+								.displayLevel(2).build(),
+						TaxType.builder().taxName("D").displayName("D").taxCode("D").taxValue(new BigDecimal("0.00")).isDefault(Boolean.FALSE)
+								.displayLevel(3).build()));
+				coreCountryRepository.save(CoreCountry.builder().code("RW").displayName(fiscalYear.name())
+						.englishName(fiscalYear.name()).frenchName(fiscalYear.name()).isDefault(Boolean.TRUE).build());
 
 				break;
 			}
 			case CHAD: {
 				taxTypeRepository.saveAll(List.of(
-						TaxType.builder().taxName("EX").displayName("Exonere").taxCode("EX")
-								.taxValue(new BigDecimal("0.00")).displayLevel(0)  .build(),
-						TaxType.builder().taxName("TN").displayName("Taux Normal").taxCode("TN")
-								.taxValue(new BigDecimal("19.25")).displayLevel(1) .build(),
-						TaxType.builder().taxName("TR").displayName("Taux Reduit").taxCode("TR")
-								.taxValue(new BigDecimal("9.9")).displayLevel(2)  .build(),
-						TaxType.builder().taxName("XP").displayName("Exportation").taxCode("XP")
-								.taxValue(new BigDecimal("0.00")).displayLevel(3) .build(),
-						TaxType.builder().taxName("NA").displayName("Non assugetti").taxCode("NA")
-								.taxValue(new BigDecimal("0.00")).displayLevel(4) .build()));
+						TaxType.builder().taxName("EX").displayName("Exonere").taxCode("EX").isDefault(Boolean.FALSE)
+								.taxValue(new BigDecimal("0.00")).displayLevel(0).build(),
+						TaxType.builder().taxName("TN").displayName("Taux Normal").taxCode("TN").isDefault(Boolean.FALSE)
+								.taxValue(new BigDecimal("19.25")).displayLevel(1).build(),
+						TaxType.builder().taxName("TR").displayName("Taux Reduit").taxCode("TR").isDefault(Boolean.TRUE)
+								.taxValue(new BigDecimal("9.9")).displayLevel(2).build(),
+						TaxType.builder().taxName("XP").displayName("Exportation").taxCode("XP").isDefault(Boolean.FALSE)
+								.taxValue(new BigDecimal("0.00")).displayLevel(3).build(),
+						TaxType.builder().taxName("NA").displayName("Non assugetti").taxCode("NA").isDefault(Boolean.FALSE)
+								.taxValue(new BigDecimal("0.00")).displayLevel(4).build()));
 
-				coreCountryRepository.save(CoreCountry.builder().code(fiscalYear.name())
-						.displayName(fiscalYear.name())
-						.englishName(fiscalYear.name())
-						.frenchName(fiscalYear.name())
-						.build())	;	
+				coreCountryRepository.save(CoreCountry.builder().code("TD").displayName(fiscalYear.name())
+						.englishName(fiscalYear.name()).frenchName(fiscalYear.name()).isDefault(Boolean.TRUE).build());
 				break;
 			}
 			case GENERAL: {
 				taxTypeRepository.saveAll(List.of(
-						TaxType.builder().taxName("A").displayName("A-EX").taxCode("A").taxValue(new BigDecimal("0.00")).displayLevel(0)
-								.build(),
-						TaxType.builder().taxName("VAT").displayName("VAT").taxCode("VAT")
-								.taxValue(new BigDecimal("18.00")).displayLevel(1)  .build()));
-
-				coreCountryRepository.save(CoreCountry.builder().code(fiscalYear.name())
-						.displayName(fiscalYear.name())
-						.englishName(fiscalYear.name())
-						.frenchName(fiscalYear.name())
-						.build())	;	
+						TaxType.builder().taxName("A").displayName("A-EX").taxCode("A").taxValue(new BigDecimal("0.00"))
+								.displayLevel(0).isDefault(Boolean.FALSE).build(),
+						TaxType.builder().taxName("VAT").displayName("VAT").taxCode("VAT").isDefault(Boolean.TRUE)
+								.taxValue(new BigDecimal("18.00")).displayLevel(1).build()));
+				coreCountryRepository.save(CoreCountry.builder().code("RW").displayName(fiscalYear.name())
+						.englishName(fiscalYear.name()).frenchName(fiscalYear.name()).isDefault(Boolean.TRUE).build());
 				break;
 			}
 			default:

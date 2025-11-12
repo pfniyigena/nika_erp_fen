@@ -102,4 +102,11 @@ public class CoreTaxpayer extends AbstractEntity {
 	@Column(name = "USE_INVOICE", nullable = false)
 	@Builder.Default
 	private Boolean useInventory = Boolean.FALSE;
+	
+	/**
+	 * The isDefault
+	 */
+	@Column(name = "IS_DEFAULT", nullable = false)
+	@Builder.Default
+	private Boolean isDefault=Boolean.FALSE;
 }

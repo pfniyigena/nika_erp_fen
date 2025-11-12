@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.niwe.draft.SaleFormDraft;
 import com.niwe.erp.core.service.CoreItemService;
 import com.niwe.erp.inventory.domain.Warehouse;
 import com.niwe.erp.inventory.service.WarehouseService;
@@ -90,7 +88,7 @@ public class ShelfController {
 	}
 	@GetMapping("/pos_sale")
 	public String showSaleFormOdoo(Model model) {
-	    model.addAttribute("saleForm", new SaleFormDraft());
+	    model.addAttribute("saleForm", new ShelfForm());
 	    //model.addAttribute("customers", customerService.findAll());
 	    model.addAttribute("products", coreItemService.findAll());
 	    return NiweErpSaleUrlConstants.SHELVE_POS_FORM_PAGE;

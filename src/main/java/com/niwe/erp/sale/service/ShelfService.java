@@ -69,7 +69,7 @@ public class ShelfService {
 	public Shelf findById(String id) {
 
 		return shelfRepository.findById(UUID.fromString(id))
-				.orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
+				.orElseThrow(() -> new ResourceNotFoundException("Shelf not found with id " + id));
 
 	}
 

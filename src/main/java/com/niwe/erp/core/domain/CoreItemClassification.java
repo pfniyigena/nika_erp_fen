@@ -8,6 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -58,15 +59,16 @@ public class CoreItemClassification extends AbstractEntity {
 	@Column(name = "DESCRIPTION", nullable = true)
 	private String description;
 	/**
-	 * The hierarchy
-	 */
-	@Column(name = "HIERARCHY", nullable = false)
-	private String hierarchy;
-	/**
 	 * The parent
 	 */
 	@ManyToOne
 	@JoinColumn(name = "PARENT_ID", nullable = true)
 	private CoreItemClassification parent;
-
+	
+	/**
+	 * The isDefault
+	 */
+	@Column(name = "IS_DEFAULT", nullable = false)
+	@Builder.Default
+	private Boolean isDefault=Boolean.FALSE;
 }

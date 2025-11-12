@@ -1,0 +1,111 @@
+package com.niwe.erp.core.helper;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
+
+import com.niwe.erp.core.domain.CorePermission;
+import com.niwe.erp.core.domain.CoreRole;
+import com.niwe.erp.core.domain.CoreUser;
+import com.niwe.erp.core.repository.CorePermissionRepository;
+import com.niwe.erp.core.repository.CoreRoleRepository;
+import com.niwe.erp.core.repository.CoreUserRepository;
+import com.niwe.erp.core.service.CoreTaxpayerService;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.metamodel.EntityType;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@RequiredArgsConstructor
+@Slf4j
+public class SecurityDataInitializer implements ApplicationRunner {
+
+	private final EntityManager entityManager;
+	private final CorePermissionRepository permissionRepository;
+	private final CoreRoleRepository roleRepository;
+	private final CoreUserRepository coreUserRepository;
+	private final CoreTaxpayerService coreTaxpayerService;
+
+	private static final List<String> CRUD_ACTIONS = List.of("CREATE", "READ", "UPDATE", "DELETE");
+	private static final String ROLE_ADMIN = "ROLE_ADMIN";
+	private static final String ROLE_USER = "ROLE_USER";
+
+	@Override
+	@Transactional
+	public void run(ApplicationArguments args) {
+		coreTaxpayerService.initTaxpayer();
+		// 1) discover entity names from JPA metamodel
+		Set<EntityType<?>> entities = entityManager.getMetamodel().getEntities();
+
+		// Normalize entity names (simple names)
+		Set<String> entityNames = entities.stream().map(et -> et.getJavaType().getSimpleName()).filter(Objects::nonNull)
+				.collect(Collectors.toSet());
+
+		// 2) build expected permission names
+		Set<String> expectedPermissionNames = entityNames.stream()
+				.flatMap(name -> CRUD_ACTIONS.stream().map(action -> name.toUpperCase() + "_" + action))
+				.collect(Collectors.toSet());
+
+		// 3) create missing permissions in DB
+		// Load existing ones to avoid duplicates
+		List<CorePermission> existing = permissionRepository.findAllByNameIn(expectedPermissionNames);
+		Set<String> existingNames = existing.stream().map(CorePermission::getName).collect(Collectors.toSet());
+
+		List<CorePermission> toCreate = expectedPermissionNames.stream().filter(name -> !existingNames.contains(name))
+				.map(name -> new CorePermission(name, "Auto-generated permission: " + name)).toList();
+
+		if (!toCreate.isEmpty()) {
+			permissionRepository.saveAll(toCreate);
+		}
+
+		// reload all relevant permissions
+		List<CorePermission> allPermissions = permissionRepository.findAllByNameIn(expectedPermissionNames);
+		Map<String, CorePermission> permissionMap = allPermissions.stream()
+				.collect(Collectors.toMap(CorePermission::getName, Function.identity()));
+
+		// 4) ensure default roles exist
+		CoreRole admin = roleRepository.findByName(ROLE_ADMIN).orElseGet(
+				() -> roleRepository.save(CoreRole.builder().name(ROLE_ADMIN).description(ROLE_ADMIN).build()));
+		CoreRole user = roleRepository.findByName(ROLE_USER).orElseGet(
+				() -> roleRepository.save(CoreRole.builder().name(ROLE_USER).description(ROLE_USER).build()));
+
+		// 5) assign permissions:
+		// ADMIN -> all permissions
+		Set<CorePermission> adminPerms = new HashSet<>(permissionMap.values());
+		admin.setPermissions(adminPerms);
+		roleRepository.save(admin);
+
+		// USER -> only READ permissions
+		Set<CorePermission> userPerms = permissionMap.keySet().stream().filter(n -> n.endsWith("_READ"))
+				.map(permissionMap::get).collect(Collectors.toSet());
+		user.setPermissions(userPerms);
+		roleRepository.save(user);
+
+		if (coreUserRepository.findByUsername("admin").isEmpty()) {
+			CoreUser u = new CoreUser();
+			u.setUsername("admin");
+			u.setPassword(new BCryptPasswordEncoder().encode("admin"));
+			u.setFullname("System Administrator");
+			u.setEnabled(true);
+			roleRepository.findByName("ROLE_ADMIN").ifPresent(r -> u.getRoles().add(r));
+			coreUserRepository.save(u);
+		}
+		// Log summary
+		log.debug("Seeded {} permissions.", permissionMap.size());
+		log.debug("Role {} has {} permissions.",ROLE_ADMIN,admin.getPermissions().size());
+		log.debug("Role {} has {} permissions.",ROLE_USER,user.getPermissions().size());
+	
+	}
+}

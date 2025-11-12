@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.niwe.erp.inventory.domain.WarehouseStock;
 import com.niwe.erp.inventory.service.WarehouseStockService;
 import com.niwe.erp.inventory.web.dto.ProductStockSummaryDto;
+import com.niwe.erp.inventory.web.dto.WarehouseStockDetailDto;
 import com.niwe.erp.inventory.web.util.NikaErpInventoryUrlConstants;
 
 import lombok.AllArgsConstructor;
@@ -51,5 +52,12 @@ public class WarehouseStockController {
 		model.addAttribute("details", details);
 		return NikaErpInventoryUrlConstants.WAREHOUSE_STOCKS_VIEW_FORM;
 	}
+	// Warehouse details view for a product
+    @GetMapping("/details/{productId}")
+    public String showWarehouseDetails(@PathVariable String productId, Model model) {
+        List<WarehouseStockDetailDto> details = warehouseStockService.getWarehouseStockDetails(productId);
+        model.addAttribute("details", details);
+        return "inventory/details";
+    }
 
 }

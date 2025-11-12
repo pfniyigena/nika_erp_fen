@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.niwe.erp.Customer;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +28,6 @@ public class ShelfForm {
 	private String invoiceNumber;
 	private LocalDate invoiceDate;
 	private LocalDate dueDate;
-	private Customer customer;
 	@Builder.Default
 	private List<ShelfLineForm> shelfLines = new ArrayList<>();
 	private BigDecimal totalAmount;

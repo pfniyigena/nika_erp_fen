@@ -22,6 +22,10 @@ public class CoreItemNatureService {
 		return coreItemNatureRepository.findAll();
 	}
 
+	List<CoreItemNature> findByIsDefault(Boolean isDefault) {
+		return coreItemNatureRepository.findByIsDefault(isDefault);
+	}
+
 	public CoreItemNature findById(String id) {
 		return coreItemNatureRepository.getReferenceById(UUID.fromString(id));
 	}

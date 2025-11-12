@@ -15,6 +15,7 @@ import com.niwe.erp.core.domain.CoreItem;
 import com.niwe.erp.core.domain.CoreTaxpayer;
 import com.niwe.erp.core.domain.CoreTaxpayerBranch;
 import com.niwe.erp.core.repository.CoreTaxpayerBranchRepository;
+import com.niwe.erp.core.service.CoreItemService;
 import com.niwe.erp.inventory.domain.EStockOperation;
 import com.niwe.erp.inventory.domain.MovementType;
 import com.niwe.erp.inventory.domain.StockMovement;
@@ -24,6 +25,7 @@ import com.niwe.erp.inventory.repository.StockMovementRepository;
 import com.niwe.erp.inventory.repository.WarehouseRepository;
 import com.niwe.erp.inventory.repository.WarehouseStockRepository;
 import com.niwe.erp.inventory.web.dto.ProductStockSummaryDto;
+import com.niwe.erp.inventory.web.dto.WarehouseStockDetailDto;
 import com.niwe.erp.sale.domain.Shelf;
 import com.niwe.erp.sale.repository.ShelfRepository;
 
@@ -41,6 +43,7 @@ public class WarehouseStockService {
 	private final WarehouseStockRepository warehouseStockRepository;
 	private final ShelfRepository shelfRepository;
 	private final StockMovementRepository stockMovementRepository;
+	private final CoreItemService coreItemService;
 
 	@Transactional
 	public void initiateInventory(CoreTaxpayer taxpayer) {
@@ -57,6 +60,8 @@ public class WarehouseStockService {
 							.branch(branches.get(0)).isMain(true).build());
 			shelfRepository.save(Shelf.builder().internalCode(sequenceNumberService.getNextShelfCode())
 					.warehouse(warehouse).name("MAIN POS").description("MAIN POS").build());
+
+			coreItemService.initItems();
 
 		} catch (Exception e) {
 			log.error("InitiateInventory:{}", e);
@@ -119,34 +124,27 @@ public class WarehouseStockService {
 	public List<WarehouseStock> findAll() {
 		return warehouseStockRepository.findAll();
 	}
-	
+
 	public List<WarehouseStock> getStockByProduct(UUID itemId) {
-        return warehouseStockRepository.findByItemId(itemId);
-    }
-	
-
-	public List<ProductStockSummaryDto> getStockSummary() {
-	    List<WarehouseStock> stocks = warehouseStockRepository.findAll();
-
-	    Map<CoreItem, BigDecimal> totalByProduct = stocks.stream()
-	            .collect(Collectors.groupingBy(
-	                    WarehouseStock::getItem,
-	                    Collectors.reducing(
-	                            BigDecimal.ZERO,
-	                            s -> s.getQuantity(), // getter returning BigDecimal
-	                            BigDecimal::add
-	                    )
-	            ));
-
-	    return totalByProduct.entrySet().stream()
-	            .map(e -> new ProductStockSummaryDto(
-	                    e.getKey().getId(),
-	                    e.getKey().getItemCode(),
-	                    e.getKey().getItemName(),
-	                    e.getValue()
-	            ))
-	            .toList();
+		return warehouseStockRepository.findByItemId(itemId);
 	}
 
+	public List<ProductStockSummaryDto> getStockSummary() {
+		List<WarehouseStock> stocks = warehouseStockRepository.findAll();
+
+		Map<CoreItem, BigDecimal> totalByProduct = stocks.stream()
+				.collect(Collectors.groupingBy(WarehouseStock::getItem,
+						Collectors.reducing(BigDecimal.ZERO, s -> s.getQuantity(), // getter returning BigDecimal
+								BigDecimal::add)));
+
+		return totalByProduct.entrySet().stream().map(e -> new ProductStockSummaryDto(e.getKey().getId(),
+				e.getKey().getItemCode(), e.getKey().getItemName(), e.getValue())).toList();
+	}
+
+	public List<WarehouseStockDetailDto> getWarehouseStockDetails(String productId) {
+		List<WarehouseStock> stocks = warehouseStockRepository.findByItemId(UUID.fromString(productId));
+		return stocks.stream().map(s -> new WarehouseStockDetailDto(s.getWarehouse().getWarehouseName(),
+				s.getQuantity(), s.getModifiedAt())).toList();
+	}
 
 }

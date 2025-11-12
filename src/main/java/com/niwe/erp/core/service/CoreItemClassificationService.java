@@ -54,7 +54,6 @@ public class CoreItemClassificationService {
 			exist.setDisplayName(classification.getDisplayName());
 			exist.setEnglishName(classification.getEnglishName());
 			exist.setFrenchName(classification.getFrenchName());
-			exist.setHierarchy(classification.getHierarchy());
 			return coreItemClassificationRepository.save(exist);
 		}
 		return coreItemClassificationRepository.save(classification);

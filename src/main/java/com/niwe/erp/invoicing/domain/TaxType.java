@@ -62,6 +62,11 @@ public class TaxType extends AbstractEntity {
 	@Builder.Default
 	private Integer displayLevel=0;
 
-
+	/**
+	 * The isDefault
+	 */
+	@Column(name = "IS_DEFAULT", nullable = false)
+	@Builder.Default
+	private Boolean isDefault=Boolean.FALSE;
 
 }
