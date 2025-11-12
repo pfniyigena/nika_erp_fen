@@ -4,19 +4,19 @@
 
 <head>
 <title th:text="#{label.item.list}"></title>
-<th:block th:include="fragments/header :: head"></th:block>
+<th:block th:insert="~{fragments/header :: head}"></th:block>
 </head>
 <body>
-	<th:block th:include="fragments/header :: pre-loader"></th:block>
+	<th:block th:insert="~{fragments/header :: pre-loader}"></th:block>
 	<div id="pcoded" class="pcoded">
 		<div class="pcoded-overlay-box"></div>
 		<div class="pcoded-container navbar-wrapper">
 
-			<th:block th:include="fragments/header :: navbar-top"></th:block>
+			<th:block th:insert="~{fragments/header :: navbar-top}"></th:block>
 
 			<div class="pcoded-main-container">
 				<div class="pcoded-wrapper">
-					<th:block th:include="fragments/header :: navbar-left"></th:block>
+					<th:block th:insert="~{fragments/header :: navbar-left}"></th:block>
 
 					<div class="pcoded-content">
 						<div class="pcoded-inner-content">
@@ -46,7 +46,7 @@
 																		type="submit">
 																		<i class="fa fa-search"></i> Search
 																	</button>
-																	<a th:href="@{/items/lists}"
+																	<a th:href="@{/items/list}"
 																		class="btn btn-secondary btn-sm waves-effect waves-light">
 																		<i class="fa fa-times"></i> Reset
 																	</a>
@@ -101,7 +101,7 @@
 															<td><a href="#" data-toggle="modal"
 																data-target="#updatePriceModal" th:data-id="${list.id}"
 																th:data-type="'cost'" th:data-value="${list.unitCost}"
-																class="text-warning open-update-modal"> <span
+																class="text-success open-update-modal"> <span
 																	th:text="${list.unitCost}"></span>
 															</a></td>
 															<td><a href="#"
@@ -131,7 +131,7 @@
 		</div>
 
 	</div>
-	<th:block th:include="fragments/header :: footer"></th:block>
+	<th:block th:insert="~{fragments/header :: footer}"></th:block>
 	<div class="modal fade" id="updatePriceModal" tabindex="-1"
 		role="dialog">
 		<div class="modal-dialog modal-sm" role="document">

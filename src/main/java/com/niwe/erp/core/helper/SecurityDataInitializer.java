@@ -102,6 +102,15 @@ public class SecurityDataInitializer implements ApplicationRunner {
 			roleRepository.findByName("ROLE_ADMIN").ifPresent(r -> u.getRoles().add(r));
 			coreUserRepository.save(u);
 		}
+		if (coreUserRepository.findByUsername("user").isEmpty()) {
+			CoreUser u = new CoreUser();
+			u.setUsername("user");
+			u.setPassword(new BCryptPasswordEncoder().encode("user"));
+			u.setFullname("System Administrator");
+			u.setEnabled(true);
+			roleRepository.findByName("ROLE_USER").ifPresent(r -> u.getRoles().add(r));
+			coreUserRepository.save(u);
+		}
 		// Log summary
 		log.debug("Seeded {} permissions.", permissionMap.size());
 		log.debug("Role {} has {} permissions.",ROLE_ADMIN,admin.getPermissions().size());

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +26,7 @@ import com.niwe.erp.core.service.CoreItemNatureService;
 import com.niwe.erp.core.service.CoreItemService;
 import com.niwe.erp.core.service.CoreQuantityUnitService;
 import com.niwe.erp.core.service.CoreTaxpayerService;
+import com.niwe.erp.core.uti.annotation.CanManageItems;
 import com.niwe.erp.core.web.util.NiweErpCoreUrlConstants;
 import com.niwe.erp.invoicing.service.TaxTypeService;
 import com.niwe.erp.invoicing.web.form.ItemForm;
@@ -63,14 +65,14 @@ public class CoreItemController {
 		model.addAttribute("lists", list.getContent());
 		return NiweErpCoreUrlConstants.ITEMS_LIST_PAGE;
 	}
-
+	@CanManageItems
 	@GetMapping(path = "/new")
 	public String newItem(Model model) {
 		model.addAttribute("item", CoreItem.builder().build());
 		setData(model);
 		return NiweErpCoreUrlConstants.ITEMS_ADD_FORM_PAGE;
 	}
-
+	@PreAuthorize("hasAnyAuthority('COREITEM_CREATE', 'COREITEM_UPDATE')")
 	@PostMapping(path = "/new")
 	public String saveItem(CoreItem item, RedirectAttributes redirectAttrs, BindingResult bindingResult, Model model) {
 

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<title th:text="#{label.error.page}"></title>
+<th:block th:insert="~{fragments/header :: head}"></th:block>
+</head>
+<body>
+	<th:block th:insert="~{fragments/header :: pre-loader}"></th:block>
+	<div id="pcoded" class="pcoded">
+		<div class="pcoded-overlay-box"></div>
+		<div class="pcoded-container navbar-wrapper">
+			<th:block th:insert="~{fragments/header :: navbar-top}"></th:block>
+			<div class="pcoded-main-container">
+				<div class="pcoded-wrapper">
+					<th:block th:insert="~{fragments/header :: navbar-left}"></th:block>
+					<div class="pcoded-content">
+						<!-- Page-header start -->
+						<div class="page-header">
+							<div class="page-block">
+								<div class="row align-items-center">
+									<div class="col-md-8">
+										<div class="page-header-title">
+											<h5 class="m-b-10">
+												<span th:text="#{dashboard.title}"></span>
+											</h5>
+											<p class="m-b-0">
+												Welcome <span th:text="#{dashboard.title}"></span>
+											</p>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<ul class="breadcrumb-title">
+											<li class="breadcrumb-item"><a href="#" th:href="@{/}">
+													<em class="fa fa-home"></em>
+											</a></li>
+											<li class="breadcrumb-item"><a href="#" th:href="@{/}">Dashboard</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Page-header end -->
+						<div class="pcoded-inner-content">
+							<!-- Main-body start -->
+							<div class="main-body">
+								<div class="page-wrapper">
+									<!-- Page-body start -->
+									<div class="page-body">
+										<div class="row">
+											<!-- Page-col start -->
+											<div class="col-xl-12">
+												<!-- To Do Card List card start -->
+												<div class="card">
+													<div class="alert alert-danger shadow-sm">
+														<h3 class="mb-3">🚫 404 Page not Found</h3>
+														<p th:text="${errorMessage}">Sorry, the page you are looking for does not exist or was moved.</p>
+														<a th:href="@{/}" class="btn btn-primary mt-3">Return
+															to Home</a>
+													</div>
+												</div>
+											</div>
+										</div>
+
+
+									</div>
+									<!-- Page-body end -->
+								</div>
+								<div id="styleSelector"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:insert="~{fragments/header :: footer}"></th:block>
+</body>
+
+</html>
