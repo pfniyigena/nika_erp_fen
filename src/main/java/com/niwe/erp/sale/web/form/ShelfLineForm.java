@@ -17,10 +17,10 @@ import lombok.experimental.SuperBuilder;
 public class ShelfLineForm {
 	private String id;
 	private String itemName;
-	private String itemCode;
+	private String internalCode;
 	private String taxCode;
 	@Builder.Default
-	private BigDecimal taxType = BigDecimal.ZERO;
+	private BigDecimal taxValue = BigDecimal.ZERO;
 	@Builder.Default
 	private BigDecimal quantity = BigDecimal.ZERO;
 	@Builder.Default

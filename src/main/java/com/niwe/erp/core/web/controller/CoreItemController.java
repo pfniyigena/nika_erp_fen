@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.niwe.erp.common.util.NiweErpCommonConstants;
 import com.niwe.erp.core.domain.CoreItem;
+import com.niwe.erp.core.form.CoreItemForm;
 import com.niwe.erp.core.service.CoreCountryService;
 import com.niwe.erp.core.service.CoreItemClassificationService;
 import com.niwe.erp.core.service.CoreItemNatureService;
@@ -27,9 +28,9 @@ import com.niwe.erp.core.service.CoreItemService;
 import com.niwe.erp.core.service.CoreQuantityUnitService;
 import com.niwe.erp.core.service.CoreTaxpayerService;
 import com.niwe.erp.core.uti.annotation.CanManageItems;
+import com.niwe.erp.core.view.CoreItemListView;
 import com.niwe.erp.core.web.util.NiweErpCoreUrlConstants;
 import com.niwe.erp.invoicing.service.TaxTypeService;
-import com.niwe.erp.invoicing.web.form.ItemForm;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,14 @@ public class CoreItemController {
 	private final TaxTypeService taxTypeService;
 	private final CoreTaxpayerService coreTaxpayerService;
 
+	@GetMapping(path = "/list")
+	public String listItems(Model model) {
+
+		List<CoreItemForm> list = coreItemService.findAllAsForm();
+		log.debug("--------------Calling listItems-------------------" + list.size());
+		model.addAttribute("lists", list);
+		return NiweErpCoreUrlConstants.ITEMS_LIST_PAGE;
+	}
 	@GetMapping(path = "/list/v2")
 	public String listItemsV2(Model model) {
 
@@ -56,8 +65,8 @@ public class CoreItemController {
 		return NiweErpCoreUrlConstants.ITEMS_LIST_PAGE;
 	}
 
-	@GetMapping(path = "/list")
-	public String listItems(Model model) {
+	@GetMapping(path = "/list/v3")
+	public String listItemsV3(Model model) {
 
 		int page = 0;
 		int size = NiweErpCommonConstants.NIKA_DEFAULT_PAGE_SIZE;
@@ -89,7 +98,14 @@ public class CoreItemController {
 		setData(model);
 		return NiweErpCoreUrlConstants.ITEMS_ADD_FORM_PAGE;
 	}
+	@GetMapping(path = "/view/{id}")
+	public String viewItemInfo(@PathVariable String id, Model model) {
+		CoreItem item = coreItemService.findById(id);
 
+		model.addAttribute("item", item);
+		setData(model);
+		return NiweErpCoreUrlConstants.ITEMS_VIEW_FORM_PAGE;
+	}
 	@GetMapping(path = "/duplicate/{id}")
 	public String duplicate(@PathVariable String id, Model model) {
 		CoreItem item = coreItemService.duplicate(id);
@@ -100,7 +116,7 @@ public class CoreItemController {
 
 	@ResponseBody
 	@GetMapping("/search")
-	public List<ItemForm> searchItems(@RequestParam String query) {
+	public List<CoreItemForm> searchItems(@RequestParam String query) {
 		log.info("searchItems:{}", query);
 		return coreItemService.findAllAsFormByItemNameContainingIgnoreCase(query);
 	}
@@ -137,7 +153,26 @@ public class CoreItemController {
 		coreItemService.updateUnitPriceOrUnitCost(id,type,value);
 		return NiweErpCoreUrlConstants.ITEMS_LIST_REDITECT_URL;
 	}
+	@GetMapping("/page")
+    public String listItems(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "itemName") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDir,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String code,
+            Model model) {
 
+        Page<CoreItemListView> itemsPage = coreItemService.getItems(page, size, sortBy, sortDir, name, code);
+        model.addAttribute("itemsPage", itemsPage);
+        model.addAttribute("name", name);
+        model.addAttribute("code", code);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDir", sortDir);
+
+        return "items/page";
+    }
+	
 	public void setData(Model model) {
 		model.addAttribute("countries", coreCountryService.findAll());
 		model.addAttribute("classifications", coreItemClassificationService.findAll());

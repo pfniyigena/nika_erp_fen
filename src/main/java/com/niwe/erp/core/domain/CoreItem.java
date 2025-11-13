@@ -1,14 +1,18 @@
 package com.niwe.erp.core.domain;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import com.niwe.erp.common.domain.AbstractEntity;
 import com.niwe.erp.invoicing.domain.TaxType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -84,38 +88,39 @@ public class CoreItem  extends AbstractEntity {
 	/**
 	 * The 	itemNature
 	 */
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ITEM_NATURE_ID")
 	private CoreItemNature nature;
 	/**
 	 * The classification
 	 */
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ITEM_CLASSIFICATION_ID")
 	private CoreItemClassification classification;
 	
 	/**
 	 * The taxpayer
 	 */
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "QUANTITY_UNIT_ID", nullable = true)
 	private CoreQuantityUnit unit;
+
+
 	/**
-	 * The irpp
+	 * The country
 	 */
-	@Column(name = "IRPP", nullable = true)
-	@Builder.Default
-	private Boolean irpp = Boolean.FALSE;
-	/**
-	 * The taxpayer
-	 */
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "COUNTY_ID", nullable = true)
 	private CoreCountry country;
 	
 	/**
 	 * The taxpayer
 	 */
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TAXPAYER_ID", nullable = true)
 	private CoreTaxpayer taxpayer;
+	@Column(name = "LAST_UPDATED")
+    private LocalDateTime lastUpdated;
 	
 	// Copy constructor
     public CoreItem(CoreItem copy) {
@@ -125,12 +130,15 @@ public class CoreItem  extends AbstractEntity {
         this.unitPrice=copy.getUnitPrice();
         this.unitCost=copy.getUnitCost();
         this.nature=copy.getNature();
-        this.irpp=copy.getIrpp();
         this.unit=copy.getUnit();
         this.country=copy.getCountry();
         this.taxpayer=copy.getTaxpayer();
         this.tax=copy.getTax();
         
     }
-
+    @PrePersist
+    @PreUpdate
+    public void updateTimestamp() {
+        this.lastUpdated = LocalDateTime.now();
+    }
 }

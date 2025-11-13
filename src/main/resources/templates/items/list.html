@@ -28,44 +28,62 @@
 
 										<!-- Hover table card start -->
 										<div class="card">
-											<div class="card-header">
-												<h5 th:text="#{label.item.list}"></h5>
-												<div class="row justify-content-center mb-3">
-													<div class="col-md-6 col-sm-8">
+											<div class="card-header py-2">
+												<div
+													class="d-flex justify-content-between align-items-center flex-wrap">
+													<h5 class="mb-0" th:text="#{label.item.list}"></h5>
+
+													<div class="d-flex flex-wrap align-items-center gap-2">
+														<!-- Search Form -->
 														<form th:action="@{/items/filter}" method="get"
-															class="form-inline justify-content-center">
-															<div class="input-group w-100">
+															class="form-inline align-items-center mr-2">
+															<div class="input-group input-group-sm">
 																<input type="text" name="searchTerm"
 																	th:value="${searchTerm}"
 																	class="form-control form-control-sm"
-																	placeholder="Search by name, code, or barcode">
+																	placeholder="Search by name, code, or barcode"
+																	style="width: 280px !important; min-width: 200px; max-width: 400px; flex: none !important;" />
+
 
 																<div class="input-group-append">
-																	<button
-																		class="btn btn-primary btn-sm waves-effect waves-light"
-																		type="submit">
-																		<i class="fa fa-search"></i><span th:text="#{label.button.search}"></span>
+																	<!-- Search Button -->
+																	<button type="submit"
+																		class="btn btn-primary btn-sm waves-effect waves-light d-inline-flex align-items-center justify-content-center"
+																		style="height: 32px; width: 32px; padding: 0;"
+																		th:title="#{label.button.search}">
+																		<i class="fa fa-search"></i>
 																	</button>
+
+																	<!-- Reset Button -->
 																	<a th:href="@{/items/list}"
-																		class="btn btn-secondary btn-sm waves-effect waves-light">
-																		<i class="fa fa-times"></i> <span th:text="#{label.button.reset}"></span>
+																		class="btn btn-secondary btn-sm waves-effect waves-light d-inline-flex align-items-center justify-content-center"
+																		style="height: 32px; width: 32px; padding: 0; margin-left: 2px;"
+																		th:title="#{label.button.reset}"> <i
+																		class="fa fa-times"></i>
 																	</a>
+																	<!-- Import Button -->
+																	<button type="button"
+																		class="btn btn-warning btn-sm waves-effect waves-light md-trigger ml-1 d-inline-flex align-items-center justify-content-center"
+																		style="height: 32px; width: 32px; padding: 0;"
+																		data-toggle="modal" data-target="#importItemModal"
+																		th:title="#{label.button.import}">
+																		<i class="fa fa-upload"></i>
+																	</button>
+
+																	<!-- New Button -->
+																	<a th:href="@{/items/new}"
+																		class="btn btn-primary btn-sm waves-effect waves-light ml-1 d-inline-flex align-items-center justify-content-center"
+																		style="height: 32px; width: 32px; padding: 0;"
+																		th:title="#{label.button.new}"> <i
+																		class="fa fa-plus"></i>
+																	</a>
+
 																</div>
+
 															</div>
 														</form>
 													</div>
 												</div>
-
-												<a href="#" th:href="@{/items/new}"
-													class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger"><span
-													th:text="#{label.button.new}"></span></a>
-
-												<button type="button"
-													class="btn btn-warning waves-effect waves-light f-right d-inline-block md-trigger"
-													data-toggle="modal" data-target="#importItemModal">
-													<span th:text="#{label.button.import}">Import</span>
-												</button>
-
 											</div>
 											<div class="dt-responsive table-responsive">
 												<table id="code-type-table"
@@ -107,8 +125,12 @@
 															<td><a href="#"
 																th:href="@{'/items/update/' + ${list.id}}"
 																class="btn waves-effect waves-light btn-success"><span
-																	class="pcoded-micon"><em class="icofont icofont-edit"></em></span></a>
-															</td>
+																	class="pcoded-micon"><em
+																		class="icofont icofont-edit"></em></span></a> <a href="#"
+																th:href="@{'/items/view/' + ${list.id}}"
+																class="btn waves-effect waves-light btn-primary"><span
+																	class="pcoded-micon"><em
+																		class="icofont icofont-eye"></em></span></a></td>
 														</tr>
 
 													</tbody>

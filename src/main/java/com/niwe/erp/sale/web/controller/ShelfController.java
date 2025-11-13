@@ -91,7 +91,7 @@ public class ShelfController {
 	    model.addAttribute("saleForm", new ShelfForm());
 	    //model.addAttribute("customers", customerService.findAll());
 	    model.addAttribute("products", coreItemService.findAll());
-	    return NiweErpSaleUrlConstants.SHELVE_POS_FORM_PAGE;
+	    return NiweErpSaleUrlConstants.SHELVE_POS_SALE_PAGE;
 	}
 	@PostMapping("/checkout")
     @ResponseBody

@@ -1,6 +1,7 @@
 package com.niwe.erp.core.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,15 +22,17 @@ import com.niwe.erp.core.domain.CoreItemClassification;
 import com.niwe.erp.core.domain.CoreItemNature;
 import com.niwe.erp.core.domain.CoreQuantityUnit;
 import com.niwe.erp.core.domain.EItemNature;
+import com.niwe.erp.core.dto.CoreItemListDTO;
+import com.niwe.erp.core.form.CoreItemForm;
 import com.niwe.erp.core.helper.ItemExcelHelper;
 import com.niwe.erp.core.repository.CoreCountryRepository;
 import com.niwe.erp.core.repository.CoreItemClassificationRepository;
 import com.niwe.erp.core.repository.CoreItemRepository;
 import com.niwe.erp.core.repository.CoreQuantityUnitRepository;
+import com.niwe.erp.core.view.CoreItemListView;
 import com.niwe.erp.core.web.util.NiweErpCoreDefaultParameter;
 import com.niwe.erp.invoicing.domain.TaxType;
 import com.niwe.erp.invoicing.repository.TaxTypeRepository;
-import com.niwe.erp.invoicing.web.form.ItemForm;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,11 +50,14 @@ public class CoreItemService {
 	private final CoreCountryRepository coreCountryRepository;
 	private TaxTypeRepository taxTypeRepository;
 
-	List<ItemForm> findAllAsForm() {
+	public List<CoreItemForm> findAllAsForm() {
 		return coreItemRepository.findAllAsForm();
 	}
+	public Page<CoreItemListDTO> findAllAsDto(Pageable pageable) {
+		return coreItemRepository.findAllAsDto(pageable);
+	}
 
-	public List<ItemForm> findAllAsFormByItemNameContainingIgnoreCase(String itemName) {
+	public List<CoreItemForm> findAllAsFormByItemNameContainingIgnoreCase(String itemName) {
 		return coreItemRepository
 				.findAllAsFormByItemNameContainingIgnoreCaseOrItemCodeContainingIgnoreCaseOrBarcodeContainingIgnoreCase(
 						itemName, itemName, itemName,itemName);
@@ -219,5 +225,33 @@ public class CoreItemService {
 			coreItemRepository.save(item);
 		
 	 }
+	 public Page<CoreItemListView> getItems(
+	            int page,
+	            int size,
+	            String sortBy,
+	            String sortDir,
+	            String name,
+	            String code) {
 
+	        Sort sort = Sort.by(Sort.Direction.fromString(sortDir), sortBy);
+	        Pageable pageable = PageRequest.of(page, size, sort);
+
+	        return coreItemRepository.findAllFiltered(name, code, pageable);
+	    }
+	 public Page<CoreItemListView> getItems(
+			 Pageable pageable,
+	            String name,
+	            String code) {
+
+	             
+
+	        return coreItemRepository.findAllFiltered(name, code, pageable);
+	    }
+
+	 public Page<CoreItemListView> getItems(Pageable pageable) {
+		return coreItemRepository. findAllAsFormPageable(pageable);
+	 }
+	 public Page<CoreItemListDTO> findByLastUpdatedAfter(LocalDateTime lastSyn, Pageable pageable) {
+		return coreItemRepository.findByLastUpdatedAfter(lastSyn,pageable);
+	 }
 }

@@ -17,10 +17,14 @@ import lombok.experimental.SuperBuilder;
 public class CoreItemForm {
 	
 private UUID id;
+private String internalCode;
 private String itemName;
 private String itemCode;
 private String barcode;
+private String externalItemCode;
 private BigDecimal unitPrice;
 private BigDecimal unitCost;
+private String taxCode;
+private BigDecimal taxValue;
 
 }

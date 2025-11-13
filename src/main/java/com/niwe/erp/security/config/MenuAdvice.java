@@ -1,6 +1,6 @@
 package com.niwe.erp.security.config;
-import com.niwe.erp.core.dto.CoreMenuDto;
 import com.niwe.erp.core.service.CoreMenuService;
+import com.niwe.erp.core.view.CoreMenuDto;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

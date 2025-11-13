@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<title th:text="#{label.item.list}"></title>
+<th:block th:insert="~{fragments/header :: head}"></th:block>
+</head>
+<body>
+	<th:block th:insert="~{fragments/header :: pre-loader}"></th:block>
+	<div id="pcoded" class="pcoded">
+		<div class="pcoded-overlay-box"></div>
+		<div class="pcoded-container navbar-wrapper">
+
+			<th:block th:insert="~{fragments/header :: navbar-top}"></th:block>
+
+			<div class="pcoded-main-container">
+				<div class="pcoded-wrapper">
+					<th:block th:insert="~{fragments/header :: navbar-left}"></th:block>
+
+					<div class="pcoded-content">
+						<div class="pcoded-inner-content">
+							<!-- Main-body start -->
+							<div class="main-body">
+								<div class="page-wrapper">
+									<!-- Page-body start -->
+									<div class="page-body">
+
+										<!-- Hover table card start -->
+										<div class="card">
+											
+											<div class="dt-responsive table-responsive">
+												<table id="itemsTable"
+													class="display table table-striped table-bordered">
+													<thead>
+														<tr>
+															<th>Name</th>
+															<th>Code</th>
+															<th>Unit Price</th>
+														</tr>
+													</thead>
+													<tbody>
+														<!-- Empty: Data will be loaded via Ajax -->
+													</tbody>
+												</table>
+											</div>
+										</div>
+
+									</div>
+									<!-- Hover table card end -->
+
+								</div>
+
+								<!-- Page-body end -->
+							</div>
+							<div id="styleSelector"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<th:block th:insert="~{fragments/header :: footer}"></th:block>
+	
+<script th:inline="javascript">
+    var contextPath = '[[@{/items/data}]]';
+
+    $(document).ready(function() {
+        $('#itemsTable').DataTable({
+            serverSide: true,
+            processing: true,
+            ajax: {
+            	url: /*[[@{/items/data}]]*/, // NO quotes around this
+                type: 'GET'
+            },
+            columns: [
+                { data: "itemName" },
+                { data: "itemCode" },
+                { data: "unitPrice" }
+            ],
+            pageLength: 10,
+            lengthMenu: [5, 10, 20, 50]
+        });
+    });
+</script>
+</body>
+
+</html>

@@ -3,8 +3,8 @@ package com.niwe.erp.core.service;
 import org.springframework.stereotype.Service;
 
 import com.niwe.erp.core.domain.CoreMenu;
-import com.niwe.erp.core.dto.CoreMenuDto;
 import com.niwe.erp.core.repository.CoreMenuRepository;
+import com.niwe.erp.core.view.CoreMenuDto;
 
 import java.util.*;
 import java.util.stream.Collectors;

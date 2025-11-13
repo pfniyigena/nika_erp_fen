@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<th:block th:insert="~{fragments/header :: head}"></th:block>
+</head>
+<body>
+	<th:block th:insert="~{fragments/header :: pre-loader}"></th:block>
+	<div id="pcoded" class="pcoded">
+		<div class="pcoded-overlay-box"></div>
+		<div class="pcoded-container navbar-wrapper">
+
+			<th:block th:insert="~{fragments/header :: navbar-top}"></th:block>
+
+			<div class="pcoded-main-container">
+				<div class="pcoded-wrapper">
+					<th:block th:insert="~{fragments/header :: navbar-left}"></th:block>
+					<div class="pcoded-content">
+						<div class="pcoded-inner-content">
+							<!-- Main-body start -->
+							<div class="main-body">
+								<div class="page-wrapper">
+									<!-- Page-body start -->
+									<div class="page-body">
+										<!-- Input Alignment card start -->
+										<div class="card">
+											<div class="card-header">
+												<h5 th:text="#{label.item.details}"></h5>
+												<a href="#" th:href="@{/items/list}"
+													class="btn btn-danger btn-round waves-effect waves-light f-right d-inline-block md-trigger"><span
+													th:text="#{label.button.back}"></span></a>
+											</div>
+											<div class="card-block">
+												<!-- Row start -->
+												<div class="row">
+													<div class="col-lg-12 col-xl-12">
+														<ul class="nav nav-tabs md-tabs" role="tablist">
+															<li class="nav-item"><a class="nav-link active"
+																data-toggle="tab" href="#home7" role="tab"><i
+																	class="icofont icofont-bar-code"></i>Details</a>
+																<div class="slide"></div></li>
+															<li class="nav-item"><a class="nav-link"
+																data-toggle="tab" href="#profile7" role="tab"><i
+																	class="icofont icofont-box"></i>Stock</a>
+																<div class="slide"></div></li>
+															<li class="nav-item"><a class="nav-link"
+																data-toggle="tab" href="#messages7" role="tab"><i
+																	class="icofont icofont-shopping-cart"></i>Sales</a>
+																<div class="slide"></div></li>
+															<li class="nav-item"><a class="nav-link"
+																data-toggle="tab" href="#settings7" role="tab"><i
+																	class="icofont icofont-stock-search"></i>Purchases</a>
+																<div class="slide"></div></li>
+														</ul>
+														<!-- Tab panes -->
+														<div class="tab-content card-block">
+															<div class="tab-pane active" id="home7" role="tabpanel">
+																<p class="m-0">1. This is Photoshop's version of
+																	Lorem IpThis is Photoshop's version of Lorem Ipsum.
+																	Proin gravida nibh vel velit auctor aliquet. Aenean
+																	sollicitudin, lorem quis bibendum auctor, nisi elit
+																	consequat ipsum, nec sagittis sem nibh id elit. Lorem
+																	ipsum dolor sit amet, consectetuer adipiscing elit.
+																	Aenean commodo ligula eget dolor. Aenean mas Cum sociis
+																	natoque penatibus et magnis dis.....</p>
+															</div>
+															<div class="tab-pane" id="profile7" role="tabpanel">
+																<p class="m-0">2.Cras consequat in enim ut
+																	efficitur. Nulla posuere elit quis auctor interdum
+																	praesent sit amet nulla vel enim amet. Donec convallis
+																	tellus neque, et imperdiet felis amet.</p>
+															</div>
+															<div class="tab-pane" id="messages7" role="tabpanel">
+																<p class="m-0">3. This is Photoshop's version of
+																	Lorem IpThis is Photoshop's version of Lorem Ipsum.
+																	Proin gravida nibh vel velit auctor aliquet. Aenean
+																	sollicitudin, lorem quis bibendum auctor, nisi elit
+																	consequat ipsum, nec sagittis sem nibh id elit. Lorem
+																	ipsum dolor sit amet, consectetuer adipiscing elit.
+																	Aenean commodo ligula eget dolor. Aenean mas Cum sociis
+																	natoque penatibus et magnis dis.....</p>
+															</div>
+															<div class="tab-pane" id="settings7" role="tabpanel">
+																<p class="m-0">4.Cras consequat in enim ut
+																	efficitur. Nulla posuere elit quis auctor interdum
+																	praesent sit amet nulla vel enim amet. Donec convallis
+																	tellus neque, et imperdiet felis amet.</p>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+										</div>
+										<!-- Input Alignment card end -->
+
+									</div>
+									<!-- Page-body end -->
+								</div>
+								<div id="styleSelector"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:insert="~{fragments/header :: footer}"></th:block>
+</body>
+
+</html>

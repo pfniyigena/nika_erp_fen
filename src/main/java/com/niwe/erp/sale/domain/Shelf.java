@@ -1,5 +1,7 @@
 package com.niwe.erp.sale.domain;
 
+import java.time.LocalDateTime;
+
 import com.niwe.erp.common.domain.AbstractEntity;
 import com.niwe.erp.inventory.domain.Warehouse;
 
@@ -9,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -51,4 +54,7 @@ public class Shelf extends AbstractEntity {
 	@ManyToOne
 	@JoinColumn(name = "WAREHOUSE_ID")
 	private Warehouse warehouse;
+	@Column(name = "LAST_SYN")
+	@Builder.Default
+	private LocalDateTime lastSyn=LocalDateTime.now();
 }

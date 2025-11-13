@@ -103,11 +103,16 @@ public class ShelfService {
 	}
 
 	private SaleItem mapToSaleLine(ShelfLineForm shelfLineForm) {
-		CoreItem coreItem = coreItemService.findByInternalCode(shelfLineForm.getItemCode());
+		CoreItem coreItem = coreItemService.findByInternalCode(shelfLineForm.getInternalCode());
 
 		return SaleItem.builder().item(coreItem).itemName(coreItem.getItemName()).quantity(shelfLineForm.getQuantity())
 				.salePrice(shelfLineForm.getUnitPrice()).build();
 
+	}
+
+	public Shelf findByInternalCode(String internalCode) {
+		return shelfRepository.findByInternalCode(internalCode)
+				.orElseThrow(() -> new ResourceNotFoundException("Shelf not found with internalCode: " + internalCode));
 	}
 
 }

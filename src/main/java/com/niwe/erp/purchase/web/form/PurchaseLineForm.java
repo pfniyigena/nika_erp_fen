@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 public class PurchaseLineForm {
 	private String id;
 	private String itemName;
-    private String itemCode;
+    private String internalCode;
     private String taxCode;
     @Builder.Default
     private BigDecimal taxType=BigDecimal.ZERO;

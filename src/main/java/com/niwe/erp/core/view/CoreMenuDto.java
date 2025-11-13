@@ -1,4 +1,4 @@
-package com.niwe.erp.core.dto;
+package com.niwe.erp.core.view;
  
 
 import java.util.ArrayList;

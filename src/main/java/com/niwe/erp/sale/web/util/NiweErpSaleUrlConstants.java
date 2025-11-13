@@ -36,9 +36,9 @@ public class NiweErpSaleUrlConstants {
 	public static final String SHELVES_OPEN_REDITECT_URL = "redirect:/shelves/open/";
 	
 	/**
-	 * The SHELVE_POS_FORM_PAGE
+	 * The SHELVE_POS_SALE_PAGE
 	 */
-	public static final String SHELVE_POS_FORM_PAGE = "shelves/pos-form";
+	public static final String SHELVE_POS_SALE_PAGE = "shelves/pos-sale";
 	
 	/**
 	 * The SALES_URL

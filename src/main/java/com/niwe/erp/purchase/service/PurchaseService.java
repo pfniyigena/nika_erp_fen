@@ -57,7 +57,7 @@ public class PurchaseService {
 	}
 
 	private PurchaseItem mapToPurchaseLine(PurchaseLineForm purchaseLineForm) {
-		CoreItem coreItem = coreItemService.findByInternalCode(purchaseLineForm.getItemCode());
+		CoreItem coreItem = coreItemService.findByInternalCode(purchaseLineForm.getInternalCode());
 
 		return PurchaseItem.builder().item(coreItem).itemName(coreItem.getItemName())
 				.quantity(purchaseLineForm.getQuantity()).purchasePrice(purchaseLineForm.getUnitPrice()).build();

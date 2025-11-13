@@ -56,6 +56,11 @@ public class NiweErpCoreUrlConstants {
 	 */
 	public static final String ITEMS_LIST_REDITECT_URL = "redirect:/items/list";
 	/**
+	 * The ITEMS_VIEW_FORM_PAGE
+	 */
+	
+	public static final String ITEMS_VIEW_FORM_PAGE = "items/view-form";
+	/**
 	 * The ITEM_CLASSIFICATIONS_URL
 	 */
 	public static final String ITEM_CLASSIFICATIONS_URL = "itemClassifications";
