@@ -1,4 +1,4 @@
-package com.niwe.erp.common.config;
+package com.niwe.erp.common.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

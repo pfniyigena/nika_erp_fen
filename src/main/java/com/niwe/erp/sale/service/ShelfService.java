@@ -1,31 +1,40 @@
 package com.niwe.erp.sale.service;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.niwe.erp.common.api.dto.SaleItemRequest;
+import com.niwe.erp.common.api.dto.SaleRequest;
 import com.niwe.erp.common.domain.PaymentStatus;
 import com.niwe.erp.common.exception.ResourceNotFoundException;
 import com.niwe.erp.common.service.SequenceNumberService;
+import com.niwe.erp.common.util.DataParserUtil;
 import com.niwe.erp.core.domain.CoreItem;
 import com.niwe.erp.core.service.CoreItemService;
 import com.niwe.erp.core.service.CoreUserService;
 import com.niwe.erp.inventory.domain.EStockOperation;
 import com.niwe.erp.inventory.domain.MovementType;
 import com.niwe.erp.inventory.service.WarehouseStockService;
+import com.niwe.erp.invoicing.domain.EPaymentMethod;
+import com.niwe.erp.sale.domain.DailySalesSummary;
 import com.niwe.erp.sale.domain.Sale;
 import com.niwe.erp.sale.domain.SaleItem;
 import com.niwe.erp.sale.domain.SaleStatus;
 import com.niwe.erp.sale.domain.Shelf;
+import com.niwe.erp.sale.domain.TransactionType;
 import com.niwe.erp.sale.repository.SaleRepository;
 import com.niwe.erp.sale.repository.ShelfRepository;
 import com.niwe.erp.sale.web.form.ShelfForm;
 import com.niwe.erp.sale.web.form.ShelfLineForm;
 
 import lombok.RequiredArgsConstructor;
+import wys.ebm.core.invoice.util.InvoiceCalculationService;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +45,8 @@ public class ShelfService {
 	private final CoreItemService coreItemService;
 	private final CoreUserService coreUserService;
 	private final WarehouseStockService warehouseStockService;
+	private final PaymentMethodService paymentMethodService;
+	private final DailySalesSummaryService dailySalesSummaryService;
 
 	public List<Shelf> findAll() {
 
@@ -73,6 +84,7 @@ public class ShelfService {
 
 	}
 
+	@Transactional
 	public void savePost(ShelfForm shelfForm) {
 
 		Shelf shelf = findById(shelfForm.getShelfId());
@@ -93,7 +105,9 @@ public class ShelfService {
 		sale.setItemNumber(lines.size());
 		sale.setStatus(SaleStatus.DONE);
 		sale.setPaymentStatus(PaymentStatus.PAID);
+		sale.setPaymentMethod(paymentMethodService.save(EPaymentMethod.CASH.name()));
 		saleRepository.save(sale);
+		dailySalesSummaryService.save(sale);
 		sale.getItems().forEach((n) -> {
 			warehouseStockService.updateProductQuantity(sale.getShelf().getWarehouse(), n.getItem(), n.getQuantity(),
 					MovementType.SALE, "S", EStockOperation.OUT);
@@ -113,6 +127,67 @@ public class ShelfService {
 	public Shelf findByInternalCode(String internalCode) {
 		return shelfRepository.findByInternalCode(internalCode)
 				.orElseThrow(() -> new ResourceNotFoundException("Shelf not found with internalCode: " + internalCode));
+	}
+
+	@Transactional
+	public void receiveSaleFromExternalShelf(SaleRequest request) {
+
+		if (saleRepository.findByExternalCode(request.externalReference()).isPresent()) {
+			return;
+		}
+		Shelf shelf = findByInternalCode(request.niweHeaderRequest().shelfCode());
+
+		Sale sale = new Sale();
+		TransactionType transactionType = TransactionType.SALE;
+		if (!request.transactionType().equals("S")) {
+			transactionType = TransactionType.REFUND;
+		}
+		sale.setTransactionType(transactionType);
+		sale.setSaleDate(DataParserUtil.instantFromDateString(request.saleDate()));
+		sale.setExternalCode(request.externalReference());
+		sale.setShelf(shelf);
+		sale.setPaymentMethod(paymentMethodService.save(request.paymentMethod()));
+		sale.setConfirmedBy(request.confirmedBy());
+		sale.setSaleDate(Instant.now());
+		sale.setInternalCode(sequenceNumberService.getNextShelfCode());
+		List<SaleItem> lines = request.items().stream().map(itemRequest -> {
+
+			InvoiceCalculationService invoiceCalculationService = new InvoiceCalculationService(itemRequest.quantity(),
+					itemRequest.unitPrice(), itemRequest.taxRate(), new BigDecimal("0.00"), new BigDecimal("0.00"));
+
+			sale.setTotalAmount(sale.getTotalAmount().add(invoiceCalculationService.getAmountToPay()));
+
+			SaleItem line = mapToSaleLine(itemRequest);
+			return line;
+
+		}).toList();
+		lines.forEach((n) -> n.setSale(sale));
+		sale.setItems(lines);
+		sale.setItemNumber(lines.size());
+		sale.setStatus(SaleStatus.DONE);
+		sale.setPaymentStatus(PaymentStatus.PAID);
+		DailySalesSummary summary=	dailySalesSummaryService.save(sale);
+		sale.setSummary(summary);
+		saleRepository.save(sale);
+		sale.getItems().forEach((n) -> {
+			EStockOperation stockOperation = EStockOperation.OUT;
+			MovementType movementType = MovementType.SALE;
+			if (!request.transactionType().equals("S")) {
+				stockOperation = EStockOperation.IN;
+				movementType = MovementType.SALE_RETURN;
+
+			}
+			warehouseStockService.updateProductQuantity(sale.getShelf().getWarehouse(), n.getItem(), n.getQuantity(),
+					movementType, request.externalReference(), stockOperation);
+		});
+
+	}
+
+	private SaleItem mapToSaleLine(SaleItemRequest saleItemRequest) {
+		CoreItem coreItem = coreItemService.findByInternalCode(saleItemRequest.itemCode());
+		return SaleItem.builder().item(coreItem).itemName(coreItem.getItemName()).quantity(saleItemRequest.quantity())
+				.salePrice(saleItemRequest.unitPrice()).itemSeq(saleItemRequest.itemSequence()).build();
+
 	}
 
 }

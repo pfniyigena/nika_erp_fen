@@ -183,7 +183,7 @@ public class Invoice extends AbstractEntity {
 	@Column(name = "PAYMENT_METHOD", nullable = false)
 	@lombok.ToString.Include
 	@Builder.Default
-	private EPaymentMethod paymentMethod = EPaymentMethod.PAYMENT_METHOD_CASH;
+	private EPaymentMethod paymentMethod = EPaymentMethod.CASH;
 	/**
 	 * The refounded
 	 */

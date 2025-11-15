@@ -40,6 +40,7 @@
 														<tr>
 															<th scope="col" th:text="#{label.general.name}"></th>
 															<th scope="col" th:text="#{label.general.date}"></th>
+															<th scope="col" th:text="#{label.general.type}"></th>
 															<th scope="col" th:text="#{label.general.status}"></th>
 															<th scope="col" th:text="#{label.button.actions}"></th>
 														</tr>
@@ -48,12 +49,12 @@
 														<tr th:each="sale : ${lists}">
 															<td th:text="${sale.internalCode}"></td>
 															<td
-																th:text="${#dates.format(sale.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+																th:text="${#dates.format(sale.saleDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+															<td><span th:text="${sale.transactionType}"
+																th:class="${sale.transactionType != null} ? (${sale.transactionType.name()} == 'SALE' ? 'badge bg-success' : 'badge bg-danger') : 'badge bg-secondary'">
+															</span></td>
 															<td><span th:text="${sale.status}"
-																th:class="${sale.status != null} ? 
-                     (${sale.status.name()} == 'PAID' ? 'badge bg-success' : 
-                     (${sale.status.name()} == 'DONE' ? 'badge bg-warning text-dark' : 'badge bg-danger')) 
-                     : 'badge bg-secondary'">
+																th:class="${sale.status != null} ? (${sale.status.name()} == 'PAID' ? 'badge bg-success' : (${sale.status.name()} == 'DONE' ? 'badge bg-warning text-dark' : 'badge bg-danger')) : 'badge bg-secondary'">
 															</span></td>
 															<td><a href="#"
 																th:href="@{'/sales/view/' + ${sale.id}}"

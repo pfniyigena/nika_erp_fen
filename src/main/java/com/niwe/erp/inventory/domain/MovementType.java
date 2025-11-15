@@ -1,6 +1,6 @@
 package com.niwe.erp.inventory.domain;
 
 public enum MovementType {
-	PURCHASE, SALE, ADJUSTMENT
+	PURCHASE, SALE, ADJUSTMENT, SALE_RETURN
 
 }

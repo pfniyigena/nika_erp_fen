@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <title th:text="#{niwe_erp.app.title}"></title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="description" content="Nika Erp" />
+<meta name="keywords" content="Nika Erp" />
+<meta name="author" content="Mangatek Ltd" />
+<!-- Favicon icon -->
+<link rel="icon" th:href="@{/assets/images/favicon.ico}"
+	type="image/x-icon">
+<!-- Google font-->
+<!-- Google font-->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/css}">
+
+<!-- waves.css -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/pages/waves/css/waves.min.css}" media="all">
+<!-- Required Fremwork -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/bootstrap/css/bootstrap.min.css}">
+<!-- waves.css -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/pages/waves/css/waves.min.css}" media="all">
+<!-- themify icon -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/icon/themify-icons/themify-icons.css}">
+
+<!-- ico font -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/icon/icofont/css/icofont.css}">
+<!-- Font Awesome -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/icon/font-awesome/css/font-awesome.min.css}">
+<!-- scrollbar.css -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/jquery.mCustomScrollbar.css}">
+<!-- jquery file upload Frame work -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/jquery.filer.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/jquery.filer-dragdropbox-theme.css}">
+<!-- animation nifty modal window effects css -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/component.css}">
+<!-- Select 2 css -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/pages/select/css/select2.min.css}">
+<!-- Data Table Css -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/bootstrap/css/dataTables.bootstrap4.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/bootstrap/css/responsive.bootstrap4.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/pages/data-table/css/jquery.mCustomScrollbar.css}">
+<!-- am chart export.css -->
+<link rel="stylesheet" type="text/css"
+	href="https://www.amcharts.com/lib/3/plugins/export/export.css"
+	media="all" />
+
+<link rel="stylesheet" th:href="@{/assets/css/style.css}" />
+</head>
+    <body>
+        <!-- Pre-loader start -->
+        <div class="theme-loader">
+            <div class="loader-track">
+                <div class="preloader-wrapper">
+                    <div class="spinner-layer spinner-blue">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                    <div class="spinner-layer spinner-red">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                    <div class="spinner-layer spinner-yellow">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                    <div class="spinner-layer spinner-green">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- Pre-loader end -->
+        <div id="pcoded" class="pcoded">
+            <div class="pcoded-overlay-box"></div>
+            <div class="pcoded-container navbar-wrapper">
+                <nav class="navbar header-navbar pcoded-header" header-theme="theme1">
+                    <div class="navbar-wrapper">
+                        <div class="navbar-logo">
+                            <div class="mobile-search waves-effect waves-light">
+                                <div class="header-search">
+                                    <div class="main-search morphsearch-search">
+                                        <div class="input-group">
+                                            <span class="input-group-addon search-close"><i class="ti-close"></i></span><input type="text" class="form-control" placeholder="Enter Keyword"><span class="input-group-addon search-btn"><i class="ti-search"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="index.html"> <img class="img-fluid"
+								th:src="@{/assets/images/logo.png}" alt="Theme-Logo" /></a>
+                        </div>
+                        <div class="navbar-container container-fluid">
+                            <ul class="nav-left">
+                                <li>
+                                    <a href="#!" onclick="javascript:toggleFullScreen()" class="waves-effect waves-light"><i class="ti-fullscreen"></i></a>
+                                </li>
+                            </ul>
+                            
+                        </div>
+                    </div>
+                </nav>
+            </div><!-- Menu header end -->
+            <section class="login-block">
+                <!-- Container-fluid starts -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- Authentication card start -->
+                            <form class="md-float-material form-material m-t-40 m-b-40" th:action="@{/login}" method="post">
+                                <div class="auth-box card">
+                                    <div class="card-block">
+                                        <div class="row m-b-20">
+                                            <div class="col-md-12">
+                                                <h3 class="text-center">
+                                                    Sign In
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-primary">
+                                            <input type="text" name="username" class="form-control" required><span class="form-bar"></span><label class="float-label">Your Email Address/Username</label>
+                                        </div>
+                                        <div class="form-group form-primary">
+                                            <input type="password" name="password" class="form-control" required=""><span class="form-bar"></span><label class="float-label">Password</label>
+                                        </div>
+                                        <div class="row m-t-25 text-left">
+                                            <div class="col-12">
+                                                <div class="checkbox-fade fade-in-primary d-">
+                                                    <label><input type="checkbox" value=""><span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span><span class="text-inverse">Remember me</span></label>
+                                                </div>
+                                                <div class="forgot-phone text-right f-right">
+                                                    <a href="auth-reset-password.html" class="text-right f-w-600">Forgot Password?</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row m-t-30">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Sign in</button>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <p class="text-inverse text-left m-b-0">
+                                                    Thank you.
+                                                </p>
+                                                <p class="text-inverse text-left">
+                                                    <a href="index.html"><b>Back to website</b></a>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <img src="../files/assets/images/auth/Logo-small-bottom.png" alt="small-logo.png">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form><!-- Authentication card end -->
+                        </div><!-- end of col-sm-12 -->
+                    </div><!-- end of row -->
+                </div><!-- end of container-fluid -->
+            </section>
+        </div>
+        <div class="footer">
+            <p class="text-center m-b-0">
+                Copyright © 2026 NIWE TECHNOLOGY LTD , All rights reserved.
+            </p>
+        </div><script type="text/javascript"
+			th:src="@{/assets/js/jquery/jquery.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/js/jquery-ui/jquery-ui.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/js/popper.js/popper.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/js/bootstrap/js/bootstrap.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/widget/excanvas.js}"></script>
+		<!-- waves js -->
+		<script th:src="@{/assets/pages/waves/js/waves.min.js}"></script>
+		<!-- jquery slimscroll js -->
+		<script type="text/javascript"
+			th:src="@{/assets/js/jquery-slimscroll/jquery.slimscroll.js}"></script>
+		<!-- modernizr js -->
+		<script type="text/javascript"
+			th:src="@{/assets/js/modernizr/modernizr.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/js/modernizr/css-scrollbars.js}"></script>
+		<!-- slimscroll js -->
+		<script type="text/javascript" th:src="@{/assets/js/SmoothScroll.js}"></script>
+		<script th:src="@{/assets/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+		<!-- Chart js -->
+		<script type="text/javascript"
+			th:src="@{/assets/js/chart.js/Chart.js}"></script>
+		<!-- amchart js -->
+		<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+		<script th:src="@{/assets/pages/widget/amchart/gauge.js}"></script>
+		<script th:src="@{/assets/pages/widget/amchart/serial.js}"></script>
+		<script th:src="@{/assets/pages/widget/amchart/light.js}"></script>
+		<script th:src="@{/assets/pages/widget/amchart/pie.min.js}"></script>
+		<script
+			src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+		<!-- menu js -->
+		<script th:src="@{/assets/js/pcoded.min.js}"></script>
+		<script th:src="@{/assets/js/vertical-layout.min.js}"></script>
+		<!-- data-table js -->
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/jquery.dataTables.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/dataTables.buttons.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/jszip.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/pdfmake.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/vfs_fonts.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/buttons.print.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/buttons.html5.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/dataTables.bootstrap4.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/dataTables.responsive.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/responsive.bootstrap4.min.js}"></script>
+		<!-- jquery file upload js -->
+		<script type="text/javascript"
+			th:src="@{/assets/js/jquery/jquery.filer.min.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/js/jquery/custom-filer.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/js/jquery/jquery.fileuploads.init.js}"></script>
+
+		<!-- Select 2 js -->
+		<script type="text/javascript"
+			th:src="@{/assets/pages/select/js/select2.full.min.js}"></script>
+		<!-- custom js -->
+		<script type="text/javascript"
+			th:src="@{/assets/pages/select/js/select2-custom.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/data-table/js/data-table-custom.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/dashboard/custom-dashboard.js}"></script>
+		<script type="text/javascript" th:src="@{/assets/js/script.js}"></script>
+		<!-- Model animation js -->
+		<script type="text/javascript" th:src="@{/assets/js/classie.js}"></script>
+		<script type="text/javascript" th:src="@{/assets/js/modalEffects.js}"></script>
+		<div id="mfa_inject_cartdata" hidden="hidden"></div>
+		<div id="mfa_inject" hidden="hidden"></div>
+		<!-- Editable-table js -->
+		<script type="text/javascript"
+			th:src="@{/assets/pages/edit-table/editable2.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/edit-table/editable.js}"></script>
+		<script type="text/javascript"
+			th:src="@{/assets/pages/edit-table/jquery.tabledit.js}"></script>
+    </body>
+</html>

@@ -40,6 +40,23 @@ public interface CoreItemRepository extends JpaRepository<CoreItem, UUID> {
 			    JOIN b.tax t
 			""")
 	List<CoreItemForm> findAllAsForm();
+	@Query("""
+		    SELECT new com.niwe.erp.core.form.CoreItemForm(
+		    b.id,
+		    b.internalCode,
+		    b.itemName,
+			b.itemCode,
+			b.barcode,
+			b.externalItemCode,
+			b.unitPrice,
+			b.unitCost,
+		    t.taxCode,
+		    t.taxValue
+		    )
+		    FROM CoreItem b
+		    JOIN b.tax t
+		""")
+Page<CoreItemForm> findAllAsForm(Pageable pageable);
 
 	@Query("""
 			   SELECT new com.niwe.erp.core.view.CoreItemListView(

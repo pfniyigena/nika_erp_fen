@@ -125,6 +125,37 @@ public class NiweErpCoreUrlConstants {
 	 * The ITEM_NATURES_LIST_REDITECT_URL
 	 */
 	public static final String ITEM_NATURES_LIST_REDITECT_URL = "redirect:/itemNatures/list";
+	/**
+	 * The USERS_URL
+	 */
+	public static final String USERS_URL = "users";
+	/**
+	 * The USERS_LIST_PAGE
+	 */
+	public static final String USERS_LIST_PAGE = "admin/users";
+	
+	/**
+	 * The ROLES_URL
+	 */
+	public static final String ROLES_URL = "roles";
+	/**
+	 * The PERMISSIONS_LIST_PAGE
+	 */
+	public static final String ROLES_LIST_PAGE = "admin/roles";
+	/**
+	 * The ROLE_ADD_FORM_PAGE
+	 */
+	public static final String ROLE_ADD_FORM_PAGE = "admin/role-form";
+	
+	/**
+	 * The PERMISSIONS_URL
+	 */
+	public static final String PERMISSIONS_URL = "permissions";
+	
+	/**
+	 * The PERMISSIONS_LIST_PAGE
+	 */
+	public static final String PERMISSIONS_LIST_PAGE = "admin/permissions";
 	
 	
 

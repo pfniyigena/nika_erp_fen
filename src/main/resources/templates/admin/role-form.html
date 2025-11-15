@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<title th:text="#{label.role.details}"></title>
+<th:block th:insert="~{fragments/header :: head}"></th:block>
+</head>
+<body>
+	<th:block th:insert="~{fragments/header :: pre-loader}"></th:block>
+	<div id="pcoded" class="pcoded">
+		<div class="pcoded-overlay-box"></div>
+		<div class="pcoded-container navbar-wrapper">
+			<th:block th:insert="~{fragments/header :: navbar-top}"></th:block>
+			<div class="pcoded-main-container">
+				<div class="pcoded-wrapper">
+					<th:block th:insert="~{fragments/header :: navbar-left}"></th:block>
+					<div class="pcoded-content">
+						<div class="pcoded-inner-content">
+							<!-- Main-body start -->
+							<div class="main-body">
+								<div class="page-wrapper">
+									<!-- Page-body start -->
+									<div class="page-body">
+										<!-- Input Alignment card start -->
+										<div class="card">
+											<div class="card-header">
+												<h5 th:text="#{label.role.details}"></h5>
+											</div>
+											<div class="card-block">
+												<form th:object="${role}" th:action="@{/roles/new}"
+													method="post">
+													<input type="hidden" th:field="*{id}" />
+													<div class="form-group row row">
+														<label class="col-sm-2 col-form-label" for="name"
+															th:text="#{label.general.name}"></label>
+														<div class="col-sm-4 has-danger ">
+															<input type="text" th:field="*{name}" id="name"
+																class="form-control form-control-bold"
+																th:placeholder="#{label.general.name}"> <span
+																class="col-form-label"
+																th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+														</div>
+													</div>
+													<!-- Permission group (drop into your existing form) -->
+													<div class="form-group row">
+														<label class="col-sm-2 col-form-label"
+															th:text="#{label.general.permissions}"></label>
+
+														<div class="col-sm-10">
+															 
+
+															<!-- Search -->
+															<input type="text" id="permSearch"
+																class="form-control mb-3"
+																placeholder="Search permissions (type to filter groups/permissions)..." />
+
+															<div class="accordion" id="permissionAccordion">
+																<div th:each="entry : ${groups}"
+																	class="accordion-item permission-group">
+
+																	<h2 class="accordion-header"
+																		th:attr="id='heading-' + ${entry.key}">
+																		<button class="accordion-button collapsed"
+																			type="button" data-bs-toggle="collapse"
+																			th:attr="data-bs-target='#grp-' + ${entry.key}"
+																			aria-expanded="false"
+																			th:attr="aria-controls='grp-' + ${entry.key}">
+																			<span th:text="${entry.key} + ' Permissions'"></span>
+																		</button>
+																	</h2>
+
+																	<div th:id="'grp-' + ${entry.key}"
+																		class="accordion-collapse collapse"
+																		th:attr="aria-labelledby='heading-' + ${entry.key}"
+																		data-bs-parent="#permissionAccordion">
+																		<div class="accordion-body">
+
+																			<div class="mb-2">
+																				<button type="button"
+																					class="btn btn-sm btn-outline-primary me-1"
+																					onclick="checkGroup(this, true)">Select
+																					All</button>
+																				<button type="button"
+																					class="btn btn-sm btn-outline-secondary"
+																					onclick="checkGroup(this, false)">None</button>
+																			</div>
+
+																			<div class="row">
+																				<div th:each="perm : ${entry.value}"
+																					class="col-lg-4 col-md-6 mb-2">
+																					<div class="form-check">
+																						<input class="form-check-input" type="checkbox"
+																							th:name="permIds" th:id="'perm-' + ${perm.id}"
+																							th:value="${perm.id}"
+																							th:checked="${role.permissions.contains(perm)}" />
+																						<label class="form-check-label"
+																							th:for="'perm-' + ${perm.id}"
+																							th:text="${perm.name}"></label>
+																					</div>
+																				</div>
+																			</div>
+
+																		</div>
+																	</div>
+
+																</div>
+															</div>
+
+															<!-- Save button -->
+															<div class="mt-3">
+																<button type="submit" class="btn btn-success">Save
+																	Role</button>
+															</div>
+														</div>
+													</div>
+
+												</form>
+											</div>
+										</div>
+										<!-- Input Alignment card end -->
+
+									</div>
+									<!-- Page-body end -->
+								</div>
+								<div id="styleSelector"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:insert="~{fragments/header :: footer}"></th:block>
+	<script>
+    // Select / Deselect group
+    function checkGroup(btn, checked) {
+        const container = btn.closest('.accordion-body');
+        container.querySelectorAll("input[type='checkbox']")
+            .forEach(cb => cb.checked = checked);
+    }
+
+    // Live search filter
+    document.getElementById("permSearch").addEventListener("keyup", function () {
+        let term = this.value.toLowerCase();
+
+        document.querySelectorAll(".permission-group").forEach(group => {
+            group.style.display = group.textContent.toLowerCase().includes(term) ? "" : "none";
+        });
+    });
+</script>
+
+</body>
+
+</html>

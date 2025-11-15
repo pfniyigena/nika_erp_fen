@@ -508,7 +508,7 @@ $(document).ready(function() {
 
     $('#code-type-table').DataTable({
         "order": [
-            [3, "desc"]
+            [2, "desc"]
         ]
     });
     $('#invoice-table').DataTable({

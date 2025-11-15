@@ -53,6 +53,10 @@ public class CoreItemService {
 	public List<CoreItemForm> findAllAsForm() {
 		return coreItemRepository.findAllAsForm();
 	}
+	public Page<CoreItemForm> findAllAsForm(int page,int size) {
+		Pageable pageable = PageRequest.of(page, size, Sort.by("itemName").ascending());
+		return coreItemRepository.findAllAsForm(pageable);
+	}
 	public Page<CoreItemListDTO> findAllAsDto(Pageable pageable) {
 		return coreItemRepository.findAllAsDto(pageable);
 	}

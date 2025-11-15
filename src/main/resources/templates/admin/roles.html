@@ -3,7 +3,7 @@
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-<title th:text="#{label.warehouse.stock.summary}"></title>
+<title th:text="#{label.roles.list}"></title>
 <th:block th:insert="~{fragments/header :: head}"></th:block>
 </head>
 <body>
@@ -29,7 +29,11 @@
 										<!-- Hover table card start -->
 										<div class="card">
 											<div class="card-header">
-												<h5 th:text="#{label.warehouse.stock.summary}"></h5>
+												<h5 th:text="#{label.roles.list}"></h5>
+												<a href="#" th:href="@{/warehouses/new}"
+													class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger"><em
+													class="icofont icofont-plus m-r-5"></em> </a>
+
 											</div>
 											<div class="dt-responsive table-responsive">
 												<table id="code-type-table"
@@ -38,27 +42,19 @@
 													<caption></caption>
 													<thead>
 														<tr>
-															<th scope="col">#</th>
-															<th scope="col" th:text="#{label.general.code}"></th>
 															<th scope="col" th:text="#{label.general.name}"></th>
-															<th scope="col" th:text="#{label.general.quantity.total}"></th>
+															<th scope="col" th:text="#{label.general.description}"></th>
 															<th scope="col" th:text="#{label.button.actions}"></th>
 														</tr>
 													</thead>
 													<tbody>
-														<tr th:each="list,stat : ${lists}">
-															<th scope="row" th:text="${stat.index + 1}"></th>
-															<td th:text="${list.productCode}"></td>
-															<td th:text="${list.productName}"></td>
-															<td th:text="${list.totalQuantity}"
-															th:class="${list.totalQuantity != null} ? 
-                     (${list.totalQuantity} > 0 ? 'badge bg-success' : 
-                     (list.totalQuantity == 0 ? 'badge bg-warning text-dark' : 'badge bg-danger')) 
-                     : 'badge bg-secondary'"></td>
+														<tr th:each="list : ${lists}">
+															<td th:text="${list.name}"></td>
+															<td th:text="${list.description}"></td>
 															<td><a href="#"
-																th:href="@{'/warehouse-stocks/warehouse/product/' + ${list.itemId}}"
+																th:href="@{'/roles/edit/' + ${list.id}}"
 																class="waves-effect waves-dark"><span
-																	class="pcoded-micon"><em class="fa fa-eye"></em></span></a>
+																	class="pcoded-micon"><em class="fa fa-pencil"></em></span></a>
 															</td>
 														</tr>
 

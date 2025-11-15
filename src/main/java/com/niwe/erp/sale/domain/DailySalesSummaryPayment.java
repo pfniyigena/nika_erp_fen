@@ -1,9 +1,8 @@
 package com.niwe.erp.sale.domain;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 import com.niwe.erp.common.domain.AbstractEntity;
-import com.niwe.erp.inventory.domain.Warehouse;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,42 +21,36 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
-@Table(name = "INVENTORY_SHELF")
+@Table(name = "REPORT_DAILY_SALES_SUMMARY_PAYMENT")
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class Shelf extends AbstractEntity {
-
-	/**
+public class DailySalesSummaryPayment extends AbstractEntity{/**
 	 * The serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * The internalCode
+	 * The grossProfit
 	 */
-	@Column(name = "INTERNAL_CODE", nullable = false)
-	private String internalCode;
+	@Column(name = "TOTAL_AMOUNT")
+	@Builder.Default
+	private BigDecimal totalAmount=BigDecimal.ZERO;
 	/**
-	 * The name
+	 * The numberOfReceipts
 	 */
-	@Column(name = "NAME")
-	private String name;
-	
+	@Column(name = "NUMBER_OF_TRANSACTIONS")
+	@Builder.Default
+	private Integer numberOfTransactions=0;
 	/**
-	 * The description
-	 */
-	@Column(name = "description")
-	private String description;
-	/**
-	 * The warehouse
+	 * The summary
 	 */
 	@ManyToOne
-	@JoinColumn(name = "WAREHOUSE_ID")
-	private Warehouse warehouse;
+	@JoinColumn(name = "PAYMENT_METHO_ID")
+	private PaymentMethod paymentMethod;
 	/**
-	 * The lastSyn
+	 * The summary
 	 */
-	@Column(name = "LAST_SYN")
-	@Builder.Default
-	private LocalDateTime lastSyn=LocalDateTime.now();
+	@ManyToOne
+	@JoinColumn(name = "SUMMARY_ID")
+	private DailySalesSummary summary;
 }

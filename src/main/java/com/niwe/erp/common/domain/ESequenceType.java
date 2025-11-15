@@ -13,12 +13,14 @@ public enum ESequenceType {
 	/** The CHARGE. */
 	CHARGE,
 	/** The WAREHOUSE. */
-	WAREHOUSE, 
+	WAREHOUSE,
 	/** The SHELF. */
 	SHELF,
 	/** The PURCHASE. */
 	PURCHASE,
 	/** The RECEIVED_GOOD. */
-	RECEIVED_GOOD
+	RECEIVED_GOOD,
+	/** The PAYMENT_METHOD. */
+	PAYMENT_METHOD
 
 }

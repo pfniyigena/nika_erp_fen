@@ -1,4 +1,4 @@
-package com.niwe.erp.core.helper;
+package com.niwe.erp.security.config;
 
 import java.util.HashSet;
 import java.util.List;
@@ -96,6 +96,7 @@ public class SecurityDataInitializer implements ApplicationRunner {
 		if (coreUserRepository.findByUsername("admin").isEmpty()) {
 			CoreUser u = new CoreUser();
 			u.setUsername("admin");
+			u.setEmail("pfniyigena@gmail.com");
 			u.setPassword(new BCryptPasswordEncoder().encode("admin"));
 			u.setFullname("System Administrator");
 			u.setEnabled(true);
@@ -105,16 +106,17 @@ public class SecurityDataInitializer implements ApplicationRunner {
 		if (coreUserRepository.findByUsername("user").isEmpty()) {
 			CoreUser u = new CoreUser();
 			u.setUsername("user");
+			u.setEmail("mangatek2020@gmail.com");
 			u.setPassword(new BCryptPasswordEncoder().encode("user"));
-			u.setFullname("System Administrator");
+			u.setFullname("System User");
 			u.setEnabled(true);
 			roleRepository.findByName("ROLE_USER").ifPresent(r -> u.getRoles().add(r));
 			coreUserRepository.save(u);
 		}
 		// Log summary
-		log.debug("Seeded {} permissions.", permissionMap.size());
-		log.debug("Role {} has {} permissions.",ROLE_ADMIN,admin.getPermissions().size());
-		log.debug("Role {} has {} permissions.",ROLE_USER,user.getPermissions().size());
+		log.info("Seeded {} permissions.", permissionMap.size());
+		log.info("Role {} has {} permissions.",ROLE_ADMIN,admin.getPermissions().size());
+		log.info("Role {} has {} permissions.",ROLE_USER,user.getPermissions().size());
 	
 	}
 }

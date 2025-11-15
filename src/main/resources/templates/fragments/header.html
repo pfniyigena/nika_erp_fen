@@ -61,7 +61,7 @@
 <link rel="stylesheet" type="text/css"
 	href="https://www.amcharts.com/lib/3/plugins/export/export.css"
 	media="all" />
- 
+
 <link rel="stylesheet" th:href="@{/assets/css/style.css}" />
 </head>
 <body>
@@ -176,54 +176,6 @@
 								</a></li>
 							</ul>
 							<ul class="nav-right">
-								<li class="header-notification"><a href="#!"
-									class="waves-effect waves-light"> <em class="ti-bell"></em>
-										<span class="badge bg-c-red"></span>
-								</a>
-									<ul class="show-notification">
-										<li>
-											<h6>Notifications</h6> <label class="label label-danger">New</label>
-										</li>
-										<li class="waves-effect waves-light">
-											<div class="media">
-												<img class="d-flex align-self-center img-radius"
-													th:src="@{/assets/images/avatar-2.jpg}"
-													alt="Generic placeholder image">
-												<div class="media-body">
-													<h5 class="notification-user">John Doe</h5>
-													<p class="notification-msg">Lorem ipsum dolor sit amet,
-														consectetuer elit.</p>
-													<span class="notification-time">30 minutes ago</span>
-												</div>
-											</div>
-										</li>
-										<li class="waves-effect waves-light">
-											<div class="media">
-												<img class="d-flex align-self-center img-radius"
-													th:src="@{/assets/images/avatar-4.jpg}"
-													alt="Generic placeholder image">
-												<div class="media-body">
-													<h5 class="notification-user">Joseph William</h5>
-													<p class="notification-msg">Lorem ipsum dolor sit amet,
-														consectetuer elit.</p>
-													<span class="notification-time">30 minutes ago</span>
-												</div>
-											</div>
-										</li>
-										<li class="waves-effect waves-light">
-											<div class="media">
-												<img class="d-flex align-self-center img-radius"
-													th:src="@{/assets/images/avatar-3.jpg}"
-													alt="Generic placeholder image">
-												<div class="media-body">
-													<h5 class="notification-user">Sara Soudein</h5>
-													<p class="notification-msg">Lorem ipsum dolor sit amet,
-														consectetuer elit.</p>
-													<span class="notification-time">30 minutes ago</span>
-												</div>
-											</div>
-										</li>
-									</ul></li>
 								<li sec:authorize="isAuthenticated()"
 									class="user-profile header-notification"><a href="#!"
 									class="waves-effect waves-light"> <img
@@ -291,6 +243,40 @@
 								<ul class="pcoded-item pcoded-left-item">
 									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
 										class="waves-effect waves-dark"> <span
+											class="pcoded-micon"><em class="fa fa-users"></em></span> <span
+											class="pcoded-mtext" data-i18n="nav.basic-components.main"
+											th:text="#{menu.administration}"></span> <span
+											class="pcoded-mcaret"></span>
+									</a>
+										<ul class="pcoded-submenu">
+											<li class=" "><a href="#" th:href="@{/users/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.breadcrumbs"
+													th:text="#{menu.users}"> </span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
+											<li class=" "><a href="#" th:href="@{/roles/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.roles}"></span> <span class="pcoded-mcaret"></span>
+											</a></li>
+											<li class=" "><a href="#" th:href="@{/permissions/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.permissions}"></span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
+
+
+										</ul></li>
+									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
+										class="waves-effect waves-dark"> <span
 											class="pcoded-micon"><em class="fa fa-wrench"></em></span> <span
 											class="pcoded-mtext" data-i18n="nav.basic-components.main"
 											th:text="#{menu.settings}"></span> <span
@@ -344,7 +330,8 @@
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
 													<span class="pcoded-mtext"
 													data-i18n="nav.basic-components.alert"
-													th:text="#{menu.items.v2}"></span> <span class="pcoded-mcaret"></span>
+													th:text="#{menu.items.v2}"></span> <span
+													class="pcoded-mcaret"></span>
 											</a></li>
 											<li class=" "><a href="#"
 												th:href="@{/itemClassifications/list}"
@@ -477,6 +464,21 @@
 													data-i18n="nav.basic-components.alert"
 													th:text="#{menu.sales}"></span> <span class="pcoded-mcaret"></span>
 											</a></li>
+											<li class="pcoded-hasmenu"><a href="javascript:void(0)"
+												class="waves-effect waves-dark"><span
+													class="pcoded-micon"><em class="ti-direction-alt"></em></span>
+													<span class="pcoded-mtext"
+													th:text="#{label.general.reports}"></span> <span
+													class="pcoded-mcaret"></span></a>
+												<ul class="pcoded-submenu">
+													<li class=""><a href="#" th:href="@{/sales/report/daily}"
+													
+														class="waves-effect waves-dark"><span
+															class="pcoded-micon"><i class="ti-direction-alt"></i></span>
+															<span class="pcoded-mtext"
+															th:text="#{label.sale.daily.summary}"></span>
+															<span class="pcoded-mcaret"></span></a></li>
+												</ul></li>
 										</ul></li>
 									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
 										class="waves-effect waves-dark"> <span
@@ -544,51 +546,10 @@
 	</div>
 
 	<div th:fragment="footer">
-		<!-- Warning Section Starts -->
-		<!-- Older IE warning message -->
-		<!--[if lt IE 10]>
-    <div class="ie-warning">
-        <h1>Warning!!</h1>
-        <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
-        <div class="iew-container">
-            <ul class="iew-download">
-                <li>
-                    <a href="http://www.google.com/chrome/">
-                        <img src="assets/images/browser/chrome.png" alt="Chrome">
-                        <div>Chrome</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.mozilla.org/en-US/firefox/new/">
-                        <img src="assets/images/browser/firefox.png" alt="Firefox">
-                        <div>Firefox</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="http://www.opera.com">
-                        <img src="assets/images/browser/opera.png" alt="Opera">
-                        <div>Opera</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.apple.com/safari/">
-                        <img src="assets/images/browser/safari.png" alt="Safari">
-                        <div>Safari</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
-                        <img src="assets/images/browser/ie.png" alt="">
-                        <div>IE (9 & above)</div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <p>Sorry for the inconvenience!</p>
-    </div>
-    <![endif]-->
-		<!-- Warning Section Ends -->
-
+		<div class="footer">
+			<p class="text-center m-b-0">Copyright © 2026 NIWE TECHNOLOGY LTD
+				, All rights reserved.</p>
+		</div>
 		<!-- Required Jquery -->
 		<script type="text/javascript"
 			th:src="@{/assets/js/jquery/jquery.min.js}"></script>

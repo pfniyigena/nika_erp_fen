@@ -97,4 +97,9 @@ public class SequenceNumberService {
 		String sequence = this.getNextSequenceNumber(ESequenceType.RECEIVED_GOOD);
 		return "GR" + StringUtils.leftPad(sequence, 9, "0");
 	}
+	public String getNextPaymentMethodCode() {
+
+		String sequence = this.getNextSequenceNumber(ESequenceType.PAYMENT_METHOD);
+		return "PM" + StringUtils.leftPad(sequence, 2, "0");
+	}
 }

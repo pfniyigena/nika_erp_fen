@@ -1,5 +1,6 @@
 package com.niwe.erp.sale.domain;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,4 +94,35 @@ public class Sale extends AbstractEntity {
 	@ManyToOne
 	@JoinColumn(name = "TAXPAYER_ID", nullable = true)
 	private CoreTaxpayer taxpayer;
+	/**
+	 * The paymentMethos
+	 */
+	@ManyToOne
+	@JoinColumn(name = "PAYMENT_METHOD_ID", nullable = true)
+	private PaymentMethod paymentMethod;
+	/**
+	 * The transactionType
+	 */
+	@Column(name = "TRANSACTION_TYPE", nullable = true, length = 50)
+	private TransactionType transactionType;
+
+	/**
+	 * The externalCode
+	 */
+	@Column(name = "EXTERNAL_CODE", nullable = true, length = 50)
+	private String externalCode;
+
+	/**
+	 * The grossProfit
+	 */
+	@Column(name = "TOTAL_AMOUNT")
+	@Builder.Default
+	private BigDecimal totalAmount = BigDecimal.ZERO;
+	/**
+	 * The summary
+	 */
+	@ManyToOne
+	@JoinColumn(name = "DAILY_SUMMARY_ID", nullable = true)
+	private DailySalesSummary summary;
+
 }

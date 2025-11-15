@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.niwe.erp.common.config.NiweCommonRequest;
-import com.niwe.erp.common.config.NiweCommonResponse;
+import com.niwe.erp.common.api.dto.NiweCommonResponse;
+import com.niwe.erp.common.api.dto.NiweCommonRequest;
 import com.niwe.erp.core.service.CoreItemService;
 import com.niwe.erp.sale.domain.Shelf;
 import com.niwe.erp.sale.service.ShelfService;

@@ -1,4 +1,4 @@
-package com.niwe.erp.core.web.controller;
+package com.niwe.erp.core.web.ajax;
 
 import java.util.HashMap;
 import java.util.Map;

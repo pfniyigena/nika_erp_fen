@@ -1,4 +1,4 @@
-package com.niwe.erp.common.config;
+package com.niwe.erp.common.domain;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

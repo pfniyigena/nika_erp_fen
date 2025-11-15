@@ -44,7 +44,7 @@ public class WarehouseStockController {
 		return NikaErpInventoryUrlConstants.WAREHOUSE_STOCKS_SUMMARY_PAGE;
 	}
 
-	@GetMapping("/details/{id}")
+	@GetMapping("/warehouse/product/{id}")
 	public String viewWarehouseStockByProduct(@PathVariable String id, Model model) {
 
 		List<WarehouseStock> details = warehouseStockService.getStockByProduct(UUID.fromString(id));

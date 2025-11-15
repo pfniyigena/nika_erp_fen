@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.niwe.erp.sale.domain.DailySalesSummary;
 import com.niwe.erp.sale.domain.Sale;
+import com.niwe.erp.sale.service.DailySalesSummaryService;
 import com.niwe.erp.sale.service.SaleService;
 import com.niwe.erp.sale.web.util.NiweErpSaleUrlConstants;
 
@@ -20,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SaleController {
 	private final SaleService saleService;
-
+private final DailySalesSummaryService dailySalesSummaryService;
 
 	@GetMapping(path = "/list")
 	public String listSales(Model model) {
@@ -30,5 +32,12 @@ public class SaleController {
 		model.addAttribute("lists", list);
 		return NiweErpSaleUrlConstants.SALES_LIST_PAGE;
 	}
-	
+	@GetMapping(path = "/report/daily")
+	public String listDailySalesSummary(Model model) {
+
+		List<DailySalesSummary> list = dailySalesSummaryService.findAll();
+		log.debug("--------------Calling listDailySalesSummary-------------------:{}", list.size());
+		model.addAttribute("lists", list);
+		return NiweErpSaleUrlConstants.DAILT_SALES_SUMMARY_LIST_PAGE;
+	}
 }
