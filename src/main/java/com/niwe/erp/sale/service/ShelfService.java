@@ -6,21 +6,22 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.niwe.erp.common.api.dto.SaleItemRequest;
 import com.niwe.erp.common.api.dto.SaleRequest;
+import com.niwe.erp.common.domain.EChannel;
 import com.niwe.erp.common.domain.PaymentStatus;
 import com.niwe.erp.common.exception.ResourceNotFoundException;
 import com.niwe.erp.common.service.SequenceNumberService;
 import com.niwe.erp.common.util.DataParserUtil;
+import com.niwe.erp.common.util.NiweErpCommonConstants;
 import com.niwe.erp.core.domain.CoreItem;
 import com.niwe.erp.core.service.CoreItemService;
 import com.niwe.erp.core.service.CoreUserService;
-import com.niwe.erp.inventory.domain.EStockOperation;
-import com.niwe.erp.inventory.domain.MovementType;
-import com.niwe.erp.inventory.service.WarehouseStockService;
 import com.niwe.erp.invoicing.domain.EPaymentMethod;
 import com.niwe.erp.sale.domain.DailySalesSummary;
 import com.niwe.erp.sale.domain.Sale;
@@ -32,6 +33,7 @@ import com.niwe.erp.sale.repository.SaleRepository;
 import com.niwe.erp.sale.repository.ShelfRepository;
 import com.niwe.erp.sale.web.form.ShelfForm;
 import com.niwe.erp.sale.web.form.ShelfLineForm;
+import com.niwe.erp.web.api.event.SaleCreatedEvent;
 
 import lombok.RequiredArgsConstructor;
 import wys.ebm.core.invoice.util.InvoiceCalculationService;
@@ -44,13 +46,21 @@ public class ShelfService {
 	private final SequenceNumberService sequenceNumberService;
 	private final CoreItemService coreItemService;
 	private final CoreUserService coreUserService;
-	private final WarehouseStockService warehouseStockService;
 	private final PaymentMethodService paymentMethodService;
 	private final DailySalesSummaryService dailySalesSummaryService;
+	private final ApplicationEventPublisher eventPublisher;
 
 	public List<Shelf> findAll() {
 
-		return shelfRepository.findAll();
+		return shelfRepository.findAll().stream().map(shelf -> {
+			shelf.setNumberOfProductsNotSynchronized(
+					coreItemService
+							.findByLastUpdatedAfter(shelf.getLastSyn(),
+									PageRequest.of(0, NiweErpCommonConstants.NIKA_DEFAULT_PAGE_SIZE))
+							.getTotalElements());
+			return shelf;
+		}).toList();
+
 	}
 
 	public Shelf save(Shelf shelf) {
@@ -86,9 +96,10 @@ public class ShelfService {
 
 	@Transactional
 	public void savePost(ShelfForm shelfForm) {
-
-		Shelf shelf = findById(shelfForm.getShelfId());
 		Sale sale = new Sale();
+		sale.setSourceChannel(EChannel.WEB);
+		sale.setTransactionType(TransactionType.SALE);
+		Shelf shelf = findById(shelfForm.getShelfId());
 		sale.setShelf(shelf);
 		sale.setConfirmedBy(coreUserService.getCurrentUserEntity().getUsername());
 		sale.setSaleDate(Instant.now());
@@ -108,11 +119,7 @@ public class ShelfService {
 		sale.setPaymentMethod(paymentMethodService.save(EPaymentMethod.CASH.name()));
 		saleRepository.save(sale);
 		dailySalesSummaryService.save(sale);
-		sale.getItems().forEach((n) -> {
-			warehouseStockService.updateProductQuantity(sale.getShelf().getWarehouse(), n.getItem(), n.getQuantity(),
-					MovementType.SALE, "S", EStockOperation.OUT);
-
-		});
+		eventPublisher.publishEvent(new SaleCreatedEvent(this, sale));
 
 	}
 
@@ -138,6 +145,7 @@ public class ShelfService {
 		Shelf shelf = findByInternalCode(request.niweHeaderRequest().shelfCode());
 
 		Sale sale = new Sale();
+		sale.setSourceChannel(EChannel.API);
 		TransactionType transactionType = TransactionType.SALE;
 		if (!request.transactionType().equals("S")) {
 			transactionType = TransactionType.REFUND;
@@ -148,14 +156,12 @@ public class ShelfService {
 		sale.setShelf(shelf);
 		sale.setPaymentMethod(paymentMethodService.save(request.paymentMethod()));
 		sale.setConfirmedBy(request.confirmedBy());
-		sale.setSaleDate(Instant.now());
 		sale.setInternalCode(sequenceNumberService.getNextShelfCode());
 		List<SaleItem> lines = request.items().stream().map(itemRequest -> {
-
 			InvoiceCalculationService invoiceCalculationService = new InvoiceCalculationService(itemRequest.quantity(),
 					itemRequest.unitPrice(), itemRequest.taxRate(), new BigDecimal("0.00"), new BigDecimal("0.00"));
 
-			sale.setTotalAmount(sale.getTotalAmount().add(invoiceCalculationService.getAmountToPay()));
+			sale.setTotalAmountToPay(sale.getTotalAmountToPay().add(invoiceCalculationService.getAmountToPay()));
 
 			SaleItem line = mapToSaleLine(itemRequest);
 			return line;
@@ -166,21 +172,10 @@ public class ShelfService {
 		sale.setItemNumber(lines.size());
 		sale.setStatus(SaleStatus.DONE);
 		sale.setPaymentStatus(PaymentStatus.PAID);
-		DailySalesSummary summary=	dailySalesSummaryService.save(sale);
+		DailySalesSummary summary = dailySalesSummaryService.save(sale);
 		sale.setSummary(summary);
 		saleRepository.save(sale);
-		sale.getItems().forEach((n) -> {
-			EStockOperation stockOperation = EStockOperation.OUT;
-			MovementType movementType = MovementType.SALE;
-			if (!request.transactionType().equals("S")) {
-				stockOperation = EStockOperation.IN;
-				movementType = MovementType.SALE_RETURN;
-
-			}
-			warehouseStockService.updateProductQuantity(sale.getShelf().getWarehouse(), n.getItem(), n.getQuantity(),
-					movementType, request.externalReference(), stockOperation);
-		});
-
+		eventPublisher.publishEvent(new SaleCreatedEvent(this, sale));
 	}
 
 	private SaleItem mapToSaleLine(SaleItemRequest saleItemRequest) {

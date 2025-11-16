@@ -2,11 +2,15 @@ package com.niwe.erp.sale.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.niwe.erp.common.domain.AbstractEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,31 +35,67 @@ public class DailySalesSummary extends AbstractEntity{
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * The totalSalesTaxesInclusive
+	 * The totalDiscountAmount
 	 */
-	@Column(name = "TOTAL_SALES_TAXES_INCLISIVE")
+	@Column(name = "TOTAL_DISCOUNT_AMOUNT", nullable = true)
 	@Builder.Default
-	private BigDecimal totalSalesTaxesInclusive=BigDecimal.ZERO;
+	private BigDecimal totalDiscountAmount = BigDecimal.ZERO;
 	/**
-	 * The totalSalesTaxesExclusive
+	 * The totlaTaxAmount
 	 */
-	@Column(name = "TOTAL_SALES_TAXES_EXCLUSIVE")
+	@Column(name = "TOTAL_TAX_AMOUNT", nullable = true)
 	@Builder.Default
-	private BigDecimal totalSalesTaxesExclusive=BigDecimal.ZERO;
-	
+	private BigDecimal totlaTaxAmount = BigDecimal.ZERO;
 	/**
-	 * The totalCost
+	 * The totalAmountInclusiveTax
 	 */
-	@Column(name = "TOTAL_COST")
+	@Column(name = "TOTAL_AMOUNT_INCLUSIVE_TAX", nullable = true)
 	@Builder.Default
-	private BigDecimal totalCost=BigDecimal.ZERO;
-	
+	private BigDecimal totalAmountInclusiveTax = BigDecimal.ZERO;
 	/**
-	 * The grossProfit
+	 * The totalAmountHorsTax
 	 */
-	@Column(name = "GROSS_PROFIT")
+	@Column(name = "TOTAL_AMOUNT_HORS_TAX", nullable = true)
 	@Builder.Default
-	private BigDecimal grossProfit=BigDecimal.ZERO;
+	private BigDecimal totalAmountHorsTax = BigDecimal.ZERO;
+	/**
+	 * The totalGrossAmount
+	 */
+	@Column(name = "TOTAL_GROSS_AMOUNT", nullable = true)
+	@Builder.Default
+	private BigDecimal totalGrossAmount = BigDecimal.ZERO;
+	/**
+	 * The totalExtraAmount
+	 */
+	@Column(name = "TOTAL_EXTRA_AMOUNT", nullable = true)
+	@Builder.Default
+	private BigDecimal totalExtraAmount = BigDecimal.ZERO;
+
+	/**
+	 * The totalAmountToPay
+	 */
+	@Column(name = "TOTAL_AMOUNT_TO_PAY", nullable = true)
+	@Builder.Default
+	private BigDecimal totalAmountToPay = BigDecimal.ZERO;
+	/**
+	 * The totalPurchaseAmountInclusiveTax
+	 */
+	@Column(name = "TOTAL_PURCHASE_AMOUNT_INCLUSIVE_TAX")
+	@Builder.Default
+	private BigDecimal totalPurchaseAmountInclusiveTax= BigDecimal.ZERO;
+	/**
+	 * The totalPurchaseAmountHorsTax
+	 */
+	@Column(name = "TOTAL_PURCHASE_AMOUNT_HORS_TAX", nullable = true)
+	@Builder.Default
+	private BigDecimal totalPurchaseAmountHorsTax = BigDecimal.ZERO;
+	/**
+	 * The costAmount
+	 */
+	@Column(name = "TOTAL_PROFIT")
+	@Builder.Default
+	private BigDecimal totalProfit= BigDecimal.ZERO;
+
 	/**
 	 * The numberOfReceipts
 	 */
@@ -69,6 +109,11 @@ public class DailySalesSummary extends AbstractEntity{
 	@Column(name = "SUMMARY_DATE")
 	private LocalDate summaryDate;
 
-
-
+	/**
+	 * The items
+	 */
+	@OneToMany(mappedBy = "summary", cascade = CascadeType.ALL)
+	@Builder.Default
+	@ToString.Exclude
+	private List<DailySalesSummaryPayment> payments = new ArrayList<>();
 }

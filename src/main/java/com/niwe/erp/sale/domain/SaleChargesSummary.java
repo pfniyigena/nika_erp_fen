@@ -3,6 +3,7 @@ package com.niwe.erp.sale.domain;
 import java.math.BigDecimal;
 
 import com.niwe.erp.common.domain.AbstractEntity;
+import com.niwe.erp.invoicing.domain.ChargeType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,41 +17,53 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-
 @Data
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
-@Table(name = "REPORT_DAILY_SALES_SUMMARY_PAYMENT")
+@Table(name = "SALE_CHARGES_SUMMARY")
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class DailySalesSummaryPayment extends AbstractEntity{/**
+public class SaleChargesSummary extends AbstractEntity{
+	/**
 	 * The serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * The grossProfit
+	 * The chargeCode
 	 */
-	@Column(name = "TOTAL_PAID_AMOUNT")
-	@Builder.Default
-	private BigDecimal totalPaidAmount=BigDecimal.ZERO;
+	@Column(name = "CHARGE_CODE", nullable = false,unique = true)
+	private String chargeCode;
+
 	/**
-	 * The numberOfReceipts
+	 * The chargeName
 	 */
-	@Column(name = "NUMBER_OF_TRANSACTIONS")
-	@Builder.Default
-	private Integer numberOfTransactions=0;
+	@Column(name = "CHARGE_NAME", nullable = false,unique = true)
+	private String chargeName;
 	/**
-	 * The summary
+	 * The taxValue
+	 */
+	@Column(name = "CHARGE_VALUE", nullable = true)
+	@Builder.Default
+	private BigDecimal chargeValue = BigDecimal.ZERO;
+	/**
+	 * The totalAmount
+	 */
+	@Column(name = "TOTAL_AMOUNT", nullable = true)
+	@Builder.Default
+	private BigDecimal totalAmount = BigDecimal.ZERO;
+	/**
+	 * The charge
 	 */
 	@ManyToOne
-	@JoinColumn(name = "PAYMENT_METHO_ID")
-	private PaymentMethod paymentMethod;
+	@JoinColumn(name = "CHARGE_TYPE_ID", nullable = false)
+	private ChargeType charge;
 	/**
-	 * The summary
+	 * The invoice
 	 */
 	@ManyToOne
-	@JoinColumn(name = "SUMMARY_ID")
-	private DailySalesSummary summary;
+	@JoinColumn(name = "SALE_ID", nullable = false)
+	private Sale sale;
+
 }

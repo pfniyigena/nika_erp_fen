@@ -3,6 +3,7 @@ package com.niwe.erp.sale.domain;
 import java.math.BigDecimal;
 
 import com.niwe.erp.common.domain.AbstractEntity;
+import com.niwe.erp.invoicing.domain.TaxType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,36 +22,52 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
-@Table(name = "REPORT_DAILY_SALES_SUMMARY_PAYMENT")
+@Table(name = "SALE_TAXES_SUMMARY")
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class DailySalesSummaryPayment extends AbstractEntity{/**
+public class SaleTaxesSummary extends AbstractEntity {
+
+	/**
 	 * The serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * The grossProfit
+	 * The taxCode
 	 */
-	@Column(name = "TOTAL_PAID_AMOUNT")
-	@Builder.Default
-	private BigDecimal totalPaidAmount=BigDecimal.ZERO;
+	@Column(name = "TAX_CODE", nullable = false)
+	private String taxCode;
+
 	/**
-	 * The numberOfReceipts
+	 * The taxName
 	 */
-	@Column(name = "NUMBER_OF_TRANSACTIONS")
-	@Builder.Default
-	private Integer numberOfTransactions=0;
+	@Column(name = "TAX_NAME", nullable = false)
+	private String taxName;
 	/**
-	 * The summary
+	 * The taxValue
+	 */
+	@Column(name = "TAX_VALUE", nullable = true)
+	@Builder.Default
+	private BigDecimal taxValue = BigDecimal.ZERO;
+	
+	/**
+	 * The totalAmount
+	 */
+	@Column(name = "TOTAL_AMOUNT", nullable = true)
+	@Builder.Default
+	private BigDecimal totalAmount = BigDecimal.ZERO;
+
+	/**
+	 * The tax
 	 */
 	@ManyToOne
-	@JoinColumn(name = "PAYMENT_METHO_ID")
-	private PaymentMethod paymentMethod;
+	@JoinColumn(name = "TAX_TYPE_ID", nullable = false)
+	private TaxType tax;
 	/**
-	 * The summary
+	 * The invoice
 	 */
 	@ManyToOne
-	@JoinColumn(name = "SUMMARY_ID")
-	private DailySalesSummary summary;
+	@JoinColumn(name = "SALE_ID", nullable = false)
+	private Sale sale;
+
 }

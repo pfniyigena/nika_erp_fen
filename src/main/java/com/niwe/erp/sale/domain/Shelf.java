@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -60,4 +61,8 @@ public class Shelf extends AbstractEntity {
 	@Column(name = "LAST_SYN")
 	@Builder.Default
 	private LocalDateTime lastSyn=LocalDateTime.now();
+	@Transient
+	@Builder.Default
+	private Long numberOfProductsNotSynchronized=0L;
+	
 }

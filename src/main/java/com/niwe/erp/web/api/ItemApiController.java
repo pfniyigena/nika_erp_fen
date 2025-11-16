@@ -27,14 +27,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping(value = NiweErpApiUrlConstants.NIWE_API_V1 + NiweErpApiUrlConstants.API_ITEMS_URL)
+@RequestMapping(value = NiweErpApiUrlConstants.NIWE_API + NiweErpApiUrlConstants.API_ITEMS_URL)
 @AllArgsConstructor
 @CrossOrigin(origins = "*")
 public class ItemApiController {
 	private final CoreItemService coreItemService;
 	private final ShelfService shelfService;
 
-	@PostMapping
+	@PostMapping(headers =NiweErpApiUrlConstants.NIWE_API_V1)
 	public ResponseEntity<NiweCommonResponse> getItems(@RequestBody NiweCommonRequest niweCommonRequest) {
 		log.info("Get Items from request: {}", niweCommonRequest);
 
@@ -52,7 +52,7 @@ public class ItemApiController {
 		return ResponseEntity.ok(niweCommonResponse);
 	}
 
-	@PostMapping("/updates")
+	@PostMapping(value="/updates",headers =NiweErpApiUrlConstants.NIWE_API_V1)
 	public ResponseEntity<NiweCommonResponse> getUpdatedItems(@RequestBody NiweCommonRequest niweCommonRequest) {
 		log.info("Get product Items from: {}", niweCommonRequest);
 		Sort sort = Sort.by("lastUpdated").ascending();

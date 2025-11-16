@@ -51,9 +51,16 @@ public class NiweErpSaleUrlConstants {
 	public static final String SALES_LIST_PAGE = "sales/list";
 	
 	/**
-	 * The SALES_LIST_PAGE
+	 * The DAILY_SALES_SUMMARY_URL
 	 */
-	public static final String DAILT_SALES_SUMMARY_LIST_PAGE = "sales/daily-summary";
-	
-	
+	public static final String DAILY_SALES_SUMMARY_URL = "daily-sales";
+	/**
+	 * The DAILT_SALES_SUMMARY_LIST_PAGE
+	 */
+	public static final String DAILT_SALES_SUMMARY_LIST_PAGE = "daily-sales/list";
+	/**
+	 * The DAILT_SALES_SUMMARY_DATAILS_PAGE
+	 */
+	public static final String DAILT_SALES_SUMMARY_DATAILS_PAGE = "daily-sales/details";
+
 }

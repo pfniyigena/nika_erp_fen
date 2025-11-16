@@ -3,12 +3,16 @@ package com.niwe.erp.sale.service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.UUID;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.niwe.erp.common.exception.ResourceNotFoundException;
 import com.niwe.erp.sale.domain.DailySalesSummary;
 import com.niwe.erp.sale.domain.DailySalesSummaryPayment;
 import com.niwe.erp.sale.domain.Sale;
+import com.niwe.erp.sale.domain.TransactionType;
 import com.niwe.erp.sale.repository.DailySalesSummaryPaymentRepository;
 import com.niwe.erp.sale.repository.DailySalesSummaryRepository;
 
@@ -20,7 +24,6 @@ public class DailySalesSummaryService {
 
 	private final DailySalesSummaryRepository dailySalesSummaryRepository;
 	private final DailySalesSummaryPaymentRepository dailySalesSummaryPaymentRepository;
-	
 
 	public DailySalesSummary save(Sale sale) {
 
@@ -41,13 +44,21 @@ public class DailySalesSummaryService {
 					return dailySalesSummaryPaymentRepository.save(p);
 				});
 
-		// 4. Update daily summary totals
-		summary.setTotalSalesTaxesInclusive(summary.getTotalSalesTaxesInclusive().add(sale.getTotalAmount()));
+		if (sale.getTransactionType().equals(TransactionType.SALE)) {
+			summary.setTotalAmountToPay(summary.getTotalAmountToPay().add(sale.getTotalAmountToPay()));
+		} else {
+			summary.setTotalAmountToPay(summary.getTotalAmountToPay().subtract(sale.getTotalAmountToPay()));
+		}
+
 		summary.setNumberOfReceipts(summary.getNumberOfReceipts() + 1);
 		dailySalesSummaryRepository.save(summary);
 
-		// 5. Update payment method totals
-		paymentSummary.setTotalAmount(paymentSummary.getTotalAmount().add(sale.getTotalAmount()));
+		if (sale.getTransactionType().equals(TransactionType.SALE)) {
+			paymentSummary.setTotalPaidAmount(paymentSummary.getTotalPaidAmount().add(sale.getTotalAmountToPay()));
+		} else {
+			paymentSummary.setTotalPaidAmount(paymentSummary.getTotalPaidAmount().subtract(sale.getTotalAmountToPay()));
+		}
+
 		paymentSummary.setNumberOfTransactions(paymentSummary.getNumberOfTransactions() + 1);
 
 		dailySalesSummaryPaymentRepository.save(paymentSummary);
@@ -55,7 +66,17 @@ public class DailySalesSummaryService {
 	}
 
 	public List<DailySalesSummary> findAll() {
-		return dailySalesSummaryRepository.findAll();
+		return dailySalesSummaryRepository.findAll(Sort.by(Sort.Direction.DESC, "summaryDate"));
+	}
+
+	public DailySalesSummary findById(String id) {
+		return dailySalesSummaryRepository.findById(UUID.fromString(id))
+				.orElseThrow(() -> new ResourceNotFoundException("DailySalesSummary not found with id " + id));
+	}
+
+	public DailySalesSummary findBySummaryDate(LocalDate summaryDate) {
+		return dailySalesSummaryRepository.findBySummaryDate(summaryDate)
+				.orElseThrow(() -> new ResourceNotFoundException("DailySalesSummary not found with Date " + summaryDate));
 	}
 
 }

@@ -17,14 +17,22 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping(value = NiweErpApiUrlConstants.NIWE_API_V1 + NiweErpApiUrlConstants.API_SALES_URL)
+@RequestMapping(value = NiweErpApiUrlConstants.NIWE_API + NiweErpApiUrlConstants.API_SALES_URL)
 @AllArgsConstructor
 @CrossOrigin(origins = "*")
 public class SaleApiController {
 	private final ShelfService shelfService;
 
-	@PostMapping
+	@PostMapping(headers =NiweErpApiUrlConstants.NIWE_API_V1 )
 	public ResponseEntity<NiweCommonResponse> receiveSale(@RequestBody SaleRequest request) {
+		log.info("ReceiveSale from request: {}", request);
+		shelfService.receiveSaleFromExternalShelf(request);
+		NiweCommonResponse niweCommonResponse = new NiweCommonResponse(null, "000", "SUCCESS",0);
+		log.info("ReceiveSale from response: {}", niweCommonResponse);
+		return ResponseEntity.ok(niweCommonResponse);
+	}
+	@PostMapping(headers =NiweErpApiUrlConstants.NIWE_API_V2 )
+	public ResponseEntity<NiweCommonResponse> receiveSaleV2(@RequestBody SaleRequest request) {
 		log.info("ReceiveSale from request: {}", request);
 		shelfService.receiveSaleFromExternalShelf(request);
 		NiweCommonResponse niweCommonResponse = new NiweCommonResponse(null, "000", "SUCCESS",0);

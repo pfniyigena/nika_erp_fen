@@ -42,6 +42,7 @@
 															<th scope="col" th:text="#{label.general.date}"></th>
 															<th scope="col" th:text="#{label.general.type}"></th>
 															<th scope="col" th:text="#{label.general.status}"></th>
+															<th scope="col" th:text="#{label.general.total.paid}">Paid</th>
 															<th scope="col" th:text="#{label.button.actions}"></th>
 														</tr>
 													</thead>
@@ -56,6 +57,7 @@
 															<td><span th:text="${sale.status}"
 																th:class="${sale.status != null} ? (${sale.status.name()} == 'PAID' ? 'badge bg-success' : (${sale.status.name()} == 'DONE' ? 'badge bg-warning text-dark' : 'badge bg-danger')) : 'badge bg-secondary'">
 															</span></td>
+															<td th:text="${sale.totalAmountToPay}"></td>
 															<td><a href="#"
 																th:href="@{'/sales/view/' + ${sale.id}}"
 																class="waves-effect waves-dark"><span

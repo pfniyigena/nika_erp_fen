@@ -40,7 +40,7 @@
 														<tr>
 															 
 															<th scope="col" th:text="#{label.general.date}"></th>
-															<th scope="col" th:text="#{label.general.total}"></th>
+															<th scope="col" th:text="#{label.general.total.paid}"></th>
 															<th scope="col" th:text="#{label.button.actions}"></th>
 														</tr>
 													</thead>
@@ -50,7 +50,7 @@
 															<td
 																th:text="${#temporals.format(summary.summaryDate, 'yyyy-MM-dd')}"></td>
 															 
-															<td th:text="${summary.totalSalesTaxesInclusive}"></td>
+															<td th:text="${summary.totalAmountToPay}"></td>
 															<td><a href="#"
 																th:href="@{'/sales/view/' + ${summary.id}}"
 																class="waves-effect waves-dark"><span

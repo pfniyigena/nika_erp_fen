@@ -43,12 +43,103 @@ public class SaleItem extends AbstractEntity {
 	 * The quantity
 	 */
 	@Column(name = "QUANTITY")
-	private BigDecimal quantity;
+	@Builder.Default
+	private BigDecimal quantity= BigDecimal.ZERO;
 	/**
 	 * The salePrice
 	 */
 	@Column(name = "SALE_PRICE")
-	private BigDecimal salePrice;
+	@Builder.Default
+	private BigDecimal salePrice= BigDecimal.ZERO;
+	/**
+	 * The purchasePrice
+	 */
+	@Column(name = "PURCHASE_PRICE")
+	@Builder.Default
+	private BigDecimal purchasePrice= BigDecimal.ZERO;
+	
+	/**
+	 * The taxRate
+	 */
+	@Column(name = "TAX_RATE")
+	@Builder.Default
+	private BigDecimal taxRate= BigDecimal.ZERO;
+	
+
+	/**
+	 * The discountRate
+	 */
+	@Column(name = "DISCOUNT_RATE", nullable = true)
+	@Builder.Default
+	private BigDecimal discountRate = BigDecimal.ZERO;
+
+	/**
+	 * The discountAmount
+	 */
+	@Column(name = "DISCOUNT_AMOUNT", nullable = true)
+	@Builder.Default
+	private BigDecimal discountAmount = BigDecimal.ZERO;
+	/**
+	 * The taxAmount
+	 */
+	@Column(name = "TAX_AMOUNT", nullable = true)
+	@Builder.Default
+	private BigDecimal taxAmount = BigDecimal.ZERO;
+	/**
+	 * The amountInclusiveTax
+	 */
+	@Column(name = "AMOUNT_INCLUSIVE_TAX", nullable = true)
+	@Builder.Default
+	private BigDecimal amountInclusiveTax = BigDecimal.ZERO;
+	/**
+	 * The amountInclusiveTax
+	 */
+	@Column(name = "AMOUNT_HORS_TAX", nullable = true)
+	@Builder.Default
+	private BigDecimal amountHorsTax = BigDecimal.ZERO;
+	/**
+	 * The grossAmount
+	 */
+	@Column(name = "GROSS_AMOUNT", nullable = true)
+	@Builder.Default
+	private BigDecimal grossAmount = BigDecimal.ZERO;
+	/**
+	 * The extraAmount
+	 */
+	@Column(name = "EXTRA_AMOUNT", nullable = true)
+	@Builder.Default
+	private BigDecimal extraAmount = BigDecimal.ZERO;
+
+	/**
+	 * The amountToPay
+	 */
+	@Column(name = "AMOUNT_TO_PAY", nullable = true)
+	@Builder.Default
+	private BigDecimal amountToPay = BigDecimal.ZERO;
+	/**
+	 * The purchasePrice
+	 */
+	@Column(name = "PURCHASE_AMOUNT_INCLUSIVE_TAX")
+	@Builder.Default
+	private BigDecimal purchaseAmountInclusiveTax= BigDecimal.ZERO;
+	/**
+	 * The amountInclusiveTax
+	 */
+	@Column(name = "PURCHASE_AMOUNT_HORS_TAX", nullable = true)
+	@Builder.Default
+	private BigDecimal purchaseAmountHorsTax = BigDecimal.ZERO;
+	/**
+	 * The taxAmount
+	 */
+	@Column(name = "PURCHASE_TAX_AMOUNT", nullable = true)
+	@Builder.Default
+	private BigDecimal purchaseTaxAmount = BigDecimal.ZERO;
+	/**
+	 * The taxType
+	 */
+	@Column(name = "TAX_TYPE", nullable = true)
+	@Builder.Default
+	private BigDecimal taxType = BigDecimal.ZERO;
 	/**
 	 * The item
 	 */

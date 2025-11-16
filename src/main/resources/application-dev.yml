@@ -15,7 +15,6 @@ spring:
     hikari:
       minimum-idle: 5
       maximum-pool-size: 20
-      auto-commit: false
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect

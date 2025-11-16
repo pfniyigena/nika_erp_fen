@@ -43,7 +43,9 @@
 															<ul id="task-list" th:each="list : ${lists}">
 																<li class="border p-2 mb-2">
 																	<p class="mb-1">
-																		<span th:text="${list.internalCode}"></span>
+																		<span th:text="${list.internalCode}"></span><span
+																			class="pcoded-badge label label-danger"
+																			th:text="${list.numberOfProductsNotSynchronized}">0</span>
 																	</p>
 																	<p class="mb-2">
 																		<span th:text="${list.warehouse.warehouseName}"></span>
@@ -54,7 +56,8 @@
 																		<a href="#" th:href="@{'/shelves/open/' + ${list.id}}"
 																			class="btn btn-success waves-effect waves-light">
 																			<i class="fa fa-folder-open"></i>
-																		</a> <a href="#" th:href="@{'/shelves/update/' + ${list.id}}"
+																		</a> <a href="#"
+																			th:href="@{'/shelves/update/' + ${list.id}}"
 																			class="btn btn-primary waves-effect waves-light">
 																			<i class="fa fa-edit"></i>
 																		</a>

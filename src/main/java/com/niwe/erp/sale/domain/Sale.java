@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.niwe.erp.common.domain.AbstractEntity;
+import com.niwe.erp.common.domain.EChannel;
 import com.niwe.erp.common.domain.PaymentStatus;
 import com.niwe.erp.core.domain.CoreTaxpayer;
 
@@ -62,13 +63,19 @@ public class Sale extends AbstractEntity {
 	 */
 	@Column(name = "SALE_DATE")
 	private Instant saleDate;
+
 	/**
-	 * The items
+	 * The externalCode
 	 */
-	@OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
-	@Builder.Default
-	@ToString.Exclude
-	private List<SaleItem> items = new ArrayList<>();
+	@Column(name = "EXTERNAL_CODE", nullable = true, length = 50)
+	private String externalCode;
+	/**
+	 * The transactionType
+	 */
+	@Column(name = "TRANSACTION_TYPE", nullable = true, length = 50)
+	private TransactionType transactionType;
+
+
 	/**
 	 * The status
 	 */
@@ -76,11 +83,80 @@ public class Sale extends AbstractEntity {
 	@Builder.Default
 	private SaleStatus status = SaleStatus.DRAFT;
 	/**
+	 * The paymentMethos
+	 */
+	@ManyToOne
+	@JoinColumn(name = "PAYMENT_METHOD_ID", nullable = true)
+	private PaymentMethod paymentMethod;
+
+	/**
 	 * The paymentStatus
 	 */
 	@Column(name = "PAYMENT_STATUS", nullable = true)
 	@Builder.Default
 	private PaymentStatus paymentStatus = PaymentStatus.PENDING;
+	/**
+	 * The totalDiscountAmount
+	 */
+	@Column(name = "TOTAL_DISCOUNT_AMOUNT", nullable = true)
+	@Builder.Default
+	private BigDecimal totalDiscountAmount = BigDecimal.ZERO;
+	/**
+	 * The totlaTaxAmount
+	 */
+	@Column(name = "TOTAL_TAX_AMOUNT", nullable = true)
+	@Builder.Default
+	private BigDecimal totlaTaxAmount = BigDecimal.ZERO;
+	/**
+	 * The totalAmountInclusiveTax
+	 */
+	@Column(name = "TOTAL_AMOUNT_INCLUSIVE_TAX", nullable = true)
+	@Builder.Default
+	private BigDecimal totalAmountInclusiveTax = BigDecimal.ZERO;
+	/**
+	 * The totalAmountHorsTax
+	 */
+	@Column(name = "TOTAL_AMOUNT_HORS_TAX", nullable = true)
+	@Builder.Default
+	private BigDecimal totalAmountHorsTax = BigDecimal.ZERO;
+	/**
+	 * The totalGrossAmount
+	 */
+	@Column(name = "TOTAL_GROSS_AMOUNT", nullable = true)
+	@Builder.Default
+	private BigDecimal totalGrossAmount = BigDecimal.ZERO;
+	/**
+	 * The totalExtraAmount
+	 */
+	@Column(name = "TOTAL_EXTRA_AMOUNT", nullable = true)
+	@Builder.Default
+	private BigDecimal totalExtraAmount = BigDecimal.ZERO;
+
+	/**
+	 * The totalAmountToPay
+	 */
+	@Column(name = "TOTAL_AMOUNT_TO_PAY", nullable = true)
+	@Builder.Default
+	private BigDecimal totalAmountToPay = BigDecimal.ZERO;
+	/**
+	 * The totalPurchaseAmountInclusiveTax
+	 */
+	@Column(name = "TOTAL_PURCHASE_AMOUNT_INCLUSIVE_TAX")
+	@Builder.Default
+	private BigDecimal totalPurchaseAmountInclusiveTax= BigDecimal.ZERO;
+	/**
+	 * The totalPurchaseAmountHorsTax
+	 */
+	@Column(name = "TOTAL_PURCHASE_AMOUNT_HORS_TAX", nullable = true)
+	@Builder.Default
+	private BigDecimal totalPurchaseAmountHorsTax = BigDecimal.ZERO;
+	/**
+	 * The costAmount
+	 */
+	@Column(name = "TOTAL_PROFIT")
+	@Builder.Default
+	private BigDecimal totalProfit= BigDecimal.ZERO;
+
 	/**
 	 * The shelf
 	 */
@@ -94,35 +170,26 @@ public class Sale extends AbstractEntity {
 	@ManyToOne
 	@JoinColumn(name = "TAXPAYER_ID", nullable = true)
 	private CoreTaxpayer taxpayer;
-	/**
-	 * The paymentMethos
-	 */
-	@ManyToOne
-	@JoinColumn(name = "PAYMENT_METHOD_ID", nullable = true)
-	private PaymentMethod paymentMethod;
-	/**
-	 * The transactionType
-	 */
-	@Column(name = "TRANSACTION_TYPE", nullable = true, length = 50)
-	private TransactionType transactionType;
 
-	/**
-	 * The externalCode
-	 */
-	@Column(name = "EXTERNAL_CODE", nullable = true, length = 50)
-	private String externalCode;
-
-	/**
-	 * The grossProfit
-	 */
-	@Column(name = "TOTAL_AMOUNT")
-	@Builder.Default
-	private BigDecimal totalAmount = BigDecimal.ZERO;
 	/**
 	 * The summary
 	 */
 	@ManyToOne
 	@JoinColumn(name = "DAILY_SUMMARY_ID", nullable = true)
 	private DailySalesSummary summary;
+	/**
+	 * The items
+	 */
+	@OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
+	@Builder.Default
+	@ToString.Exclude
+	private List<SaleItem> items = new ArrayList<>();
+	
+	/**
+	 * The transactionType
+	 */
+	@Column(name = "SOURCE_CHANNEL", nullable = true, length = 50)
+	@Builder.Default
+	private EChannel sourceChannel=EChannel.WEB;
 
 }

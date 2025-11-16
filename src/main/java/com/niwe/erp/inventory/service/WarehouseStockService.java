@@ -32,9 +32,10 @@ import com.niwe.erp.sale.repository.ShelfRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Service
-@AllArgsConstructor
 @Slf4j
+@Service
+@Transactional
+@AllArgsConstructor
 public class WarehouseStockService {
 
 	private final CoreTaxpayerBranchRepository coreTaxpayerBranchRepository;
@@ -45,7 +46,7 @@ public class WarehouseStockService {
 	private final StockMovementRepository stockMovementRepository;
 	private final CoreItemService coreItemService;
 
-	@Transactional
+	
 	public void initiateInventory(CoreTaxpayer taxpayer) {
 		try {
 
@@ -69,10 +70,12 @@ public class WarehouseStockService {
 
 	}
 
-	@Transactional
+	
 	public void updateProductQuantity(Warehouse warehouse, CoreItem product, BigDecimal quantityChange,
 			MovementType type, String reference, EStockOperation eStockOperation) {
+		try {
 
+		log.debug("-------updateProductQuantity");
 		WarehouseStock stock = warehouseStockRepository.findByWarehouseAndItem(warehouse, product).orElseGet(() -> {
 			WarehouseStock newStock = new WarehouseStock();
 			newStock.setWarehouse(warehouse);
@@ -111,9 +114,11 @@ public class WarehouseStockService {
 				.build();
 
 		stockMovementRepository.save(movement);
+		}catch (Exception e) {
+			log.error("-------updateProductQuantity:{}",e);
+		}
 	}
 
-	@Transactional
 	public void transferProduct(Warehouse fromWarehouse, Warehouse toWarehouse, CoreItem product, BigDecimal quantity) {
 		updateProductQuantity(fromWarehouse, product, quantity, MovementType.ADJUSTMENT,
 				"TRANSFER-OUT-" + fromWarehouse.getWarehouseName(), EStockOperation.OUT);

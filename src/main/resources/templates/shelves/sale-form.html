@@ -120,11 +120,14 @@
 															<td><input type="text"
 																th:field="*{shelfLines[__${iterStat.index}__].itemName}"
 																class="item-search" autocomplete="off" />
-																<div class="suggestions"></div> <input type="hidden"
+																<div class="suggestions"></div> 
+																<input type="hidden"
 																th:field="*{shelfLines[__${iterStat.index}__].internalCode}"
-																class="internalCode" /> <input type="hidden"
+																class="internalCode" /> 
+																<input type="hidden"
 																th:field="*{shelfLines[__${iterStat.index}__].taxCode}"
-																class="taxCode" /> <input type="hidden"
+																class="taxCode" /> 
+																<input type="hidden"
 																th:field="*{shelfLines[__${iterStat.index}__].taxValue}"
 																class="taxValue" /></td>
 															<td><input type="number"
@@ -223,8 +226,9 @@ function addLine() {
     row.innerHTML = `
         <td>
         <input type="text" name="shelfLines[${lineIndex}].itemName" class="item-search" autocomplete="off"/><div class="suggestions"></div>
-        <input type="hidden" name="shelfLines[${lineIndex}].itemCode"  class="internalCode"/>
+        <input type="hidden" name="shelfLines[${lineIndex}].internalCode"  class="internalCode"/>
         <input type="hidden" name="shelfLines[${lineIndex}].taxCode"  class="taxCode"/>	
+        	<input type="hidden" name="shelfLines[${lineIndex}].taxValue"  class="taxValue"/>	
         </td>
         <td><input type="number" name="shelfLines[${lineIndex}].quantity" min="0" oninput="updateTotals()" class="qty"/></td>
         <td><input type="number" step="0.01" name="shelfLines[${lineIndex}].unitPrice" min="0" oninput="updateTotals()"  class="unitPrice"/></td>

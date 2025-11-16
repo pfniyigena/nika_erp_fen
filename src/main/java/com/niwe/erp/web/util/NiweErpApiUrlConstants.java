@@ -8,7 +8,15 @@ public class NiweErpApiUrlConstants {
 	/**
 	 * The NIWE_API_V1
 	 */
-	public static final String NIWE_API_V1 = "api/v1/";
+	public static final String NIWE_API_V1="API-Version=1";
+	/**
+	 * The NIWE_API_V1
+	 */
+	public static final String NIWE_API_V2="API-Version=2";
+	/**
+	 * The NIWE_API_V1
+	 */
+	public static final String NIWE_API = "api/";
 	
 	/**
 	 * The API_ITEMS_URL
