@@ -123,7 +123,13 @@
 	    <dependency>
 	        <groupId>org.glassfish.jaxb</groupId>
 	        <artifactId>jaxb-runtime</artifactId>
-	        </dependency>
+	    </dependency>
+	<dependency>
+  <groupId>org.springdoc</groupId>
+  <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+  <version>2.8.5</version> <!-- or latest 2.x stable -->
+</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -138,7 +144,7 @@
 
 	<build>
 		<plugins>
-		<!-- Spring Boot Plugin -->
+			<!-- Spring Boot Plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -180,7 +186,7 @@
 		</plugins>
 	</build>
 <profiles>
- <!-- ✅ Development profile -->
+		<!-- ✅ Development profile -->
     <profile>
       <id>dev</id>
       <activation>
@@ -190,21 +196,21 @@
         <spring.profiles.active>dev</spring.profiles.active>
       </properties>
     </profile>
- <!-- ✅ Test profile -->
+		<!-- ✅ Test profile -->
     <profile>
       <id>test</id>
       <properties>
         <spring.profiles.active>test</spring.profiles.active>
       </properties>
     </profile>
- <!-- ✅ Production profile -->
+		<!-- ✅ Production profile -->
     <profile>
       <id>prod</id>
       <properties>
         <spring.profiles.active>prod</spring.profiles.active>
       </properties>
     </profile>
-     <!-- ✅ GraalVM Native build profile -->
+		<!-- ✅ GraalVM Native build profile -->
     <profile>
       <id>native</id>
       <activation>

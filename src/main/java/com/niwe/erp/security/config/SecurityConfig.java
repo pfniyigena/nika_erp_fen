@@ -28,8 +28,10 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests(auth -> auth.requestMatchers("assets/**","/api/**", "/login", "/error").permitAll()
-				.requestMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated())
+		http.authorizeHttpRequests(auth -> auth
+				.requestMatchers("assets/**", "/api/**", "/login", "/error", "/swagger-ui.html", "/swagger-ui/**",
+						"/v3/api-docs/**")
+				.permitAll().requestMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/login").permitAll().defaultSuccessUrl("/", true))
 				.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login?logout"))
 				.exceptionHandling(ex -> ex.accessDeniedHandler(accessDeniedHandler) // 👈 Register custom handler

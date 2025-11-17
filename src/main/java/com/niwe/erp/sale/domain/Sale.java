@@ -53,6 +53,17 @@ public class Sale extends AbstractEntity {
 	 */
 	@Column(name = "CUSTOMER_NAME")
 	private String customerName;
+
+	/**
+	 * The customerName
+	 */
+	@Column(name = "CUSTOMER_TIN")
+	private String customerTin;
+	/**
+	 * The customerName
+	 */
+	@Column(name = "CUSTOMER_PHONE")
+	private String customerPhone;
 	/**
 	 * The confirmedBy
 	 */

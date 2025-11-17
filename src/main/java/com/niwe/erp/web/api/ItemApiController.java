@@ -22,6 +22,10 @@ import com.niwe.erp.sale.service.ShelfService;
 import com.niwe.erp.core.dto.CoreItemListDTO;
 import com.niwe.erp.web.util.NiweErpApiUrlConstants;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,10 +34,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = NiweErpApiUrlConstants.NIWE_API + NiweErpApiUrlConstants.API_ITEMS_URL)
 @AllArgsConstructor
 @CrossOrigin(origins = "*")
+@Tag(name = "Items", description = "Items API for Niwe ERP")
 public class ItemApiController {
 	private final CoreItemService coreItemService;
 	private final ShelfService shelfService;
-
+	@Operation(summary = "Get Items", description = "Retrieve  item records")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Items found"),
+            @ApiResponse(responseCode = "404", description = "Items not found")
+    })
 	@PostMapping(headers =NiweErpApiUrlConstants.NIWE_API_V1)
 	public ResponseEntity<NiweCommonResponse> getItems(@RequestBody NiweCommonRequest niweCommonRequest) {
 		log.info("Get Items from request: {}", niweCommonRequest);
@@ -51,7 +60,11 @@ public class ItemApiController {
 		log.info("Get Items from response: {}", niweCommonResponse);
 		return ResponseEntity.ok(niweCommonResponse);
 	}
-
+	@Operation(summary = "Get Items Updates", description = "Retrieve  updated item records")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Items found"),
+            @ApiResponse(responseCode = "404", description = "Items not found")
+    })
 	@PostMapping(value="/updates",headers =NiweErpApiUrlConstants.NIWE_API_V1)
 	public ResponseEntity<NiweCommonResponse> getUpdatedItems(@RequestBody NiweCommonRequest niweCommonRequest) {
 		log.info("Get product Items from: {}", niweCommonRequest);
