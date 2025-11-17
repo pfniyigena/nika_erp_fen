@@ -300,6 +300,14 @@
 													th:text="#{menu.taxpayer-branches}"></span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
+											<li class=" "><a href="#" th:href="@{/warehouses/list}"
+												class="waves-effect waves-dark"> <span
+													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+													<span class="pcoded-mtext"
+													data-i18n="nav.basic-components.alert"
+													th:text="#{menu.warehouses}"></span> <span
+													class="pcoded-mcaret"></span>
+											</a></li>
 											<li class=" "><a href="#" th:href="@{/countries/list}"
 												class="waves-effect waves-dark"> <span
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
@@ -404,21 +412,22 @@
 											class="pcoded-mcaret"></span>
 									</a>
 										<ul class="pcoded-submenu">
-											<li class=" "><a href="#" th:href="@{/warehouses/list}"
+											<li class=" "><a href="#"
+												th:href="@{/stocks-received/list}"
 												class="waves-effect waves-dark"> <span
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
 													<span class="pcoded-mtext"
 													data-i18n="nav.basic-components.alert"
-													th:text="#{menu.warehouses}"></span> <span
+													th:text="#{menu.stock.received}"> </span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
 											<li class=" "><a href="#"
-												th:href="@{/warehouse-stocks/summary}"
+												th:href="@{/stock-transfers/list}"
 												class="waves-effect waves-dark"> <span
 													class="pcoded-micon"><em class="ti-angle-right"></em></span>
 													<span class="pcoded-mtext"
 													data-i18n="nav.basic-components.alert"
-													th:text="#{menu.stock.summary}"> </span> <span
+													th:text="#{menu.stock.transfers}"> </span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
 											<li class=" "><a href="#"
@@ -430,15 +439,23 @@
 													th:text="#{menu.stock.movements}"> </span> <span
 													class="pcoded-mcaret"></span>
 											</a></li>
-											<li class=" "><a href="#"
-												th:href="@{/stocks-received/list}"
-												class="waves-effect waves-dark"> <span
-													class="pcoded-micon"><em class="ti-angle-right"></em></span>
+											<li class="pcoded-hasmenu"><a href="javascript:void(0)"
+												class="waves-effect waves-dark"><span
+													class="pcoded-micon"><em class="ti-direction-alt"></em></span>
 													<span class="pcoded-mtext"
-													data-i18n="nav.basic-components.alert"
-													th:text="#{menu.stock.received}"> </span> <span
-													class="pcoded-mcaret"></span>
-											</a></li>
+													th:text="#{label.general.reports}"></span> <span
+													class="pcoded-mcaret"></span></a>
+												<ul class="pcoded-submenu">
+													<li class=" "><a href="#"
+														th:href="@{/warehouse-stocks/summary}"
+														class="waves-effect waves-dark"> <span
+															class="pcoded-micon"><em class="ti-angle-right"></em></span>
+															<span class="pcoded-mtext"
+															data-i18n="nav.basic-components.alert"
+															th:text="#{menu.stock.summary}"> </span> <span
+															class="pcoded-mcaret"></span>
+													</a></li>
+												</ul></li>
 
 										</ul></li>
 									<li class="pcoded-hasmenu"><a href="javascript:void(0)"
@@ -471,13 +488,27 @@
 													th:text="#{label.general.reports}"></span> <span
 													class="pcoded-mcaret"></span></a>
 												<ul class="pcoded-submenu">
-													<li class=""><a href="#" th:href="@{/daily-sales/list}"
-													
+													<li class=""><a href="#"
+														th:href="@{/daily-sales/daily}"
 														class="waves-effect waves-dark"><span
 															class="pcoded-micon"><i class="ti-direction-alt"></i></span>
 															<span class="pcoded-mtext"
-															th:text="#{label.sale.daily.summary}"></span>
-															<span class="pcoded-mcaret"></span></a></li>
+															th:text="#{label.sale.daily.summary}"></span> <span
+															class="pcoded-mcaret"></span></a></li>
+													<li class=""><a href="#"
+														th:href="@{/daily-sales/monthly}"
+														class="waves-effect waves-dark"><span
+															class="pcoded-micon"><i class="ti-direction-alt"></i></span>
+															<span class="pcoded-mtext"
+															th:text="#{label.sale.monthly.summary}"></span> <span
+															class="pcoded-mcaret"></span></a></li>
+													<li class=""><a href="#"
+														th:href="@{/daily-sales/annual}"
+														class="waves-effect waves-dark"><span
+															class="pcoded-micon"><i class="ti-direction-alt"></i></span>
+															<span class="pcoded-mtext"
+															th:text="#{label.sale.annual.summary}"></span> <span
+															class="pcoded-mcaret"></span></a></li>
 												</ul></li>
 										</ul></li>
 									<li class="pcoded-hasmenu"><a href="javascript:void(0)"

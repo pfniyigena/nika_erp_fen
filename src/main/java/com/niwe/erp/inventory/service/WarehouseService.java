@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.niwe.erp.common.exception.ResourceNotFoundException;
 import com.niwe.erp.common.service.SequenceNumberService;
 import com.niwe.erp.inventory.domain.Warehouse;
 import com.niwe.erp.inventory.repository.WarehouseRepository;
@@ -25,8 +26,9 @@ public class WarehouseService {
 	}
 
 	public Warehouse findById(String id) {
+		return warehouseRepository.findById(UUID.fromString(id))
+				.orElseThrow(() -> new ResourceNotFoundException("Warehouse not found with id " + id));
 
-		return warehouseRepository.getReferenceById(UUID.fromString(id));
 	}
 
 	public Warehouse save(Warehouse warehouse) {
@@ -52,5 +54,8 @@ public class WarehouseService {
 
 	}
 
- 
+	public List<Warehouse> findByIdNotIn(List<UUID> ids) {
+		return warehouseRepository.findByIdNotIn(ids);
+	}
+
 }

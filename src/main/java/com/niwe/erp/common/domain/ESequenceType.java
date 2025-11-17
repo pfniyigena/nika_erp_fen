@@ -21,6 +21,8 @@ public enum ESequenceType {
 	/** The RECEIVED_GOOD. */
 	RECEIVED_GOOD,
 	/** The PAYMENT_METHOD. */
-	PAYMENT_METHOD
+	PAYMENT_METHOD,
+	/** The PAYMENT_METHOD. */
+	STOCK_TRANSFER
 
 }

@@ -2,24 +2,35 @@ package com.niwe.erp.sale.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.niwe.erp.common.util.DataParserUtil;
 import com.niwe.erp.sale.domain.DailySalesSummary;
+import com.niwe.erp.sale.domain.PaymentMethod;
 import com.niwe.erp.sale.domain.Sale;
 import com.niwe.erp.sale.domain.TransactionType;
 
@@ -37,6 +48,8 @@ public class SalePdfExportService {
 			PdfWriter writer = new PdfWriter(out);
 			PdfDocument pdf = new PdfDocument(writer);
 			Document document = new Document(pdf);
+			pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new PageNumberEventHandler());
+
 			Table companyHeader = companyHeader();
 			// Add header to PDF
 			document.add(companyHeader);
@@ -158,6 +171,92 @@ public class SalePdfExportService {
 			throw new RuntimeException("Failed to export PDF: " + e.getMessage());
 		}
 	}
+	public void generateMonthlyPdf(OutputStream out, List<Sale> sales, YearMonth month) throws Exception {
+		try {
+			PdfWriter writer = new PdfWriter(out);
+			PdfDocument pdf = new PdfDocument(writer);
+			Document document = new Document(pdf);
+			pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new PageNumberEventHandler());
+
+			Table companyHeader = companyHeader();
+			// Add header to PDF
+			document.add(companyHeader);
+
+			// Add small spacing before title
+			document.add(new Paragraph("\n"));
+			document.add(new Paragraph("Monthly Sales Report of " +month.toString()).setBold()
+					.setFontSize(14).setTextAlignment(TextAlignment.CENTER));
+
+			float[] columnWidths = { 4, 4, 4, 2, 3, 3 };
+			Table table = new Table(columnWidths);
+			table.setWidth(UnitValue.createPercentValue(100));
+
+			String[] headers = { "Sale Date", "Internal Code", "Customer Name", "Item Number", "Total Amount",
+					"Payment Method" };
+			for (String h : headers) {
+				table.addHeaderCell(new Cell().add(new Paragraph(h)));
+			}
+			BigDecimal totalAmount = BigDecimal.ZERO;
+			// Data rows
+			for (Sale sale : sales) {
+				BigDecimal amount = sale.getTotalAmountToPay() != null ? sale.getTotalAmountToPay() : BigDecimal.ZERO;
+				if (sale.getTransactionType() == TransactionType.REFUND) {
+					amount = amount.negate(); // negative for refunds
+				}
+				table.addCell(DataParserUtil.dateFromInstant(sale.getSaleDate()));
+				table.addCell(sale.getInternalCode());
+				table.addCell(sale.getCustomerName() != null ? sale.getCustomerName() : "");
+				table.addCell(String.valueOf(sale.getItemNumber()));
+				table.addCell(amount.toString());
+				table.addCell(sale.getPaymentMethod().getName());
+				totalAmount = totalAmount.add(amount); // add negative for refunds
+			}
+			// Total row
+			table.addCell(new Cell(1, 4).add(new Paragraph("TOTAL")));
+			table.addCell(new Cell().add(new Paragraph(totalAmount.toString())));
+			table.addCell(new Cell()); // empty for Payment Status
+			document.add(table);
+			
+
+		    document.add(new Paragraph("\nPayment Summary").setBold().setFontSize(12));
+
+		    // --- Payment Summary Table ---
+		    Map<PaymentMethod, BigDecimal> paymentTotals = sales.stream()
+		            .collect(Collectors.groupingBy(
+		                    Sale::getPaymentMethod,
+		                    Collectors.mapping(
+		                            s -> s.getTransactionType() == TransactionType.REFUND
+		                                 ? s.getTotalAmountToPay().negate()
+		                                 : s.getTotalAmountToPay(),
+		                            Collectors.reducing(BigDecimal.ZERO, BigDecimal::add)
+		                    )
+		            ));
+		    Table paymentTable = new Table(UnitValue.createPercentArray(new float[]{4, 3})).useAllAvailableWidth();
+		    paymentTable.addHeaderCell(new Cell().add(new Paragraph("Payment Method").setBold()));
+		    paymentTable.addHeaderCell(new Cell().add(new Paragraph("Total Amount").setBold()));
+
+		    BigDecimal paymentTotalSum = BigDecimal.ZERO;
+		    for (Map.Entry<PaymentMethod, BigDecimal> entry : paymentTotals.entrySet()) {
+		        paymentTable.addCell(new Cell().add(new Paragraph(entry.getKey().getName())));
+		        paymentTable.addCell(new Cell().add(new Paragraph(entry.getValue().toString())));
+		        paymentTotalSum = paymentTotalSum.add(entry.getValue());
+		    }
+
+		    // Total row
+		    Cell payTotalLabel = new Cell().add(new Paragraph("TOTAL").setBold())
+		            .setBackgroundColor(new DeviceRgb(230, 230, 230));
+		    Cell payTotalValue = new Cell().add(new Paragraph(paymentTotalSum.toString()).setBold())
+		            .setBackgroundColor(new DeviceRgb(230, 230, 230));
+		    paymentTable.addCell(payTotalLabel);
+		    paymentTable.addCell(payTotalValue);
+
+		    document.add(paymentTable);
+			document.close();
+
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to export PDF: " + e.getMessage());
+		}
+	}
 	public ByteArrayInputStream exportDailySalesSummaryToPdf(DailySalesSummary summary) {
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 			PdfWriter writer = new PdfWriter(out);
@@ -262,22 +361,44 @@ public class SalePdfExportService {
 		String address = "N'Djamena, Chad";
 		String phone = "Phone: +235 66 00 00 00";
 		String email = "Email: contact@afritech-solutions.com";
+		String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		// --- Load logo ---
+		Image logo = null;
+		try {
+		    ImageData imageData = ImageDataFactory.create("/path/to/logo.png"); // your logo path
+		    logo = new Image(imageData);
+		    logo.setWidth(60); // adjust size
+		} catch (Exception e) {
+		    // Handle missing logo
+		    logo = null;
+		}
+		Table headerTable = new Table(new float[]{1, 3, 2});
+		headerTable.setWidth(UnitValue.createPercentValue(100));
+		// Logo cell
+		Cell logoCell = new Cell();
+		logoCell.setBorder(Border.NO_BORDER);
+		if (logo != null) {
+		    logoCell.add(logo);
+		}
+		headerTable.addCell(logoCell);
+		// Company info cell
+		Cell companyCell = new Cell();
+		companyCell.setBorder(Border.NO_BORDER);
+		companyCell.add(new Paragraph(companyName).setBold().setFontSize(14));
+		companyCell.add(new Paragraph(tin));
+		companyCell.add(new Paragraph(address));
+		companyCell.add(new Paragraph(phone));
+		companyCell.add(new Paragraph(email));
+		headerTable.addCell(companyCell);
 
-		// Header table (left aligned)
-		Table companyHeader = new Table(1);
-		companyHeader.setWidth(UnitValue.createPercentValue(50)); // keep it on the left side
+		
+		// Date cell (right-aligned)
+		Cell dateCell = new Cell();
+		dateCell.setBorder(Border.NO_BORDER);
+		dateCell.add(new Paragraph("Date: " + date));
+		dateCell.setTextAlignment(TextAlignment.RIGHT);
+		headerTable.addCell(dateCell);
 
-		companyHeader.addCell(
-				new Cell().add(new Paragraph(companyName).setBold().setFontSize(14)).setBorder(Border.NO_BORDER));
-
-		companyHeader.addCell(new Cell().add(new Paragraph(tin)).setBorder(Border.NO_BORDER));
-
-		companyHeader.addCell(new Cell().add(new Paragraph(address)).setBorder(Border.NO_BORDER));
-
-		companyHeader.addCell(new Cell().add(new Paragraph(phone)).setBorder(Border.NO_BORDER));
-
-		companyHeader.addCell(new Cell().add(new Paragraph(email)).setBorder(Border.NO_BORDER));
-
-		return companyHeader;
+		return headerTable;
 	}
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.niwe.erp.common.service.SequenceNumberService;
 import com.niwe.erp.core.domain.CoreTaxpayerBranch;
 import com.niwe.erp.core.service.CoreTaxpayerBranchService;
 import com.niwe.erp.inventory.domain.Warehouse;
@@ -29,8 +28,6 @@ public class WarehouseController {
 
 	private final WarehouseService warehouseService;
 	private final CoreTaxpayerBranchService coreTaxpayerBranchService;
-	private final SequenceNumberService sequenceNumberService;
-
 	@GetMapping(path = "/list")
 	public String listWarehouses(Model model) {
 
@@ -43,7 +40,7 @@ public class WarehouseController {
 	@GetMapping(path = "/new")
 	public String warehouseForm(Model model) {
 		model.addAttribute("warehouse",
-				Warehouse.builder().internalCode(sequenceNumberService.getNextWarehouseCode()).build());
+				Warehouse.builder().build());
 		setData(model);
 
 		return NikaErpInventoryUrlConstants.WAREHOUSES_ADD_FORM_PAGE;

@@ -10,5 +10,7 @@ import java.util.UUID;
 
 public interface WarehouseRepository extends JpaRepository<Warehouse, UUID> {
     List<Warehouse> findByBranchId(UUID branchId);
+    
+    List<Warehouse>  findByIdNotIn(List<UUID> ids);
 }
 

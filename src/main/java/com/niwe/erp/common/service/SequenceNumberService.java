@@ -102,4 +102,9 @@ public class SequenceNumberService {
 		String sequence = this.getNextSequenceNumber(ESequenceType.PAYMENT_METHOD);
 		return "PM" + StringUtils.leftPad(sequence, 2, "0");
 	}
+	public String getNextStockTransferCode() {
+
+		String sequence = this.getNextSequenceNumber(ESequenceType.STOCK_TRANSFER);
+		return "ST" + StringUtils.leftPad(sequence, 9, "0");
+	}
 }

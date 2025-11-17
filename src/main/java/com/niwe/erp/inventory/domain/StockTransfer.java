@@ -32,10 +32,10 @@ public class StockTransfer  extends AbstractEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * The previousQuantity
+	 * The internalCode
 	 */
-	@Column(name = "PREVIOUS_QUANTITY")
-    private BigDecimal previousQuantity;
+	@Column(name = "INTERNAL_CODE", nullable = false, unique = true)
+	private String internalCode;
 	/**
 	 * The quantity
 	 */
@@ -43,21 +43,10 @@ public class StockTransfer  extends AbstractEntity {
     private BigDecimal quantity;
 	
 	/**
-	 * The currentQuantity
-	 */
-	@Column(name = "CURRENT_QUANTITY")
-    private BigDecimal currentQuantity;
-	/**
-	 * The movementType
-	 */
-	@Column(name = "MOVEMENT_TYPE")
-	@lombok.ToString.Include
-	private MovementType movementType;
-	/**
 	 * The movementDate
 	 */
-	@Column(name = "MOUVEMENT_DATE")
-    private LocalDateTime movementDate;
+	@Column(name = "TRANSFER_DATE")
+    private LocalDateTime transferDate;
 	/**
 	 * The fromWarehouse
 	 */

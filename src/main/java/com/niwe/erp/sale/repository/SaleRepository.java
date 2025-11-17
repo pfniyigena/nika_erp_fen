@@ -1,6 +1,7 @@
 package com.niwe.erp.sale.repository;
  
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,7 +16,7 @@ public interface SaleRepository extends JpaRepository<Sale, UUID> {
 	Optional<Sale> findByExternalCode(String externalCode);
 
 	List<Sale> findBySummaryIdOrderBySaleDateDesc(UUID summaryId);
-	
+	List<Sale> findBySaleDateBetween(Instant start, Instant end);
     
 }
 

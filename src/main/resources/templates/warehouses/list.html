@@ -55,10 +55,12 @@
 															<td th:text="${list.internalCode}"></td>
 															<td th:text="${list.isMain}"></td>
 															<td th:text="${list.branch.branchName}"></td>
-															<td><a href="#"
-																th:href="@{'/taxpayer-branches/update/' + ${list.id}}"
-																class="waves-effect waves-dark"><span
-																	class="pcoded-micon"><em class="fa fa-pencil"></em></span></a>
+															<td><a
+																th:href="@{'/stock-transfers/new/'+ ${list.id}}"
+																class="btn waves-effect waves-light btn-danger btn-icon"
+																th:title="#{label.button.transfer}"> <em
+																	class="icofont icofont-auto-rickshaw"></em>
+															</a>
 															</td>
 														</tr>
 
