@@ -4,7 +4,7 @@
     <ul class="nav flex-column" th:each="menu : ${menuItems}">
         <li class="nav-item">
             <a class="nav-link d-flex align-items-center" th:href="@{${menu.url}}">
-                <i th:if="${menu.icon}" th:class="${menu.icon} me-2"}"></i>
+                <i th:if="${menu.icon}" th:class="${menu.icon}"></i>
                 <span th:text="${menu.title}"></span>
             </a>
 

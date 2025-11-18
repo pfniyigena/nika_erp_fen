@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.niwe.erp.common.api.dto.NiweCommonResponse;
-import com.niwe.erp.common.api.dto.NiweCommonRequest;
+
 import com.niwe.erp.core.service.CoreItemService;
 import com.niwe.erp.sale.domain.Shelf;
 import com.niwe.erp.sale.service.ShelfService;
 import com.niwe.erp.core.dto.CoreItemListDTO;
+import com.niwe.erp.web.api.dto.NiweCommonRequest;
+import com.niwe.erp.web.api.dto.NiweCommonResponse;
 import com.niwe.erp.web.util.NiweErpApiUrlConstants;
 
 import io.swagger.v3.oas.annotations.Operation;

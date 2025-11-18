@@ -45,7 +45,7 @@ public class DailySalesSummary extends AbstractEntity{
 	 */
 	@Column(name = "TOTAL_TAX_AMOUNT", nullable = true)
 	@Builder.Default
-	private BigDecimal totlaTaxAmount = BigDecimal.ZERO;
+	private BigDecimal totalTaxAmount = BigDecimal.ZERO;
 	/**
 	 * The totalAmountInclusiveTax
 	 */
@@ -80,15 +80,10 @@ public class DailySalesSummary extends AbstractEntity{
 	/**
 	 * The totalPurchaseAmountInclusiveTax
 	 */
-	@Column(name = "TOTAL_PURCHASE_AMOUNT_INCLUSIVE_TAX")
+	@Column(name = "TOTAL_COST")
 	@Builder.Default
-	private BigDecimal totalPurchaseAmountInclusiveTax= BigDecimal.ZERO;
-	/**
-	 * The totalPurchaseAmountHorsTax
-	 */
-	@Column(name = "TOTAL_PURCHASE_AMOUNT_HORS_TAX", nullable = true)
-	@Builder.Default
-	private BigDecimal totalPurchaseAmountHorsTax = BigDecimal.ZERO;
+	private BigDecimal totalCost= BigDecimal.ZERO;
+
 	/**
 	 * The costAmount
 	 */

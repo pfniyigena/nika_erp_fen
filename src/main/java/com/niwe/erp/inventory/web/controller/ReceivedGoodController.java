@@ -50,9 +50,9 @@ public class ReceivedGoodController {
 
 	@GetMapping(path = "/new")
 	public String newReceivedGood(Model model) {
-		GoodForm good = new GoodForm();
-		good.setGoodLines(List.of(new GoodLineForm()));
-		model.addAttribute("good", good);
+		GoodForm goodForm= new GoodForm();
+		goodForm.setGoodLines(List.of(new GoodLineForm()));
+		model.addAttribute("goodForm", goodForm);
 		return NikaErpInventoryUrlConstants.STOCK_RECEIVED_ADD_FORM;
 	}
 

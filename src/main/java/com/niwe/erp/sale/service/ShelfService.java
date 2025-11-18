@@ -1,6 +1,5 @@
 package com.niwe.erp.sale.service;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -11,8 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.niwe.erp.common.api.dto.SaleItemRequest;
-import com.niwe.erp.common.api.dto.SaleRequest;
 import com.niwe.erp.common.domain.EChannel;
 import com.niwe.erp.common.domain.PaymentStatus;
 import com.niwe.erp.common.exception.ResourceNotFoundException;
@@ -23,6 +20,7 @@ import com.niwe.erp.core.domain.CoreItem;
 import com.niwe.erp.core.service.CoreItemService;
 import com.niwe.erp.core.service.CoreUserService;
 import com.niwe.erp.invoicing.domain.EPaymentMethod;
+import com.niwe.erp.sale.domain.Customer;
 import com.niwe.erp.sale.domain.DailySalesSummary;
 import com.niwe.erp.sale.domain.Sale;
 import com.niwe.erp.sale.domain.SaleItem;
@@ -33,10 +31,11 @@ import com.niwe.erp.sale.repository.SaleRepository;
 import com.niwe.erp.sale.repository.ShelfRepository;
 import com.niwe.erp.sale.web.form.ShelfForm;
 import com.niwe.erp.sale.web.form.ShelfLineForm;
+import com.niwe.erp.web.api.dto.SaleItemRequest;
+import com.niwe.erp.web.api.dto.SaleRequest;
 import com.niwe.erp.web.api.event.SaleCreatedEvent;
 
 import lombok.RequiredArgsConstructor;
-import wys.ebm.core.invoice.util.InvoiceCalculationService;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +47,7 @@ public class ShelfService {
 	private final CoreUserService coreUserService;
 	private final PaymentMethodService paymentMethodService;
 	private final DailySalesSummaryService dailySalesSummaryService;
+	private final CustomerService customerService;
 	private final ApplicationEventPublisher eventPublisher;
 
 	public List<Shelf> findAll() {
@@ -103,7 +103,7 @@ public class ShelfService {
 		sale.setShelf(shelf);
 		sale.setConfirmedBy(coreUserService.getCurrentUserEntity().getUsername());
 		sale.setSaleDate(Instant.now());
-		sale.setInternalCode(sequenceNumberService.getNextShelfCode());
+		sale.setInternalCode(sequenceNumberService.getNextSaleCode());
 		AtomicInteger counter = new AtomicInteger(1);
 		List<SaleItem> lines = shelfForm.getShelfLines().stream().map(formLine -> {
 
@@ -143,8 +143,14 @@ public class ShelfService {
 			return;
 		}
 		Shelf shelf = findByInternalCode(request.niweHeaderRequest().shelfCode());
-
+		Customer customer = customerService.save(Customer.builder().customerName(request.customerName())
+				.customerTin(request.customerTin()).customerPhone(request.customerPhone()).build());
 		Sale sale = new Sale();
+		sale.setShelf(shelf);
+		sale.setCustomer(customer);
+		sale.setCustomerName(request.customerName());
+		sale.setCustomerPhone(request.customerPhone());
+		sale.setCustomerTin(request.customerTin());
 		sale.setSourceChannel(EChannel.API);
 		TransactionType transactionType = TransactionType.SALE;
 		if (!request.transactionType().equals("S")) {
@@ -153,17 +159,19 @@ public class ShelfService {
 		sale.setTransactionType(transactionType);
 		sale.setSaleDate(DataParserUtil.instantFromDateString(request.saleDate()));
 		sale.setExternalCode(request.externalReference());
-		sale.setShelf(shelf);
 		sale.setPaymentMethod(paymentMethodService.save(request.paymentMethod()));
 		sale.setConfirmedBy(request.confirmedBy());
-		sale.setInternalCode(sequenceNumberService.getNextShelfCode());
+		sale.setInternalCode(sequenceNumberService.getNextSaleCode());
+		sale.setTotalGrossAmount(request.totalGrossAmount());
+		sale.setTotalDiscountAmount(request.totalDiscountAmount());
+		sale.setTotalTaxAmount(request.totalTaxAmount());
+		sale.setTotalAmountInclusiveTax(request.totalAmount());
+		sale.setTotalAmountHorsTax(request.totalAmount().subtract(request.totalTaxAmount()));
+		sale.setTotalAmountToPay(request.totalAmount());
 		List<SaleItem> lines = request.items().stream().map(itemRequest -> {
-			InvoiceCalculationService invoiceCalculationService = new InvoiceCalculationService(itemRequest.quantity(),
-					itemRequest.unitPrice(), itemRequest.taxRate(), new BigDecimal("0.00"), new BigDecimal("0.00"));
-
-			sale.setTotalAmountToPay(sale.getTotalAmountToPay().add(invoiceCalculationService.getAmountToPay()));
-
 			SaleItem line = mapToSaleLine(itemRequest);
+			line.setPurchasePrice(line.getItem().getUnitCost());
+			sale.setTotalCost(sale.getTotalCost().add((line.getItem().getUnitCost().multiply(line.getQuantity()))));
 			return line;
 
 		}).toList();

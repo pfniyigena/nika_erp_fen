@@ -1,12 +1,10 @@
-package com.niwe.erp.sale.service;
+package com.niwe.erp.sale.service.pdf;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -14,8 +12,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.itextpdf.io.image.ImageData;
-import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -23,7 +19,6 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
@@ -33,6 +28,8 @@ import com.niwe.erp.sale.domain.DailySalesSummary;
 import com.niwe.erp.sale.domain.PaymentMethod;
 import com.niwe.erp.sale.domain.Sale;
 import com.niwe.erp.sale.domain.TransactionType;
+import com.niwe.erp.sale.service.PageNumberEventHandler;
+import com.niwe.erp.sale.service.SaleService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -50,7 +47,7 @@ public class SalePdfExportService {
 			Document document = new Document(pdf);
 			pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new PageNumberEventHandler());
 
-			Table companyHeader = companyHeader();
+			Table companyHeader = PdfHeaderCommon.companyHeader();
 			// Add header to PDF
 			document.add(companyHeader);
 
@@ -63,7 +60,7 @@ public class SalePdfExportService {
 			Table table = new Table(columnWidths);
 			table.setWidth(UnitValue.createPercentValue(100));
 
-			String[] headers = { "Sale Date", "Internal Code", "Customer Name", "Item Number", "Total Amount",
+			String[] headers = { "Sale Date", "Internal Code", "Customer Name", "Unit Price", "Total Amount",
 					"Payment Method" };
 			for (String h : headers) {
 				table.addHeaderCell(new Cell().add(new Paragraph(h)));
@@ -140,12 +137,11 @@ public class SalePdfExportService {
 			addRow.accept("Total HT", summary.getTotalAmountHorsTax());
 			addRow.accept("Total TTC", summary.getTotalAmountInclusiveTax());
 			addRow.accept("Total Discount", summary.getTotalDiscountAmount());
-			addRow.accept("Total Tax", summary.getTotlaTaxAmount());
+			addRow.accept("Total Tax", summary.getTotalTaxAmount());
 			addRow.accept("Total Gross", summary.getTotalGrossAmount());
 			addRow.accept("Total Extra", summary.getTotalExtraAmount());
 			addRow.accept("Total To Pay", summary.getTotalAmountToPay());
-			addRow.accept("Purchase TTC", summary.getTotalPurchaseAmountInclusiveTax());
-			addRow.accept("Purchase HT", summary.getTotalPurchaseAmountHorsTax());
+			addRow.accept("Total Cost", summary.getTotalCost());
 			addRow.accept("Total Profit", summary.getTotalProfit());
 
 			// Add number of receipts
@@ -171,6 +167,7 @@ public class SalePdfExportService {
 			throw new RuntimeException("Failed to export PDF: " + e.getMessage());
 		}
 	}
+
 	public void generateMonthlyPdf(OutputStream out, List<Sale> sales, YearMonth month) throws Exception {
 		try {
 			PdfWriter writer = new PdfWriter(out);
@@ -178,14 +175,14 @@ public class SalePdfExportService {
 			Document document = new Document(pdf);
 			pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new PageNumberEventHandler());
 
-			Table companyHeader = companyHeader();
+			Table companyHeader = PdfHeaderCommon.companyHeader();
 			// Add header to PDF
 			document.add(companyHeader);
 
 			// Add small spacing before title
 			document.add(new Paragraph("\n"));
-			document.add(new Paragraph("Monthly Sales Report of " +month.toString()).setBold()
-					.setFontSize(14).setTextAlignment(TextAlignment.CENTER));
+			document.add(new Paragraph("Monthly Sales Report of " + month.toString()).setBold().setFontSize(14)
+					.setTextAlignment(TextAlignment.CENTER));
 
 			float[] columnWidths = { 4, 4, 4, 2, 3, 3 };
 			Table table = new Table(columnWidths);
@@ -216,53 +213,48 @@ public class SalePdfExportService {
 			table.addCell(new Cell().add(new Paragraph(totalAmount.toString())));
 			table.addCell(new Cell()); // empty for Payment Status
 			document.add(table);
-			
 
-		    document.add(new Paragraph("\nPayment Summary").setBold().setFontSize(12));
+			document.add(new Paragraph("\nPayment Summary").setBold().setFontSize(12));
 
-		    // --- Payment Summary Table ---
-		    Map<PaymentMethod, BigDecimal> paymentTotals = sales.stream()
-		            .collect(Collectors.groupingBy(
-		                    Sale::getPaymentMethod,
-		                    Collectors.mapping(
-		                            s -> s.getTransactionType() == TransactionType.REFUND
-		                                 ? s.getTotalAmountToPay().negate()
-		                                 : s.getTotalAmountToPay(),
-		                            Collectors.reducing(BigDecimal.ZERO, BigDecimal::add)
-		                    )
-		            ));
-		    Table paymentTable = new Table(UnitValue.createPercentArray(new float[]{4, 3})).useAllAvailableWidth();
-		    paymentTable.addHeaderCell(new Cell().add(new Paragraph("Payment Method").setBold()));
-		    paymentTable.addHeaderCell(new Cell().add(new Paragraph("Total Amount").setBold()));
+			// --- Payment Summary Table ---
+			Map<PaymentMethod, BigDecimal> paymentTotals = sales.stream()
+					.collect(Collectors.groupingBy(Sale::getPaymentMethod, Collectors.mapping(
+							s -> s.getTransactionType() == TransactionType.REFUND ? s.getTotalAmountToPay().negate()
+									: s.getTotalAmountToPay(),
+							Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))));
+			Table paymentTable = new Table(UnitValue.createPercentArray(new float[] { 4, 3 })).useAllAvailableWidth();
+			paymentTable.addHeaderCell(new Cell().add(new Paragraph("Payment Method").setBold()));
+			paymentTable.addHeaderCell(new Cell().add(new Paragraph("Total Amount").setBold()));
 
-		    BigDecimal paymentTotalSum = BigDecimal.ZERO;
-		    for (Map.Entry<PaymentMethod, BigDecimal> entry : paymentTotals.entrySet()) {
-		        paymentTable.addCell(new Cell().add(new Paragraph(entry.getKey().getName())));
-		        paymentTable.addCell(new Cell().add(new Paragraph(entry.getValue().toString())));
-		        paymentTotalSum = paymentTotalSum.add(entry.getValue());
-		    }
+			BigDecimal paymentTotalSum = BigDecimal.ZERO;
+			for (Map.Entry<PaymentMethod, BigDecimal> entry : paymentTotals.entrySet()) {
+				paymentTable.addCell(new Cell().add(new Paragraph(entry.getKey().getName())));
+				paymentTable.addCell(new Cell().add(new Paragraph(entry.getValue().toString())));
+				paymentTotalSum = paymentTotalSum.add(entry.getValue());
+			}
 
-		    // Total row
-		    Cell payTotalLabel = new Cell().add(new Paragraph("TOTAL").setBold())
-		            .setBackgroundColor(new DeviceRgb(230, 230, 230));
-		    Cell payTotalValue = new Cell().add(new Paragraph(paymentTotalSum.toString()).setBold())
-		            .setBackgroundColor(new DeviceRgb(230, 230, 230));
-		    paymentTable.addCell(payTotalLabel);
-		    paymentTable.addCell(payTotalValue);
+			// Total row
+			Cell payTotalLabel = new Cell().add(new Paragraph("TOTAL").setBold())
+					.setBackgroundColor(new DeviceRgb(230, 230, 230));
+			Cell payTotalValue = new Cell().add(new Paragraph(paymentTotalSum.toString()).setBold())
+					.setBackgroundColor(new DeviceRgb(230, 230, 230));
+			paymentTable.addCell(payTotalLabel);
+			paymentTable.addCell(payTotalValue);
 
-		    document.add(paymentTable);
+			document.add(paymentTable);
 			document.close();
 
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to export PDF: " + e.getMessage());
 		}
 	}
+
 	public ByteArrayInputStream exportDailySalesSummaryToPdf(DailySalesSummary summary) {
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 			PdfWriter writer = new PdfWriter(out);
 			PdfDocument pdf = new PdfDocument(writer);
 			Document document = new Document(pdf);
-			Table companyHeader = companyHeader();
+			Table companyHeader = PdfHeaderCommon.companyHeader();
 			// Add header to PDF
 			document.add(companyHeader);
 
@@ -322,12 +314,11 @@ public class SalePdfExportService {
 			addRow.accept("Total HT", summary.getTotalAmountHorsTax());
 			addRow.accept("Total TTC", summary.getTotalAmountInclusiveTax());
 			addRow.accept("Total Discount", summary.getTotalDiscountAmount());
-			addRow.accept("Total Tax", summary.getTotlaTaxAmount());
+			addRow.accept("Total Tax", summary.getTotalTaxAmount());
 			addRow.accept("Total Gross", summary.getTotalGrossAmount());
 			addRow.accept("Total Extra", summary.getTotalExtraAmount());
 			addRow.accept("Total To Pay", summary.getTotalAmountToPay());
-			addRow.accept("Purchase TTC", summary.getTotalPurchaseAmountInclusiveTax());
-			addRow.accept("Purchase HT", summary.getTotalPurchaseAmountHorsTax());
+			addRow.accept("Total Cost", summary.getTotalCost());
 			addRow.accept("Total Profit", summary.getTotalProfit());
 
 			// Add number of receipts
@@ -354,51 +345,4 @@ public class SalePdfExportService {
 		}
 	}
 
-	private Table companyHeader() {
-		// Company Information
-		String companyName = "AFRITECH SOLUTIONS";
-		String tin = "TIN: 123456789";
-		String address = "N'Djamena, Chad";
-		String phone = "Phone: +235 66 00 00 00";
-		String email = "Email: contact@afritech-solutions.com";
-		String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-		// --- Load logo ---
-		Image logo = null;
-		try {
-		    ImageData imageData = ImageDataFactory.create("/path/to/logo.png"); // your logo path
-		    logo = new Image(imageData);
-		    logo.setWidth(60); // adjust size
-		} catch (Exception e) {
-		    // Handle missing logo
-		    logo = null;
-		}
-		Table headerTable = new Table(new float[]{1, 3, 2});
-		headerTable.setWidth(UnitValue.createPercentValue(100));
-		// Logo cell
-		Cell logoCell = new Cell();
-		logoCell.setBorder(Border.NO_BORDER);
-		if (logo != null) {
-		    logoCell.add(logo);
-		}
-		headerTable.addCell(logoCell);
-		// Company info cell
-		Cell companyCell = new Cell();
-		companyCell.setBorder(Border.NO_BORDER);
-		companyCell.add(new Paragraph(companyName).setBold().setFontSize(14));
-		companyCell.add(new Paragraph(tin));
-		companyCell.add(new Paragraph(address));
-		companyCell.add(new Paragraph(phone));
-		companyCell.add(new Paragraph(email));
-		headerTable.addCell(companyCell);
-
-		
-		// Date cell (right-aligned)
-		Cell dateCell = new Cell();
-		dateCell.setBorder(Border.NO_BORDER);
-		dateCell.add(new Paragraph("Date: " + date));
-		dateCell.setTextAlignment(TextAlignment.RIGHT);
-		headerTable.addCell(dateCell);
-
-		return headerTable;
-	}
 }

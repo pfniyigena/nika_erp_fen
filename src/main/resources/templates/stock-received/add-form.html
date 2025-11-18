@@ -33,42 +33,48 @@
 												<h5 th:text="#{label.stock.received.details}"></h5>
 											</div>
 											<div class="card-block">
-												<form th:action="@{/stocks-received/new}" th:object="${good}"
+												<form th:action="@{/stocks-received/new}" th:object="${goodForm}"
 													method="post">
-													<h3>good Lines</h3>
+													<h3>Good Lines</h3>
 													<table id="lines-table">
 														<tr>
-															<th>Item</th>
-															<th>Quantity</th>
-															<th>Unit Price</th>
-															<th>Tax Rate</th>
-															<th>Line Total</th>
-															<th>Action</th>
+															<th class="font-weight-bold"
+																th:text="#{label.general.item}">Item</th>
+															<th class="font-weight-bold"
+																th:text="#{label.general.quantity}">Quantity</th>
+															<th class="font-weight-bold"
+																th:text="#{label.general.unitPrice}">Unit Price</th>
+															<th class="font-weight-bold" th:text="#{label.tax.rate}">Tax
+																Rate</th>
+															<th class="font-weight-bold"
+																th:text="#{label.general.line.total}">Line Total</th>
+															<th class="font-weight-bold"
+																th:text="#{label.button.actions}">Action</th>
 														</tr>
 														<tr th:each="line, iterStat : *{goodLines}">
 															<td><input type="text"
-																th:field="*{goodLines[__${iterStat.index}__].itemName}" class="item-search" autocomplete="off"/>
+																th:field="*{goodLines[__${iterStat.index}__].itemName}"
+																class="item-search" autocomplete="off" />
 																<div class="suggestions"></div> 
 																<input type="hidden"
-																th:field="*{goodLines[__${iterStat.index}__].itemCode}"
-																class="code"/>
+																th:field="*{goodLines[__${iterStat.index}__].internalCode}"
+																class="internalCode" /> 
 																<input type="hidden"
 																th:field="*{goodLines[__${iterStat.index}__].taxCode}"
-																class="tax"/>
+																class="taxCode" /> 
 																<input type="hidden"
-																th:field="*{goodLines[__${iterStat.index}__].taxType}"
-																class="rate"/>
-																</td>
+																th:field="*{goodLines[__${iterStat.index}__].taxValue}"
+																class="taxValue" /></td>
 															<td><input type="number"
 																th:field="*{goodLines[__${iterStat.index}__].quantity}"
-																min="0" oninput="updateTotals()"  class="qty"/></td>
+																min="0" oninput="updateTotals()" class="qty" /></td>
 															<td><input type="number" step="0.01"
 																th:field="*{goodLines[__${iterStat.index}__].unitPrice}"
-																min="0" oninput="updateTotals()"  class="price"/></td>
-															<td><input type="number" step="0.01" 
-															    th:field="*{goodLines[__${iterStat.index}__].taxType}"  
-															    class="rate" readonly/></td>
-															
+																min="0" oninput="updateTotals()" class="unitPrice" /></td>
+															<td><input type="number" step="0.01"
+																th:field="*{goodLines[__${iterStat.index}__].taxValue}"
+																class="taxValue" readonly /></td>
+
 															<td><input type="number" step="0.01"
 																name="lineTotal" readonly /></td>
 															<td><button type="button" class="btn"
@@ -109,7 +115,10 @@
 		</div>
 	</div>
 	<th:block th:insert="~{fragments/header :: footer}"></th:block>
-	<script>
+<script>
+	setTimeout(function() {
+	      $(".alert").alert('close');
+	    }, 1000); // 1 seconds
 	// 🔍 Auto-search
     $(document).on('keyup', '.item-search', function () {
     	 const $input = $(this);
@@ -119,8 +128,8 @@
          if (query.length >= 2) {
              $.get('[[@{/items/search}]]', {query}, function (data) {
                  let list = data.map(item =>
-                     `<div class="suggestion" data-id="${item.id}" data-price="${item.price}" data-name="${item.name}" data-code="${item.code}" data-tax="${item.tax}" data-rate="${item.rate}">
-                         ${item.name} (${item.rate}-${item.code})
+                     `<div class="suggestion" data-id="${item.id}" data-unit-price="${item.unitPrice}" data-item-name="${item.itemName}" data-internal-code="${item.internalCode}" data-tax-code="${item.taxCode}" data-tax-rate="${item.taxValue}">
+                         ${item.itemName} (${item.taxValue}-${item.internalCode})
                      </div>`).join('');
                  $suggestions.html(list).show();
              });
@@ -132,16 +141,16 @@
     $(document).on('click', '.suggestion', function () {
         const $div = $(this);
         const $row = $div.closest('td');
-        $row.find('.item-search').val($div.data('name'));
-        $row.parent().find('.price').val($div.data('price'));
-        $row.parent().find('.code').val($div.data('code'));
-        $row.parent().find('.tax').val($div.data('tax'));
-        $row.parent().find('.rate').val($div.data('rate'));
+        $row.find('.item-search').val($div.data('item-name'));
+        $row.parent().find('.unitPrice').val($div.data('unit-price'));
+        $row.parent().find('.internalCode').val($div.data('internal-code'));
+        $row.parent().find('.taxCode').val($div.data('tax-code'));
+        $row.parent().find('.taxValue').val($div.data('tax-rate'));
         $row.parent().find('.qty').val(1);
         $row.find('.suggestions').hide();
         updateTotals();
     });	
-let lineIndex = /*[[${good.goodLines.size()}]]*/ 1;
+let lineIndex = /*[[${goodForm.goodLines.size()}]]*/ 1;
 
 // Add new line
 function addLine() {
@@ -150,12 +159,13 @@ function addLine() {
     row.innerHTML = `
         <td>
         <input type="text" name="goodLines[${lineIndex}].itemName" class="item-search" autocomplete="off"/><div class="suggestions"></div>
-        <input type="hidden" name="goodLines[${lineIndex}].itemCode"  class="code"/>
-        <input type="hidden" name="goodLines[${lineIndex}].taxCode"  class="tax"/>	
+        <input type="hidden" name="goodLines[${lineIndex}].internalCode"  class="internalCode"/>
+        <input type="hidden" name="goodLines[${lineIndex}].taxCode"  class="taxCode"/>	
+        	<input type="hidden" name="goodLines[${lineIndex}].taxValue"  class="taxValue"/>	
         </td>
         <td><input type="number" name="goodLines[${lineIndex}].quantity" min="0" oninput="updateTotals()" class="qty"/></td>
-        <td><input type="number" step="0.01" name="goodLines[${lineIndex}].unitPrice" min="0" oninput="updateTotals()"  class="price"/></td>
-        <td><input type="number" step="0.01" name="goodLines[${lineIndex}].taxType"  class="rate" readonly/></td>
+        <td><input type="number" step="0.01" name="goodLines[${lineIndex}].unitPrice" min="0" oninput="updateTotals()"  class="unitPrice"/></td>
+        <td><input type="number" step="0.01" name="goodLines[${lineIndex}].taxType"  class="taxValue" readonly/></td>
         <td><input type="number" step="0.01" name="lineTotal" readonly /></td>
         <td><button type="button" class="btn" onclick="removeLine(this)">Remove</button></td>
     `;

@@ -107,7 +107,7 @@ public class ReceivedGoodService {
 	}
 
 	private ReceivedItem mapToPurchaseLine(GoodLineForm goodLineForm) {
-		CoreItem coreItem = coreItemService.findByInternalCode(goodLineForm.getItemCode());
+		CoreItem coreItem = coreItemService.findByInternalCode(goodLineForm.getInternalCode());
 
 		return ReceivedItem.builder().item(coreItem).itemName(coreItem.getItemName())
 				.quantity(goodLineForm.getQuantity()).purchasePrice(goodLineForm.getUnitPrice()).build();

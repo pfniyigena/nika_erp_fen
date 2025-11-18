@@ -46,10 +46,24 @@ public class DailySalesSummaryService {
 
 		if (sale.getTransactionType().equals(TransactionType.SALE)) {
 			summary.setTotalAmountToPay(summary.getTotalAmountToPay().add(sale.getTotalAmountToPay()));
+			summary.setTotalTaxAmount(summary.getTotalTaxAmount().add(sale.getTotalTaxAmount()));
+			summary.setTotalAmountHorsTax(summary.getTotalAmountHorsTax().add(sale.getTotalAmountHorsTax()));
+			summary.setTotalAmountInclusiveTax(
+					summary.getTotalAmountInclusiveTax().add(sale.getTotalAmountInclusiveTax()));
+			summary.setTotalDiscountAmount(summary.getTotalDiscountAmount().add(sale.getTotalDiscountAmount()));
+			summary.setTotalGrossAmount(summary.getTotalGrossAmount().add(sale.getTotalGrossAmount()));
+			summary.setTotalCost(summary.getTotalCost().add(sale.getTotalCost()));
 		} else {
 			summary.setTotalAmountToPay(summary.getTotalAmountToPay().subtract(sale.getTotalAmountToPay()));
+			summary.setTotalTaxAmount(summary.getTotalTaxAmount().subtract(sale.getTotalTaxAmount()));
+			summary.setTotalAmountHorsTax(summary.getTotalAmountHorsTax().subtract(sale.getTotalAmountHorsTax()));
+			summary.setTotalAmountInclusiveTax(
+					summary.getTotalAmountInclusiveTax().subtract(sale.getTotalAmountInclusiveTax()));
+			summary.setTotalDiscountAmount(summary.getTotalDiscountAmount().subtract(sale.getTotalDiscountAmount()));
+			summary.setTotalGrossAmount(summary.getTotalGrossAmount().subtract(sale.getTotalGrossAmount()));
+			summary.setTotalCost(summary.getTotalCost().subtract(sale.getTotalCost()));
 		}
-
+		summary.setTotalProfit(summary.getTotalAmountHorsTax().subtract(summary.getTotalCost()));
 		summary.setNumberOfReceipts(summary.getNumberOfReceipts() + 1);
 		dailySalesSummaryRepository.save(summary);
 
@@ -75,8 +89,8 @@ public class DailySalesSummaryService {
 	}
 
 	public DailySalesSummary findBySummaryDate(LocalDate summaryDate) {
-		return dailySalesSummaryRepository.findBySummaryDate(summaryDate)
-				.orElseThrow(() -> new ResourceNotFoundException("DailySalesSummary not found with Date " + summaryDate));
+		return dailySalesSummaryRepository.findBySummaryDate(summaryDate).orElseThrow(
+				() -> new ResourceNotFoundException("DailySalesSummary not found with Date " + summaryDate));
 	}
 
 }

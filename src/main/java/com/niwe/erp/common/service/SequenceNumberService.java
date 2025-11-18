@@ -90,7 +90,7 @@ public class SequenceNumberService {
 	public String getNextPurchaseCode() {
 
 		String sequence = this.getNextSequenceNumber(ESequenceType.PURCHASE);
-		return "PO" + StringUtils.leftPad(sequence, 9, "0");
+		return "PU" + StringUtils.leftPad(sequence, 9, "0");
 	}
 	public String getNextGoodReceivedCode() {
 
@@ -106,5 +106,10 @@ public class SequenceNumberService {
 
 		String sequence = this.getNextSequenceNumber(ESequenceType.STOCK_TRANSFER);
 		return "ST" + StringUtils.leftPad(sequence, 9, "0");
+	}
+	public String getNextSaleCode() {
+
+		String sequence = this.getNextSequenceNumber(ESequenceType.SALE);
+		return "SA" + StringUtils.leftPad(sequence, 9, "0");
 	}
 }

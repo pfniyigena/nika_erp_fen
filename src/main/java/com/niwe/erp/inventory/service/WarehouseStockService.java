@@ -2,6 +2,8 @@ package com.niwe.erp.inventory.service;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -24,6 +26,7 @@ import com.niwe.erp.inventory.domain.WarehouseStock;
 import com.niwe.erp.inventory.repository.StockMovementRepository;
 import com.niwe.erp.inventory.repository.WarehouseRepository;
 import com.niwe.erp.inventory.repository.WarehouseStockRepository;
+import com.niwe.erp.inventory.web.dto.ProductStockAgingDto;
 import com.niwe.erp.inventory.web.dto.ProductStockSummaryDto;
 import com.niwe.erp.inventory.web.dto.WarehouseStockDetailDto;
 import com.niwe.erp.sale.domain.Shelf;
@@ -46,7 +49,6 @@ public class WarehouseStockService {
 	private final StockMovementRepository stockMovementRepository;
 	private final CoreItemService coreItemService;
 
-	
 	public void initiateInventory(CoreTaxpayer taxpayer) {
 		try {
 
@@ -70,52 +72,61 @@ public class WarehouseStockService {
 
 	}
 
-	
 	public void updateProductQuantity(Warehouse warehouse, CoreItem product, BigDecimal quantityChange,
-			MovementType type, String reference, EStockOperation eStockOperation) {
+			MovementType movementType, String reference, EStockOperation eStockOperation) {
 		try {
 
-		log.debug("-------updateProductQuantity");
-		WarehouseStock stock = warehouseStockRepository.findByWarehouseAndItem(warehouse, product).orElseGet(() -> {
-			WarehouseStock newStock = new WarehouseStock();
-			newStock.setWarehouse(warehouse);
-			newStock.setItem(product);
-			newStock.setQuantity(new BigDecimal("0.00"));
-			return newStock;
-		});
-		BigDecimal previousQuantiry = stock.getQuantity();
-		BigDecimal newQuantity = new BigDecimal("0.00");
-		switch (eStockOperation) {
-		case IN: {
-			newQuantity = previousQuantiry.add(quantityChange);
-			break;
-		}
-		case OUT: {
-			newQuantity = previousQuantiry.subtract(quantityChange);
-			break;
-		}
-		default:
-			throw new IllegalArgumentException("Unexpected value: " + eStockOperation);
-		}
+			log.debug("-------updateProductQuantity");
+			WarehouseStock stock = warehouseStockRepository.findByWarehouseAndItem(warehouse, product).orElseGet(() -> {
+				WarehouseStock newStock = new WarehouseStock();
+				newStock.setWarehouse(warehouse);
+				newStock.setItem(product);
+				newStock.setQuantity(new BigDecimal("0.00"));
+				return newStock;
+			});
+			BigDecimal previousQuantiry = stock.getQuantity();
+			BigDecimal newQuantity = new BigDecimal("0.00");
+			switch (eStockOperation) {
+			case IN: {
 
-		/*
-		 * if (newQuantity.compareTo(new BigDecimal("0.00")) < 0) { throw new
-		 * IllegalStateException( "Not enough stock for product " +
-		 * product.getItemName() + " in warehouse " + warehouse.getWarehouseName()); }
-		 */
-		stock.setQuantity(newQuantity);
-		warehouseStockRepository.save(stock);
+				newQuantity = previousQuantiry.add(quantityChange);
+				break;
+			}
+			case OUT: {
+				newQuantity = previousQuantiry.subtract(quantityChange);
+				break;
+			}
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + eStockOperation);
+			}
 
-		// Record movement
-		StockMovement movement = StockMovement.builder().warehouse(warehouse).item(product).movementType(type)
-				.reference(reference).previousQuantity(previousQuantiry).currentQuantity(newQuantity)
-				.quantity(quantityChange).stockOperation(eStockOperation).movementDate(Instant.now())
+			switch (movementType) {
+			case PURCHASE: {
+				stock.setReceivedDate(Instant.now());
+				break;
+			}
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + movementType);
 
-				.build();
+			}
+			/*
+			 * if (newQuantity.compareTo(new BigDecimal("0.00")) < 0) { throw new
+			 * IllegalStateException( "Not enough stock for product " +
+			 * product.getItemName() + " in warehouse " + warehouse.getWarehouseName()); }
+			 */
+			stock.setQuantity(newQuantity);
+			warehouseStockRepository.save(stock);
+			// Record movement
+			StockMovement movement = StockMovement.builder().warehouse(warehouse).item(product)
+					.movementType(movementType).reference(reference).previousQuantity(previousQuantiry)
+					.currentQuantity(newQuantity).quantity(quantityChange).stockOperation(eStockOperation)
+					.movementDate(Instant.now())
 
-		stockMovementRepository.save(movement);
-		}catch (Exception e) {
-			log.error("-------updateProductQuantity:{}",e);
+					.build();
+
+			stockMovementRepository.save(movement);
+		} catch (Exception e) {
+			log.error("-------updateProductQuantity:{}", e);
 		}
 	}
 
@@ -150,6 +161,61 @@ public class WarehouseStockService {
 		List<WarehouseStock> stocks = warehouseStockRepository.findByItemId(UUID.fromString(productId));
 		return stocks.stream().map(s -> new WarehouseStockDetailDto(s.getWarehouse().getWarehouseName(),
 				s.getQuantity(), s.getModifiedAt())).toList();
+	}
+
+	public List<ProductStockAgingDto> getStockSummaryWithAging() {
+		List<WarehouseStock> stocks = warehouseStockRepository.findAll();
+
+		// Group by product
+		Map<CoreItem, List<WarehouseStock>> grouped = stocks.stream()
+				.collect(Collectors.groupingBy(WarehouseStock::getItem));
+
+		return grouped.entrySet().stream().map(entry -> {
+			CoreItem item = entry.getKey();
+			List<WarehouseStock> stockList = entry.getValue();
+
+			// total quantity across all warehouses
+			BigDecimal totalQty = stockList.stream().map(WarehouseStock::getQuantity).reduce(BigDecimal.ZERO,
+					BigDecimal::add);
+
+			// compute aging buckets
+			Map<String, BigDecimal> agingBuckets = new HashMap<>();
+			agingBuckets.put("0-30", BigDecimal.ZERO);
+			agingBuckets.put("31-60", BigDecimal.ZERO);
+			agingBuckets.put("61-90", BigDecimal.ZERO);
+			agingBuckets.put("91-180", BigDecimal.ZERO);
+			agingBuckets.put("181-365", BigDecimal.ZERO);
+			agingBuckets.put("365+", BigDecimal.ZERO);
+
+			
+			for (WarehouseStock ws : stockList) {
+				Instant today=Instant.now();
+				Instant date = ws.getReceivedDate() != null ? ws.getReceivedDate() : Instant.now();
+				long days = ChronoUnit.DAYS.between(date, today);
+				BigDecimal qty = ws.getQuantity();
+
+				if (days <= 30)
+					agingBuckets.put("0-30", agingBuckets.get("0-30").add(qty));
+				else if (days <= 60)
+					agingBuckets.put("31-60", agingBuckets.get("31-60").add(qty));
+				else if (days <= 90)
+					agingBuckets.put("61-90", agingBuckets.get("61-90").add(qty));
+				else if (days <= 180)
+					agingBuckets.put("91-180", agingBuckets.get("91-180").add(qty));
+				else if (days <= 365)
+					agingBuckets.put("181-365", agingBuckets.get("181-365").add(qty));
+				else
+					agingBuckets.put("365+", agingBuckets.get("365+").add(qty));
+			}
+
+			ProductStockAgingDto dto = new ProductStockAgingDto();
+			dto.setItemId(item.getId());
+			dto.setProductCode(item.getItemCode());
+			dto.setProductName(item.getItemName());
+			dto.setTotalQuantity(totalQty);
+			dto.setAgingBuckets(agingBuckets);
+			return dto;
+		}).toList();
 	}
 
 }

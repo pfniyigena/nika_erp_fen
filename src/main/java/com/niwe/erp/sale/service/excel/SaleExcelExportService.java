@@ -1,4 +1,4 @@
-package com.niwe.erp.sale.service;
+package com.niwe.erp.sale.service.excel;
 
 import com.niwe.erp.common.util.DataParserUtil;
 import com.niwe.erp.sale.domain.Sale;
@@ -17,7 +17,7 @@ import java.time.YearMonth;
 import java.util.List;
 
 @Service
-public class SaleExportService {
+public class SaleExcelExportService {
 
 	public ByteArrayInputStream exportSalesToExcel(List<Sale> sales) throws IOException {
 		try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {

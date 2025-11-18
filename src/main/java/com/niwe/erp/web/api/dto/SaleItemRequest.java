@@ -1,4 +1,4 @@
-package com.niwe.erp.common.api.dto;
+package com.niwe.erp.web.api.dto;
 
 import java.math.BigDecimal;
 

@@ -23,6 +23,8 @@ public enum ESequenceType {
 	/** The PAYMENT_METHOD. */
 	PAYMENT_METHOD,
 	/** The PAYMENT_METHOD. */
-	STOCK_TRANSFER
+	STOCK_TRANSFER,
+	/** The SALE. */
+	SALE,
 
 }

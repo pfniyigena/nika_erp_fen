@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.niwe.erp.sale.domain.DailySalesSummary;
 import com.niwe.erp.sale.domain.Sale;
 import com.niwe.erp.sale.service.DailySalesSummaryService;
-import com.niwe.erp.sale.service.SaleExportService;
-import com.niwe.erp.sale.service.SalePdfExportService;
 import com.niwe.erp.sale.service.SaleService;
+import com.niwe.erp.sale.service.excel.SaleExcelExportService;
+import com.niwe.erp.sale.service.pdf.SalePdfExportService;
 import com.niwe.erp.sale.web.util.NiweErpSaleUrlConstants;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DailySalesSummaryController {
 	private final SaleService saleService;
-	private final SaleExportService saleExportService;
+	private final SaleExcelExportService saleExportService;
 	private final SalePdfExportService salePdfExportService;
 	private final DailySalesSummaryService dailySalesSummaryService;
 

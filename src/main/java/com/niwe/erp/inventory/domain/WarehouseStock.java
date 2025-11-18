@@ -1,6 +1,7 @@
 package com.niwe.erp.inventory.domain;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 import com.niwe.erp.common.domain.AbstractEntity;
 import com.niwe.erp.core.domain.CoreItem;
@@ -44,6 +45,12 @@ public class WarehouseStock extends AbstractEntity {
 	@ManyToOne
 	@JoinColumn(name = "WAREHOUSE_ID", nullable = false)
 	private Warehouse warehouse;
+	
+	/**
+	 * The receivedDate
+	 */
+	@Column(name = "RECEIVED_DATE")
+	private Instant receivedDate;
 
   
 }

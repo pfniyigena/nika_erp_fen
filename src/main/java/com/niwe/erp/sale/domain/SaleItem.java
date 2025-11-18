@@ -116,24 +116,7 @@ public class SaleItem extends AbstractEntity {
 	@Column(name = "AMOUNT_TO_PAY", nullable = true)
 	@Builder.Default
 	private BigDecimal amountToPay = BigDecimal.ZERO;
-	/**
-	 * The purchasePrice
-	 */
-	@Column(name = "PURCHASE_AMOUNT_INCLUSIVE_TAX")
-	@Builder.Default
-	private BigDecimal purchaseAmountInclusiveTax= BigDecimal.ZERO;
-	/**
-	 * The amountInclusiveTax
-	 */
-	@Column(name = "PURCHASE_AMOUNT_HORS_TAX", nullable = true)
-	@Builder.Default
-	private BigDecimal purchaseAmountHorsTax = BigDecimal.ZERO;
-	/**
-	 * The taxAmount
-	 */
-	@Column(name = "PURCHASE_TAX_AMOUNT", nullable = true)
-	@Builder.Default
-	private BigDecimal purchaseTaxAmount = BigDecimal.ZERO;
+
 	/**
 	 * The taxType
 	 */
