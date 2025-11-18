@@ -21,6 +21,7 @@ import com.niwe.erp.inventory.domain.WarehouseStock;
 import com.niwe.erp.inventory.service.WarehouseStockService;
 import com.niwe.erp.inventory.web.dto.ProductStockAgingDto;
 import com.niwe.erp.inventory.web.dto.ProductStockSummaryDto;
+import com.niwe.erp.inventory.web.dto.ProductStockValuationDto;
 import com.niwe.erp.inventory.web.dto.WarehouseStockDetailDto;
 import com.niwe.erp.inventory.web.util.NikaErpInventoryUrlConstants;
 import com.niwe.erp.sale.service.excel.WarehouseStockExcelExportService;
@@ -57,7 +58,7 @@ public class WarehouseStockController {
 		return NikaErpInventoryUrlConstants.WAREHOUSE_STOCKS_SUMMARY_PAGE;
 	}
 	@GetMapping(path = "/aging")
-	public String agingtWarehouseStockByProduct(Model model) {
+	public String agingWarehouseStockByProduct(Model model) {
 
 		List<ProductStockAgingDto> list = warehouseStockService.getStockSummaryWithAging();
 		log.debug("--------------Calling agingtWarehouseStockByProduct-------------------" + list.size());
@@ -65,7 +66,14 @@ public class WarehouseStockController {
 		return NikaErpInventoryUrlConstants.WAREHOUSE_STOCKS_AGING_PAGE;
 	}
 
+	@GetMapping(path = "/valuation")
+	public String valuationWarehouseStockByProduct(Model model) {
 
+		List<ProductStockValuationDto> list = warehouseStockService.getStockValuationSummary();
+		log.debug("--------------Calling valuationWarehouseStockByProduct-------------------" + list.size());
+		model.addAttribute("lists", list);
+		return NikaErpInventoryUrlConstants.WAREHOUSE_STOCKS_VALUATION_PAGE;
+	}
 	@GetMapping("/warehouse/product/{id}")
 	public String viewWarehouseStockByProduct(@PathVariable String id, Model model) {
 
@@ -86,26 +94,10 @@ public class WarehouseStockController {
 	@GetMapping(path = "/summary/excel")
 	public ResponseEntity<InputStreamResource> exportToExcel(Model model) throws IOException {
 		List<ProductStockSummaryDto> list = warehouseStockService.getStockSummary();
-
 		ByteArrayInputStream in = warehouseStockExcelExportService.exportSalesToExcel(list);
 		String fileName = DataParserUtil.dateFromInstant(Instant.now())+ "-stock-summary.xlsx";
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Disposition", "attachment; filename=" + fileName);
-
-		return ResponseEntity.ok().headers(headers)
-				.contentType(
-						MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-				.body(new InputStreamResource(in));
-	}
-	@GetMapping(path = "/aging/excel")
-	public ResponseEntity<InputStreamResource> exportAgingToExcel(Model model) throws IOException {
-		List<ProductStockAgingDto> list = warehouseStockService.getStockSummaryWithAging();
-
-		ByteArrayInputStream in = warehouseStockExcelExportService.exportStockAgingToExcel(list);
-		String fileName = DataParserUtil.dateFromInstant(Instant.now())+ "-stock-summary.xlsx";
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Disposition", "attachment; filename=" + fileName);
-
 		return ResponseEntity.ok().headers(headers)
 				.contentType(
 						MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
@@ -114,15 +106,48 @@ public class WarehouseStockController {
 	@GetMapping(path = "/summary/pdf")
 	public ResponseEntity<InputStreamResource> exportToPdf(Model model) throws IOException {
 		List<ProductStockSummaryDto> list = warehouseStockService.getStockSummary();
-
 		ByteArrayInputStream in = warehouseStockPdfExportService.exportStockSummaryToPdf(list);
 		String fileName = DataParserUtil.dateFromInstant(Instant.now()) + "-stock-summary.pdf";
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Disposition", "attachment; filename=" + fileName);
-
 		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
 				.body(new InputStreamResource(in));
 
 	}
+	@GetMapping(path = "/aging/excel")
+	public ResponseEntity<InputStreamResource> exportAgingToExcel(Model model) throws IOException {
+		List<ProductStockAgingDto> list = warehouseStockService.getStockSummaryWithAging();
+		ByteArrayInputStream in = warehouseStockExcelExportService.exportStockAgingToExcel(list);
+		String fileName = DataParserUtil.dateFromInstant(Instant.now())+ "-stock-aging.xlsx";
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "attachment; filename=" + fileName);
+		return ResponseEntity.ok().headers(headers)
+				.contentType(
+						MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+				.body(new InputStreamResource(in));
+	}
+	
+	@GetMapping(path = "/valuation/excel")
+	public ResponseEntity<InputStreamResource> exportValuationToExcel(Model model) throws IOException {
+		List<ProductStockValuationDto> list = warehouseStockService.getStockValuationSummary();
+		ByteArrayInputStream in = warehouseStockExcelExportService.exportEvaluationToExcel(list);
+		String fileName = DataParserUtil.dateFromInstant(Instant.now())+ "-stock-valuation.xlsx";
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "attachment; filename=" + fileName);
+		return ResponseEntity.ok().headers(headers)
+				.contentType(
+						MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+				.body(new InputStreamResource(in));
+	}
+	@GetMapping(path = "/valuation/pdf")
+	public ResponseEntity<InputStreamResource> exportValuationToPdf(Model model) throws IOException {
+		List<ProductStockValuationDto> list = warehouseStockService.getStockValuationSummary();
+		ByteArrayInputStream in = warehouseStockPdfExportService.exportEvaluationToPdf(list);
+		String fileName = DataParserUtil.dateFromInstant(Instant.now()) + "-stock-valuation.pdf";
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "attachment; filename=" + fileName);
+		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
+				.body(new InputStreamResource(in));
 
+	}
 }

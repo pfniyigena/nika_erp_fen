@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<title th:text="#{label.warehouse.stock.summary}"></title>
+<th:block th:insert="~{fragments/header :: head}"></th:block>
+</head>
+<body>
+	<th:block th:insert="~{fragments/header :: pre-loader}"></th:block>
+	<div id="pcoded" class="pcoded">
+		<div class="pcoded-overlay-box"></div>
+		<div class="pcoded-container navbar-wrapper">
+
+			<th:block th:insert="~{fragments/header :: navbar-top}"></th:block>
+
+			<div class="pcoded-main-container">
+				<div class="pcoded-wrapper">
+					<th:block th:insert="~{fragments/header :: navbar-left}"></th:block>
+
+					<div class="pcoded-content">
+						<div class="pcoded-inner-content">
+							<!-- Main-body start -->
+							<div class="main-body">
+								<div class="page-wrapper">
+									<!-- Page-body start -->
+									<div class="page-body">
+
+										<!-- Hover table card start -->
+										<div class="card">
+
+											<div class="card-header py-2">
+												<div
+													class="d-flex justify-content-between align-items-center flex-wrap">
+													<h5 th:text="#{label.warehouse.stock.summary}"></h5>
+													<div class="d-flex flex-wrap align-items-center gap-2">
+														<!-- Search Form -->
+														 
+															<div class="d-flex flex-wrap align-items-center gap-2">
+																<div class="input-group input-group-sm">
+																	<div class="input-group-append">
+																		<!-- Excel Button -->
+																		<a
+																			th:href="@{/warehouse-stocks/valuation/excel}"
+																			class="btn btn-success btn-sm waves-effect waves-light d-inline-flex align-items-center justify-content-center"
+																			style="height: 32px; width: 32px; padding: 0; margin-left: 2px;"
+																			th:title="#{label.button.export.excel}"> <i
+																			class="fa fa-file-excel-o"></i>
+																		</a>
+																		<!-- Pdf Button -->
+																		<a
+																			th:href="@{/warehouse-stocks/valuation/pdf}"
+																			class="btn btn-danger btn-sm waves-effect waves-light d-inline-flex align-items-center justify-content-center"
+																			style="height: 32px; width: 32px; padding: 0; margin-left: 2px;"
+																			th:title="#{label.button.export.pdf}"> <i
+																			class="fa fa-file-pdf-o"></i>
+																		</a>
+																	</div>
+																</div>
+															</div>
+														 
+													</div>
+												</div>
+											</div>
+											<div class="dt-responsive table-responsive">
+												<table id="code-type-table"
+													class="table table-striped table-bordered compact nowrap"
+													th:if="${lists != null}">
+													<caption></caption>
+													<thead>
+														<tr>
+															<th scope="col">#</th>
+															<th scope="col" th:text="#{label.general.code}"></th>
+															<th scope="col" th:text="#{label.general.name}"></th>
+															<th scope="col" th:text="#{label.general.quantity.total}"></th>
+															<th scope="col" th:text="#{label.general.cost}"></th>
+															<th scope="col" th:text="#{label.general.value}"></th>
+															<th scope="col" th:text="#{label.button.actions}"></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="list,stat : ${lists}">
+															<th scope="row" th:text="${stat.index + 1}"></th>
+															<td th:text="${list.productCode}"></td>
+															<td th:text="${list.productName}"></td>
+															<td th:text="${list.totalQuantity}"
+																th:class="${list.totalQuantity != null} ? 
+                     (${list.totalQuantity} > 0 ? 'badge bg-success' : 
+                     (list.totalQuantity == 0 ? 'badge bg-warning text-dark' : 'badge bg-danger')) 
+                     : 'badge bg-secondary'"></td>
+															<td th:text="${list.unitCost}"></td>
+															<td th:text="${list.totalValue}"></td>
+															<td><a href="#"
+																th:href="@{'/warehouse-stocks/warehouse/product/' + ${list.itemId}}"
+																class="waves-effect waves-dark"><span
+																	class="pcoded-micon"><em class="fa fa-eye"></em></span></a>
+															</td>
+														</tr>
+
+													</tbody>
+												</table>
+											</div>
+										</div>
+
+									</div>
+									<!-- Hover table card end -->
+
+								</div>
+
+								<!-- Page-body end -->
+							</div>
+							<div id="styleSelector"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<th:block th:insert="~{fragments/header :: footer}"></th:block>
+</body>
+
+</html>

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.niwe.erp.inventory.web.dto.ProductStockAgingDto;
 import com.niwe.erp.inventory.web.dto.ProductStockSummaryDto;
+import com.niwe.erp.inventory.web.dto.ProductStockValuationDto;
 
 @Service
 public class WarehouseStockExcelExportService {
@@ -90,4 +91,29 @@ public class WarehouseStockExcelExportService {
             return new ByteArrayInputStream(out.toByteArray());
         }
     }
+	public ByteArrayInputStream exportEvaluationToExcel(List<ProductStockValuationDto> sales) throws IOException {
+		try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+			Sheet sheet = workbook.createSheet("Stock Evaluation");
+
+			// Header
+			Row headerRow = sheet.createRow(0);
+			String[] headers = { "Item Code", "Item Name", "Total Quantity","Cost","Value" };
+			for (int i = 0; i < headers.length; i++) {
+				Cell cell = headerRow.createCell(i);
+				cell.setCellValue(headers[i]);
+			}
+			// Data rows
+			int rowIdx = 1;
+			for (ProductStockValuationDto stock : sales) {
+				Row row = sheet.createRow(rowIdx++);
+			    row.createCell(0).setCellValue(stock.getProductCode());
+				row.createCell(1).setCellValue(stock.getProductName());
+				row.createCell(2).setCellValue(stock.getTotalQuantity().toPlainString());
+				row.createCell(3).setCellValue(stock.getUnitCost().toPlainString());
+				row.createCell(4).setCellValue(stock.getTotalValue().toPlainString());
+			}
+			workbook.write(out);
+			return new ByteArrayInputStream(out.toByteArray());
+		}
+	}
 }

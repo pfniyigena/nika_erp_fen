@@ -28,6 +28,7 @@ import com.niwe.erp.inventory.repository.WarehouseRepository;
 import com.niwe.erp.inventory.repository.WarehouseStockRepository;
 import com.niwe.erp.inventory.web.dto.ProductStockAgingDto;
 import com.niwe.erp.inventory.web.dto.ProductStockSummaryDto;
+import com.niwe.erp.inventory.web.dto.ProductStockValuationDto;
 import com.niwe.erp.inventory.web.dto.WarehouseStockDetailDto;
 import com.niwe.erp.sale.domain.Shelf;
 import com.niwe.erp.sale.repository.ShelfRepository;
@@ -187,9 +188,8 @@ public class WarehouseStockService {
 			agingBuckets.put("181-365", BigDecimal.ZERO);
 			agingBuckets.put("365+", BigDecimal.ZERO);
 
-			
 			for (WarehouseStock ws : stockList) {
-				Instant today=Instant.now();
+				Instant today = Instant.now();
 				Instant date = ws.getReceivedDate() != null ? ws.getReceivedDate() : Instant.now();
 				long days = ChronoUnit.DAYS.between(date, today);
 				BigDecimal qty = ws.getQuantity();
@@ -218,4 +218,17 @@ public class WarehouseStockService {
 		}).toList();
 	}
 
+	public List<ProductStockValuationDto> getStockValuationSummary() {
+		List<WarehouseStock> stocks = warehouseStockRepository.findAll();
+
+		Map<CoreItem, BigDecimal> totalByProduct = stocks.stream()
+				.collect(Collectors.groupingBy(WarehouseStock::getItem,
+						Collectors.reducing(BigDecimal.ZERO, s -> s.getQuantity(),
+								BigDecimal::add)));
+		return totalByProduct.entrySet().stream()
+				.map(e -> new ProductStockValuationDto(e.getKey().getId(), e.getKey().getItemCode(),
+						e.getKey().getItemName(), e.getValue(), e.getKey().getUnitCost(),
+						e.getKey().getUnitCost().multiply(e.getValue())))
+				.toList();
+	}
 }
