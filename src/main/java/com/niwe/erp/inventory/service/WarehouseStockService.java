@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -102,12 +104,20 @@ public class WarehouseStockService {
 			}
 
 			switch (movementType) {
+			case STOCK_INITIAL: {
+				stock.setReceivedDate(Instant.now());
+				break;
+			}
 			case PURCHASE: {
 				stock.setReceivedDate(Instant.now());
 				break;
 			}
+			case GOOD_RECEIVED_NOTE: {
+				stock.setReceivedDate(Instant.now());
+				break;
+			}
 			default:
-				throw new IllegalArgumentException("Unexpected value: " + movementType);
+				log.debug("Do not mark receivedDate");
 
 			}
 			/*
@@ -221,14 +231,43 @@ public class WarehouseStockService {
 	public List<ProductStockValuationDto> getStockValuationSummary() {
 		List<WarehouseStock> stocks = warehouseStockRepository.findAll();
 
-		Map<CoreItem, BigDecimal> totalByProduct = stocks.stream()
-				.collect(Collectors.groupingBy(WarehouseStock::getItem,
-						Collectors.reducing(BigDecimal.ZERO, s -> s.getQuantity(),
-								BigDecimal::add)));
+		Map<CoreItem, BigDecimal> totalByProduct = stocks.stream().collect(Collectors.groupingBy(
+				WarehouseStock::getItem, Collectors.reducing(BigDecimal.ZERO, s -> s.getQuantity(), BigDecimal::add)));
 		return totalByProduct.entrySet().stream()
 				.map(e -> new ProductStockValuationDto(e.getKey().getId(), e.getKey().getItemCode(),
 						e.getKey().getItemName(), e.getValue(), e.getKey().getUnitCost(),
 						e.getKey().getUnitCost().multiply(e.getValue())))
 				.toList();
 	}
+	public List<ProductStockValuationDto> getStockValuationSummaryV2() {
+	    return warehouseStockRepository.findValuationSummary()
+	            .stream()
+	            .map(p -> new ProductStockValuationDto(
+	                    p.getItemId(),
+	                    p.getItemCode(),
+	                    p.getItemName(),
+	                    p.getTotalQuantity(),
+	                    p.getUnitCost(),
+	                    p.getUnitCost().multiply(p.getTotalQuantity())
+	            ))
+	            .toList();
+	}
+	
+	 public Page<ProductStockValuationDto> getItems(
+			 Pageable pageable,
+	            String name,
+	            String code) {
+
+	             
+
+	        return warehouseStockRepository.aggregateStockValuation(name, code, pageable);
+	    }
+
+	 public Page<ProductStockValuationDto> getItems(Pageable pageable) {
+		return warehouseStockRepository. aggregateStockValuation(pageable);
+	 }
+
+	 public long countAll() {
+		return warehouseStockRepository.countDistinctProducts();
+	 }
 }

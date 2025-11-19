@@ -18,8 +18,8 @@ public enum ESequenceType {
 	SHELF,
 	/** The PURCHASE. */
 	PURCHASE,
-	/** The RECEIVED_GOOD. */
-	RECEIVED_GOOD,
+	/** The GOOD_RECEIVE_NOTE. */
+	GOOD_RECEIVE_NOTE,
 	/** The PAYMENT_METHOD. */
 	PAYMENT_METHOD,
 	/** The PAYMENT_METHOD. */

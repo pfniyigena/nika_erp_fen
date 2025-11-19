@@ -69,10 +69,18 @@ public class WarehouseStockController {
 	@GetMapping(path = "/valuation")
 	public String valuationWarehouseStockByProduct(Model model) {
 
-		List<ProductStockValuationDto> list = warehouseStockService.getStockValuationSummary();
+		List<ProductStockValuationDto> list = warehouseStockService.getStockValuationSummaryV2();
 		log.debug("--------------Calling valuationWarehouseStockByProduct-------------------" + list.size());
 		model.addAttribute("lists", list);
 		return NikaErpInventoryUrlConstants.WAREHOUSE_STOCKS_VALUATION_PAGE;
+	}
+	@GetMapping(path = "/valuation/ajax")
+	public String valuationWarehouseStockByProductAjax(Model model) {
+
+		List<ProductStockValuationDto> list = warehouseStockService.getStockValuationSummaryV2();
+		log.debug("--------------Calling valuationWarehouseStockByProduct-------------------" + list.size());
+		model.addAttribute("lists", list);
+		return NikaErpInventoryUrlConstants.WAREHOUSE_STOCKS_VALUATION_AJAX_PAGE;
 	}
 	@GetMapping("/warehouse/product/{id}")
 	public String viewWarehouseStockByProduct(@PathVariable String id, Model model) {
@@ -129,7 +137,7 @@ public class WarehouseStockController {
 	
 	@GetMapping(path = "/valuation/excel")
 	public ResponseEntity<InputStreamResource> exportValuationToExcel(Model model) throws IOException {
-		List<ProductStockValuationDto> list = warehouseStockService.getStockValuationSummary();
+		List<ProductStockValuationDto> list = warehouseStockService.getStockValuationSummaryV2();
 		ByteArrayInputStream in = warehouseStockExcelExportService.exportEvaluationToExcel(list);
 		String fileName = DataParserUtil.dateFromInstant(Instant.now())+ "-stock-valuation.xlsx";
 		HttpHeaders headers = new HttpHeaders();

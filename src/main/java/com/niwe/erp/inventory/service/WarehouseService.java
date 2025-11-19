@@ -58,4 +58,9 @@ public class WarehouseService {
 		return warehouseRepository.findByIdNotIn(ids);
 	}
 
+	public Warehouse findMain() {
+		 
+		return warehouseRepository.findByIsMain(Boolean.TRUE).get(0);
+	}
+
 }

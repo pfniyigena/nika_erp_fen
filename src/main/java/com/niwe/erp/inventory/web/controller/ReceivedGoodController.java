@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.niwe.erp.inventory.domain.ReceivedGood;
+import com.niwe.erp.inventory.domain.GoodReceivedNote;
 import com.niwe.erp.inventory.repository.WarehouseRepository;
 import com.niwe.erp.inventory.service.ReceivedGoodService;
 import com.niwe.erp.inventory.web.form.GoodForm;
@@ -33,7 +33,7 @@ public class ReceivedGoodController {
 	@GetMapping(path = "/list")
 	public String listReceivedGoods(Model model) {
 
-		List<ReceivedGood> list = receivedGoodService.findAll();
+		List<GoodReceivedNote> list = receivedGoodService.findAll();
 		log.debug("--------------Calling listReceivedGoods-------------------" + list.size());
 		model.addAttribute("lists", list);
 		return NikaErpInventoryUrlConstants.STOCKS_RECEIVED_LIST_PAGE;
@@ -41,7 +41,7 @@ public class ReceivedGoodController {
 
 	@GetMapping("/view/{id}")
 	public String viewReceivedGood(@PathVariable String id, Model model) {
-		ReceivedGood good = receivedGoodService.findById(id);
+		GoodReceivedNote good = receivedGoodService.findById(id);
 		log.info("viewReceivedGood:{}", good);
 		model.addAttribute("good", good);
 		setData(model);
@@ -59,7 +59,7 @@ public class ReceivedGoodController {
 	@PostMapping("/new")
 	public String saveDraftReceivedGood(@ModelAttribute GoodForm goodForm) {
 		log.info("saveDraftReceivedGood:{}", goodForm.getGoodLines().size());
-		ReceivedGood good = receivedGoodService.saveDraftReceivedGood(goodForm);
+		GoodReceivedNote good = receivedGoodService.saveDraftReceivedGood(goodForm);
 		return NikaErpInventoryUrlConstants.STOCK_RECEIVED_VIEW_FORM_REDIRECT_URL + good.getId();
 	}
 	@PostMapping("/confirm-receive")
@@ -67,7 +67,7 @@ public class ReceivedGoodController {
 	                             @RequestParam String warehouseId,Model model,
 	                             RedirectAttributes redirectAttributes) {
 		log.info("goodId:{},warehouseId:{}",goodId,warehouseId);
-		ReceivedGood good = receivedGoodService.confirmAndReceive(goodId,warehouseId);
+		GoodReceivedNote good = receivedGoodService.confirmAndReceive(goodId,warehouseId);
 	    redirectAttributes.addFlashAttribute("success", "Purchase confirmed and goods received.");
 	    return NikaErpInventoryUrlConstants.STOCK_RECEIVED_VIEW_FORM_REDIRECT_URL + good.getId();
 	}

@@ -14,7 +14,7 @@ import com.niwe.erp.core.service.CoreUserService;
 import com.niwe.erp.inventory.domain.EStockOperation;
 import com.niwe.erp.inventory.domain.EStockReceivedStatus;
 import com.niwe.erp.inventory.domain.MovementType;
-import com.niwe.erp.inventory.domain.ReceivedGood;
+import com.niwe.erp.inventory.domain.GoodReceivedNote;
 import com.niwe.erp.inventory.domain.ReceivedItem;
 import com.niwe.erp.inventory.domain.Warehouse;
 import com.niwe.erp.inventory.repository.ReceivedGoodRepository;
@@ -40,7 +40,7 @@ public class ReceivedGoodService {
 
 	public Boolean receiveGoodFromPurchase(Purchase purchase, String receivedBy, String warehouseId) {
 		Warehouse warehouse = warehouseService.findById(warehouseId);
-		ReceivedGood received = new ReceivedGood();
+		GoodReceivedNote received = new GoodReceivedNote();
 		received.setInternalCode(sequenceNumberService.getNextGoodReceivedCode());
 		received.setSupplierName(purchase.getSupplierName());
 		received.setReceivedDate(Instant.now());
@@ -66,27 +66,27 @@ public class ReceivedGoodService {
 		return true;
 	}
 
-	private void updateProductQuantities(ReceivedGood received) {
+	private void updateProductQuantities(GoodReceivedNote received) {
 
 		received.getItems().forEach((n) -> {
 			warehouseStockService.updateProductQuantity(received.getWarehouse(), n.getItem(), n.getQuantity(),
-					MovementType.PURCHASE, "p", EStockOperation.IN);
+					MovementType.GOOD_RECEIVED_NOTE, received.getInternalCode(), EStockOperation.IN);
 
 		});
 
 	}
 
-	public List<ReceivedGood> findAll() {
+	public List<GoodReceivedNote> findAll() {
 
 		return receivedGoodRepository.findAll();
 	}
 
-	public ReceivedGood findById(String id) {
+	public GoodReceivedNote findById(String id) {
 		return receivedGoodRepository.getReferenceById(UUID.fromString(id));
 	}
 
-	public ReceivedGood saveDraftReceivedGood(GoodForm goodForm) {
-		ReceivedGood good = new ReceivedGood();
+	public GoodReceivedNote saveDraftReceivedGood(GoodForm goodForm) {
+		GoodReceivedNote good = new GoodReceivedNote();
 		good.setStatus(EStockReceivedStatus.WAITING);
 		good.setInternalCode(sequenceNumberService.getNextGoodReceivedCode());
 		AtomicInteger counter = new AtomicInteger(1);
@@ -114,15 +114,15 @@ public class ReceivedGoodService {
 
 	}
 
-	public ReceivedGood confirmAndReceive(String id, String warehouseId) {
+	public GoodReceivedNote confirmAndReceive(String id, String warehouseId) {
 		Warehouse warehouse = warehouseService.findById(warehouseId);
 		String username = coreUserService.getCurrentUserEntity().getUsername();
-		ReceivedGood good = receivedGoodRepository.getReferenceById(UUID.fromString(id));
+		GoodReceivedNote good = receivedGoodRepository.getReferenceById(UUID.fromString(id));
 		good.setStatus(EStockReceivedStatus.RECEIVED);
 		good.setReceivedBy(username);
 		good.setReceivedDate(Instant.now());
 		good.setWarehouse(warehouse);
-		ReceivedGood confirmed = receivedGoodRepository.save(good);
+		GoodReceivedNote confirmed = receivedGoodRepository.save(good);
 		updateProductQuantities(confirmed);
 		return confirmed;
 	}

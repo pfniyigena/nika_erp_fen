@@ -36,7 +36,6 @@ public class WarehouseStockExcelExportService {
 			int rowIdx = 1;
 			for (ProductStockSummaryDto stock : sales) {
 				Row row = sheet.createRow(rowIdx++);
-				 
 			    row.createCell(0).setCellValue(stock.getProductCode());
 				row.createCell(1).setCellValue(stock.getProductName());
 				row.createCell(2).setCellValue(stock.getTotalQuantity().toPlainString());
@@ -85,8 +84,6 @@ public class WarehouseStockExcelExportService {
             for (int i = 0; i < col; i++) {
                 sheet.autoSizeColumn(i);
             }
-
-             
             workbook.write(out);
             return new ByteArrayInputStream(out.toByteArray());
         }
@@ -104,6 +101,7 @@ public class WarehouseStockExcelExportService {
 			}
 			// Data rows
 			int rowIdx = 1;
+			BigDecimal totalAmount = BigDecimal.ZERO;
 			for (ProductStockValuationDto stock : sales) {
 				Row row = sheet.createRow(rowIdx++);
 			    row.createCell(0).setCellValue(stock.getProductCode());
@@ -111,7 +109,12 @@ public class WarehouseStockExcelExportService {
 				row.createCell(2).setCellValue(stock.getTotalQuantity().toPlainString());
 				row.createCell(3).setCellValue(stock.getUnitCost().toPlainString());
 				row.createCell(4).setCellValue(stock.getTotalValue().toPlainString());
+				 totalAmount = totalAmount.add(stock.getTotalValue());
 			}
+			// Total row
+						Row totalRow = sheet.createRow(rowIdx);
+						totalRow.createCell(3).setCellValue("TOTAL");
+						totalRow.createCell(4).setCellValue(totalAmount.doubleValue());
 			workbook.write(out);
 			return new ByteArrayInputStream(out.toByteArray());
 		}

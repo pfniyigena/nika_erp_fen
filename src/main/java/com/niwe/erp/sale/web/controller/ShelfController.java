@@ -17,6 +17,7 @@ import com.niwe.erp.core.service.CoreItemService;
 import com.niwe.erp.inventory.domain.Warehouse;
 import com.niwe.erp.inventory.service.WarehouseService;
 import com.niwe.erp.sale.domain.Shelf;
+import com.niwe.erp.sale.service.CustomerService;
 import com.niwe.erp.sale.service.ShelfService;
 import com.niwe.erp.sale.web.form.ShelfForm;
 import com.niwe.erp.sale.web.form.ShelfLineForm;
@@ -33,6 +34,7 @@ public class ShelfController {
 	private final ShelfService shelfService;
 	private final WarehouseService warehouseService;
 	private final  CoreItemService coreItemService;
+	private final CustomerService customerService;
 	@GetMapping(path = "/list")
 	public String listShelves(Model model) {
 
@@ -96,6 +98,19 @@ public class ShelfController {
 	@PostMapping("/checkout")
     @ResponseBody
     public ResponseEntity<?> checkout(@RequestBody String saleDto) {
+       log.debug("checkout:{}",saleDto);
+        return ResponseEntity.ok("success");
+    }
+	@GetMapping("/pos")
+	public String showSaleFormOdoor(Model model) {
+	    model.addAttribute("saleForm", new ShelfForm());
+	    model.addAttribute("customers", customerService.findAll());
+	    model.addAttribute("products", coreItemService.findAllAsForm());
+	    return NiweErpSaleUrlConstants.SHELVE_POS_PAGE;
+	}
+	@PostMapping("/complete-sale")
+    @ResponseBody
+    public ResponseEntity<?> completeSale(@RequestBody String saleDto) {
        log.debug("checkout:{}",saleDto);
         return ResponseEntity.ok("success");
     }

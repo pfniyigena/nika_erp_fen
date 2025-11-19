@@ -83,6 +83,12 @@ public class CoreItem  extends AbstractEntity {
 	@Builder.Default
 	private BigDecimal unitCost = BigDecimal.ZERO;
 	/**
+	 * The unitPrice
+	 */
+	@Column(name = "QUANTITY_INITIAL", nullable = true)
+	@Builder.Default
+	private BigDecimal quanityInitial = BigDecimal.ZERO;
+	/**
 	 * The tax
 	 */
 	@ManyToOne

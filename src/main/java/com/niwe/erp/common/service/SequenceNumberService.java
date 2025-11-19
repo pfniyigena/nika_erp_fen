@@ -94,8 +94,8 @@ public class SequenceNumberService {
 	}
 	public String getNextGoodReceivedCode() {
 
-		String sequence = this.getNextSequenceNumber(ESequenceType.RECEIVED_GOOD);
-		return "GR" + StringUtils.leftPad(sequence, 9, "0");
+		String sequence = this.getNextSequenceNumber(ESequenceType.GOOD_RECEIVE_NOTE);
+		return "GRN" + StringUtils.leftPad(sequence, 9, "0");
 	}
 	public String getNextPaymentMethodCode() {
 

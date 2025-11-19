@@ -61,5 +61,5 @@ public class ReceivedItem extends AbstractEntity {
 	 */
 	@ManyToOne
 	@JoinColumn(name = "RECEIVED_GOOD_ID")
-	private ReceivedGood receivedGood;
+	private GoodReceivedNote receivedGood;
 }

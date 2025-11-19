@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping(value = NiweErpCoreUrlConstants.ITEMS_URL)
 @AllArgsConstructor
-public class AjaxController {
+public class ItemAjaxController {
 	private final CoreItemService coreItemService;
 
 	@GetMapping("/data")

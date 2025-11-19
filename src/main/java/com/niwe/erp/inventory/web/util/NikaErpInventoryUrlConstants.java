@@ -55,6 +55,11 @@ public class NikaErpInventoryUrlConstants {
 	public static final String WAREHOUSE_STOCKS_VALUATION_PAGE = "warehouse-stocks/valuation";
 	
 	/**
+	 * The WAREHOUSE_STOCKS_VALUATION_PAGE
+	 */
+	public static final String WAREHOUSE_STOCKS_VALUATION_AJAX_PAGE = "warehouse-stocks/valuation-ajax";
+	
+	/**
 	 * The WAREHOUSE_STOCKS_VIEW_FORM
 	 */
 	public static final String WAREHOUSE_STOCKS_VIEW_FORM = "warehouse-stocks/details";

@@ -27,11 +27,11 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
-@Table(name = "INVENTORY_RECEIVED_GOOD")
+@Table(name = "INVENTORY_GOOD_RECEIVED_NOTE")
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class ReceivedGood extends AbstractEntity {
+public class GoodReceivedNote extends AbstractEntity {
 	/**
 	 * The serialVersionUID
 	 */

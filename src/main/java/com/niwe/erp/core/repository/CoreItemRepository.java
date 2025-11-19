@@ -40,30 +40,24 @@ public interface CoreItemRepository extends JpaRepository<CoreItem, UUID> {
 			    JOIN b.tax t
 			""")
 	List<CoreItemForm> findAllAsForm();
-	@Query("""
-		    SELECT new com.niwe.erp.core.form.CoreItemForm(
-		    b.id,
-		    b.internalCode,
-		    b.itemName,
-			b.itemCode,
-			b.barcode,
-			b.externalItemCode,
-			b.unitPrice,
-			b.unitCost,
-		    t.taxCode,
-		    t.taxValue
-		    )
-		    FROM CoreItem b
-		    JOIN b.tax t
-		""")
-Page<CoreItemForm> findAllAsForm(Pageable pageable);
 
 	@Query("""
-			   SELECT new com.niwe.erp.core.view.CoreItemListView(
-				       i.id, i.itemName, i.itemCode, i.unitPrice, i.tax.id, i.nature.id, i.classification.id)
-				FROM CoreItem i
+			    SELECT new com.niwe.erp.core.form.CoreItemForm(
+			    b.id,
+			    b.internalCode,
+			    b.itemName,
+				b.itemCode,
+				b.barcode,
+				b.externalItemCode,
+				b.unitPrice,
+				b.unitCost,
+			    t.taxCode,
+			    t.taxValue
+			    )
+			    FROM CoreItem b
+			    JOIN b.tax t
 			""")
-	Page<CoreItemListView> findAllAsFormPageable(Pageable pageable);
+	Page<CoreItemForm> findAllAsForm(Pageable pageable);
 
 	@Query("""
 			     SELECT new com.niwe.erp.core.form.CoreItemForm(
@@ -97,6 +91,13 @@ Page<CoreItemForm> findAllAsForm(Pageable pageable);
 			    OR LOWER(i.barcode) LIKE LOWER(CONCAT('%', :searchTerm, '%'))
 			""")
 	Page<CoreItem> searchItems(@Param("searchTerm") String searchTerm, Pageable pageable);
+
+	@Query("""
+			   SELECT new com.niwe.erp.core.view.CoreItemListView(
+				       i.id, i.itemName, i.itemCode, i.unitPrice, i.tax.id, i.nature.id, i.classification.id)
+				FROM CoreItem i
+			""")
+	Page<CoreItemListView> findAllAsFormPageable(Pageable pageable);
 
 	@Query("""
 			SELECT new com.niwe.erp.core.view.CoreItemListView(

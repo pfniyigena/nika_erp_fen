@@ -58,3 +58,9 @@ logging:
     name: logs/app.log
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+printer:
+  ip: 192.168.1.100       # your printer IP
+  port: 9100
+  is-58mm: false          # ← set true for 58mm paper
+  has-logo: true
+  kick-drawer: true

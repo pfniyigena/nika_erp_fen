@@ -36,6 +36,7 @@ public class ItemExcelHelper {
 	                // Read numeric cells as BigDecimal
 	                p.setUnitPrice(getBigDecimalValue(currentRow.getCell(3)));
 	                p.setUnitCost(getBigDecimalValue(currentRow.getCell(4)));
+	                p.setQuanityInitial(getBigDecimalValue(currentRow.getCell(5)));
 	                products.add(p);
 	            }
 	            return products;

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,7 @@ import com.niwe.erp.core.view.CoreItemListView;
 import com.niwe.erp.core.web.util.NiweErpCoreDefaultParameter;
 import com.niwe.erp.invoicing.domain.TaxType;
 import com.niwe.erp.invoicing.repository.TaxTypeRepository;
+import com.niwe.erp.web.api.event.ItemCreatedEvent;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +51,7 @@ public class CoreItemService {
 	private final CoreQuantityUnitRepository coreQuantityUnitRepository;
 	private final CoreCountryRepository coreCountryRepository;
 	private TaxTypeRepository taxTypeRepository;
+	private final ApplicationEventPublisher eventPublisher;
 
 	public List<CoreItemForm> findAllAsForm() {
 		return coreItemRepository.findAllAsForm();
@@ -160,7 +163,7 @@ public class CoreItemService {
 	public void impotExcelFile(MultipartFile file) {
 		try {
 			List<CoreItem> products = ItemExcelHelper.excelToProducts(file.getInputStream());
-
+            
 			CoreCountry country = coreCountryRepository.findByIsDefault(Boolean.TRUE).get(0);
 			CoreItemClassification classification = coreItemClassificationRepository.findByIsDefault(Boolean.TRUE)
 					.get(0);
@@ -194,7 +197,8 @@ public class CoreItemService {
 				p.setTax(tax);
 			}).toList();
 
-			coreItemRepository.saveAll(enrichedProducts);
+			coreItemRepository.saveAll(enrichedProducts);	 
+			eventPublisher.publishEvent(new ItemCreatedEvent(this, enrichedProducts));
 		} catch (Exception e) {
 			throw new RuntimeException("Could not store Excel data: " + e.getMessage(), e);
 		}

@@ -41,6 +41,11 @@ public class NiweErpSaleUrlConstants {
 	public static final String SHELVE_POS_SALE_PAGE = "shelves/pos-sale";
 	
 	/**
+	 * The SHELVE_POS_SALE_PAGE
+	 */
+	public static final String SHELVE_POS_PAGE = "shelves/pos";
+	
+	/**
 	 * The SALES_URL
 	 */
 	public static final String SALES_URL = "sales";
@@ -70,5 +75,14 @@ public class NiweErpSaleUrlConstants {
 	 * The ANNUAL_SALES_REPORT_LIST_PAGE
 	 */
 	public static final String ANNUAL_SALES_REPORT_LIST_PAGE = "daily-sales/annualy-sales";
-
+	
+	/**
+	 * The CUSTOMERS_URL
+	 */
+	public static final String CUSTOMERS_URL = "customers";
+	
+	/**
+	 * The ANNUAL_SALES_REPORT_LIST_PAGE
+	 */
+	public static final String CUSTOMERS_LIST_PAGE = "customers/list";
 }
